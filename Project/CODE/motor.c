@@ -238,7 +238,7 @@ void motor_control(void) {
         // 缓启动模式
         motor_pid_l.out_i = 0;  // 清除默认模式的积分量
 
-        motor_l.duty += changable_pid_solve(&motor_l.pid, (float) (motor_l.target_speed - motor_l.encoder_speed));
+        motor_l.duty += changeable_pid_solve(&motor_l.pid, (float) (motor_l.target_speed - motor_l.encoder_speed));
         motor_l.duty = MINMAX(motor_l.duty, -MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX);
     } else if (motor_l.motor_mode == MODE_POSLOOP) {
         //Apriltag停车位置环
@@ -261,7 +261,7 @@ void motor_control(void) {
     } else if (motor_r.motor_mode == MODE_SOFT) {
         motor_pid_r.out_i = 0;
 
-        motor_r.duty += changable_pid_solve(&motor_r.pid, (float) (motor_r.target_speed - motor_r.encoder_speed));
+        motor_r.duty += changeable_pid_solve(&motor_r.pid, (float) (motor_r.target_speed - motor_r.encoder_speed));
         motor_r.duty = MINMAX(motor_r.duty, -MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX);
     } else if (motor_r.motor_mode == MODE_POSLOOP) {
         motor_pid_r.out_i = 0;
