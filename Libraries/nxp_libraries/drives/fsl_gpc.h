@@ -206,14 +206,10 @@ static inline void GPC_RequestDisplayPowerOn(GPC_Type *base, bool enable)
  * @param base GPC peripheral base address.
  * @param enable Enable the power on sequence, or the power down sequence.
  */
-static inline void GPC_RequestMEGAPowerOn(GPC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void GPC_RequestMEGAPowerOn(GPC_Type *base, bool enable) {
+    if (enable) {
         base->CNTR |= GPC_CNTR_MEGA_PUP_REQ_MASK; /* Power on sequence. */
-    }
-    else
-    {
+    } else {
         base->CNTR |= GPC_CNTR_MEGA_PDN_REQ_MASK; /* Power down sequence. */
     }
 }

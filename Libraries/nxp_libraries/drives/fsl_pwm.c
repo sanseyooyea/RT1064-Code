@@ -48,20 +48,19 @@ static const clock_ip_name_t s_pwmClocks[][FSL_FEATURE_PWM_SUBMODULE_COUNT] = PW
  *
  * param value    Parameters of type uint16_t
  */
-static inline uint16_t PWM_GetComplementU16(uint16_t value)
+static inline uint16_t
+PWM_GetComplementU16(uint16_t
+value)
 {
-    return (~value + 1U);
+return (~value + 1U);
 }
 
-static uint32_t PWM_GetInstance(PWM_Type *base)
-{
+static uint32_t PWM_GetInstance(PWM_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_pwmBases); instance++)
-    {
-        if (s_pwmBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_pwmBases); instance++) {
+        if (s_pwmBases[instance] == base) {
             break;
         }
     }
@@ -82,21 +81,18 @@ static uint32_t PWM_GetInstance(PWM_Type *base)
  *
  * return kStatus_Success means success; else failed.
  */
-status_t PWM_Init(PWM_Type *base, pwm_submodule_t subModule, const pwm_config_t *config)
-{
+status_t PWM_Init(PWM_Type *base, pwm_submodule_t subModule, const pwm_config_t *config) {
     assert(config);
 
     uint16_t reg;
 
     /* Source clock for submodule 0 cannot be itself */
-    if ((config->clockSource == kPWM_Submodule0Clock) && (subModule == kPWM_Module_0))
-    {
+    if ((config->clockSource == kPWM_Submodule0Clock) && (subModule == kPWM_Module_0)) {
         return kStatus_Fail;
     }
 
     /* Reload source select clock for submodule 0 cannot be master reload */
-    if ((config->reloadSelect == kPWM_MasterReload) && (subModule == kPWM_Module_0))
-    {
+    if ((config->reloadSelect == kPWM_MasterReload) && (subModule == kPWM_Module_0)) {
         return kStatus_Fail;
     }
 
@@ -120,16 +116,19 @@ status_t PWM_Init(PWM_Type *base, pwm_submodule_t subModule, const pwm_config_t 
             PWM_CTRL2_WAITEN(config->enableWait) | PWM_CTRL2_RELOAD_SEL(config->reloadSelect));
 
     /* Setup PWM A & B to be independent or a complementary-pair */
-    switch (config->pairOperation)
-    {
+    switch (config->pairOperation) {
         case kPWM_Independent:
             reg |= PWM_CTRL2_INDEP_MASK;
             break;
         case kPWM_ComplementaryPwmA:
-            base->MCTRL &= ~((uint16_t)1U << (PWM_MCTRL_IPOL_SHIFT + (uint16_t)subModule));
+            base->MCTRL &= ~((uint16_t)
+            1U << (PWM_MCTRL_IPOL_SHIFT + (uint16_t)
+            subModule));
             break;
         case kPWM_ComplementaryPwmB:
-            base->MCTRL |= ((uint16_t)1U << (PWM_MCTRL_IPOL_SHIFT + (uint16_t)subModule));
+            base->MCTRL |= ((uint16_t)
+            1U << (PWM_MCTRL_IPOL_SHIFT + (uint16_t)
+            subModule));
             break;
         default:
             assert(false);
@@ -144,8 +143,7 @@ status_t PWM_Init(PWM_Type *base, pwm_submodule_t subModule, const pwm_config_t 
     reg |= (PWM_CTRL_PRSC(config->prescale) | PWM_CTRL_LDFQ(config->reloadFrequency));
 
     /* Setup register reload logic */
-    switch (config->reloadLogic)
-    {
+    switch (config->reloadLogic) {
         case kPWM_ReloadImmediate:
             reg |= PWM_CTRL_LDMOD_MASK;
             break;
@@ -168,8 +166,7 @@ status_t PWM_Init(PWM_Type *base, pwm_submodule_t subModule, const pwm_config_t 
     base->SM[subModule].CTRL = reg;
 
     /* Issue a Force trigger event when configured to trigger locally */
-    if (config->forceTrigger == kPWM_Force_Local)
-    {
+    if (config->forceTrigger == kPWM_Force_Local) {
         base->SM[subModule].CTRL2 |= PWM_CTRL2_FORCE(1U);
     }
 
@@ -182,10 +179,11 @@ status_t PWM_Init(PWM_Type *base, pwm_submodule_t subModule, const pwm_config_t 
  * param base      PWM peripheral base address
  * param subModule PWM submodule to deinitialize
  */
-void PWM_Deinit(PWM_Type *base, pwm_submodule_t subModule)
-{
+void PWM_Deinit(PWM_Type *base, pwm_submodule_t subModule) {
     /* Stop the submodule */
-    base->MCTRL &= ~((uint16_t)1U << (PWM_MCTRL_RUN_SHIFT + (uint16_t)subModule));
+    base->MCTRL &= ~((uint16_t)
+    1U << (PWM_MCTRL_RUN_SHIFT + (uint16_t)
+    subModule));
 
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     /* Gate the PWM submodule clock*/
@@ -211,12 +209,11 @@ void PWM_Deinit(PWM_Type *base, pwm_submodule_t subModule)
  * endcode
  * param config Pointer to user's PWM config structure.
  */
-void PWM_GetDefaultConfig(pwm_config_t *config)
-{
+void PWM_GetDefaultConfig(pwm_config_t *config) {
     assert(config);
 
     /* Initializes the configure structure to zero. */
-    (void)memset(config, 0, sizeof(*config));
+    (void) memset(config, 0, sizeof(*config));
 
     /* PWM is paused in debug mode */
     config->enableDebugMode = false;
@@ -267,21 +264,19 @@ status_t PWM_SetupPwm(PWM_Type *base,
                       uint8_t numOfChnls,
                       pwm_mode_t mode,
                       uint32_t pwmFreq_Hz,
-                      uint32_t srcClock_Hz)
-{
+                      uint32_t srcClock_Hz) {
     assert(chnlParams);
     assert(pwmFreq_Hz);
     assert(numOfChnls);
     assert(srcClock_Hz);
-	assert(chnlParams->dutyCyclePercent <= PWM_DUTY_MAX);
-	
+    assert(chnlParams->dutyCyclePercent <= PWM_DUTY_MAX);
+
     uint32_t pwmClock;
     uint16_t pulseCnt = 0, pwmHighPulse = 0;
     uint16_t modulo = 0;
     uint8_t i, polarityShift = 0, outputEnableShift = 0;
 
-    if (numOfChnls > 2U)
-    {
+    if (numOfChnls > 2U) {
         /* Each submodule has 2 signals; PWM A & PWM B */
         return kStatus_Fail;
     }
@@ -291,19 +286,16 @@ status_t PWM_SetupPwm(PWM_Type *base,
     pulseCnt = (uint16_t)(pwmClock / pwmFreq_Hz);
 
     /* Setup each PWM channel */
-    for (i = 0; i < numOfChnls; i++)
-    {
+    for (i = 0; i < numOfChnls; i++) {
         /* Calculate pulse width */
-        pwmHighPulse = ((uint64_t)pulseCnt * chnlParams->dutyCyclePercent) / PWM_DUTY_MAX;
-        if(PWM_DUTY_MAX == chnlParams->dutyCyclePercent)    if(0xffff != pwmHighPulse)    pwmHighPulse++;
+        pwmHighPulse = ((uint64_t) pulseCnt * chnlParams->dutyCyclePercent) / PWM_DUTY_MAX;
+        if (PWM_DUTY_MAX == chnlParams->dutyCyclePercent) if (0xffff != pwmHighPulse) pwmHighPulse++;
 
         /* Setup the different match registers to generate the PWM signal */
-        switch (mode)
-        {
+        switch (mode) {
             case kPWM_SignedCenterAligned:
                 /* Setup the PWM period for a signed center aligned signal */
-                if (i == 0U)
-                {
+                if (i == 0U) {
                     modulo = (pulseCnt >> 1U);
                     /* Indicates the start of the PWM period */
                     base->SM[subModule].INIT = PWM_GetComplementU16(modulo);
@@ -314,13 +306,10 @@ status_t PWM_SetupPwm(PWM_Type *base,
                 }
 
                 /* Setup the PWM dutycycle */
-                if (chnlParams->pwmChannel == kPWM_PwmA)
-                {
+                if (chnlParams->pwmChannel == kPWM_PwmA) {
                     base->SM[subModule].VAL2 = PWM_GetComplementU16(pwmHighPulse / 2U);
                     base->SM[subModule].VAL3 = (pwmHighPulse / 2U);
-                }
-                else
-                {
+                } else {
                     base->SM[subModule].VAL4 = PWM_GetComplementU16(pwmHighPulse / 2U);
                     base->SM[subModule].VAL5 = (pwmHighPulse / 2U);
                 }
@@ -328,8 +317,7 @@ status_t PWM_SetupPwm(PWM_Type *base,
             case kPWM_CenterAligned:
                 /* Setup the PWM period for an unsigned center aligned signal */
                 /* Indicates the start of the PWM period */
-                if (i == 0U)
-                {
+                if (i == 0U) {
                     base->SM[subModule].INIT = 0;
                     /* Indicates the center value */
                     base->SM[subModule].VAL0 = (pulseCnt / 2U);
@@ -338,21 +326,17 @@ status_t PWM_SetupPwm(PWM_Type *base,
                 }
 
                 /* Setup the PWM dutycycle */
-                if (chnlParams->pwmChannel == kPWM_PwmA)
-                {
+                if (chnlParams->pwmChannel == kPWM_PwmA) {
                     base->SM[subModule].VAL2 = ((pulseCnt - pwmHighPulse) / 2U);
                     base->SM[subModule].VAL3 = ((pulseCnt + pwmHighPulse) / 2U);
-                }
-                else
-                {
+                } else {
                     base->SM[subModule].VAL4 = ((pulseCnt - pwmHighPulse) / 2U);
                     base->SM[subModule].VAL5 = ((pulseCnt + pwmHighPulse) / 2U);
                 }
                 break;
             case kPWM_SignedEdgeAligned:
                 /* Setup the PWM period for a signed edge aligned signal */
-                if (i == 0U)
-                {
+                if (i == 0U) {
                     modulo = (pulseCnt >> 1U);
                     /* Indicates the start of the PWM period */
                     base->SM[subModule].INIT = PWM_GetComplementU16(modulo);
@@ -363,13 +347,10 @@ status_t PWM_SetupPwm(PWM_Type *base,
                 }
 
                 /* Setup the PWM dutycycle */
-                if (chnlParams->pwmChannel == kPWM_PwmA)
-                {
+                if (chnlParams->pwmChannel == kPWM_PwmA) {
                     base->SM[subModule].VAL2 = PWM_GetComplementU16(modulo);
                     base->SM[subModule].VAL3 = PWM_GetComplementU16(modulo) + pwmHighPulse;
-                }
-                else
-                {
+                } else {
                     base->SM[subModule].VAL4 = PWM_GetComplementU16(modulo);
                     base->SM[subModule].VAL5 = PWM_GetComplementU16(modulo) + pwmHighPulse;
                 }
@@ -377,8 +358,7 @@ status_t PWM_SetupPwm(PWM_Type *base,
             case kPWM_EdgeAligned:
                 /* Setup the PWM period for a unsigned edge aligned signal */
                 /* Indicates the start of the PWM period */
-                if (i == 0U)
-                {
+                if (i == 0U) {
                     base->SM[subModule].INIT = 0;
                     /* Indicates the center value */
                     base->SM[subModule].VAL0 = (pulseCnt / 2U);
@@ -387,13 +367,10 @@ status_t PWM_SetupPwm(PWM_Type *base,
                 }
 
                 /* Setup the PWM dutycycle */
-                if (chnlParams->pwmChannel == kPWM_PwmA)
-                {
+                if (chnlParams->pwmChannel == kPWM_PwmA) {
                     base->SM[subModule].VAL2 = 0;
                     base->SM[subModule].VAL3 = pwmHighPulse;
-                }
-                else
-                {
+                } else {
                     base->SM[subModule].VAL4 = 0;
                     base->SM[subModule].VAL5 = pwmHighPulse;
                 }
@@ -405,30 +382,31 @@ status_t PWM_SetupPwm(PWM_Type *base,
         /* Setup register shift values based on the channel being configured.
          * Also setup the deadtime value
          */
-        if (chnlParams->pwmChannel == kPWM_PwmA)
-        {
-            polarityShift              = PWM_OCTRL_POLA_SHIFT;
-            outputEnableShift          = PWM_OUTEN_PWMA_EN_SHIFT;
+        if (chnlParams->pwmChannel == kPWM_PwmA) {
+            polarityShift = PWM_OCTRL_POLA_SHIFT;
+            outputEnableShift = PWM_OUTEN_PWMA_EN_SHIFT;
             base->SM[subModule].DTCNT0 = PWM_DTCNT0_DTCNT0(chnlParams->deadtimeValue);
-        }
-        else
-        {
-            polarityShift              = PWM_OCTRL_POLB_SHIFT;
-            outputEnableShift          = PWM_OUTEN_PWMB_EN_SHIFT;
+        } else {
+            polarityShift = PWM_OCTRL_POLB_SHIFT;
+            outputEnableShift = PWM_OUTEN_PWMB_EN_SHIFT;
             base->SM[subModule].DTCNT1 = PWM_DTCNT1_DTCNT1(chnlParams->deadtimeValue);
         }
 
         /* Setup signal active level */
-        if ((bool)chnlParams->level == kPWM_HighTrue)
-        {
-            base->SM[subModule].OCTRL &= ~((uint16_t)1U << (uint16_t)polarityShift);
-        }
-        else
-        {
-            base->SM[subModule].OCTRL |= ((uint16_t)1U << (uint16_t)polarityShift);
+        if ((bool) chnlParams->level == kPWM_HighTrue) {
+            base->SM[subModule].OCTRL &= ~((uint16_t)
+            1U << (uint16_t)
+            polarityShift);
+        } else {
+            base->SM[subModule].OCTRL |= ((uint16_t)
+            1U << (uint16_t)
+            polarityShift);
         }
         /* Enable PWM output */
-        base->OUTEN |= ((uint16_t)1U << ((uint16_t)outputEnableShift + (uint16_t)subModule));
+        base->OUTEN |= ((uint16_t)
+        1U << ((uint16_t)
+        outputEnableShift + (uint16_t)
+        subModule));
 
         /* Get the next channel parameters */
         chnlParams++;
@@ -456,29 +434,25 @@ void PWM_UpdatePwmDutycycle(PWM_Type *base,
                             pwm_submodule_t subModule,
                             pwm_channels_t pwmSignal,
                             pwm_mode_t currPwmMode,
-                            uint32_t dutyCyclePercent)
-{
+                            uint32_t dutyCyclePercent) {
     assert(dutyCyclePercent <= PWM_DUTY_MAX);
-    assert((uint16_t)pwmSignal < 2U);
+    assert((uint16_t)
+    pwmSignal < 2U);
     uint16_t pulseCnt = 0, pwmHighPulse = 0;
     uint16_t modulo = 0;
 
-    switch (currPwmMode)
-    {
+    switch (currPwmMode) {
         case kPWM_SignedCenterAligned:
-            modulo   = base->SM[subModule].VAL1;
+            modulo = base->SM[subModule].VAL1;
             pulseCnt = modulo * 2U;
             /* Calculate pulse width */
-            pwmHighPulse = ((uint64_t)pulseCnt * dutyCyclePercent) / PWM_DUTY_MAX;
+            pwmHighPulse = ((uint64_t) pulseCnt * dutyCyclePercent) / PWM_DUTY_MAX;
 
             /* Setup the PWM dutycycle */
-            if (pwmSignal == kPWM_PwmA)
-            {
+            if (pwmSignal == kPWM_PwmA) {
                 base->SM[subModule].VAL2 = PWM_GetComplementU16(pwmHighPulse / 2U);
                 base->SM[subModule].VAL3 = (pwmHighPulse / 2U);
-            }
-            else
-            {
+            } else {
                 base->SM[subModule].VAL4 = PWM_GetComplementU16(pwmHighPulse / 2U);
                 base->SM[subModule].VAL5 = (pwmHighPulse / 2U);
             }
@@ -486,34 +460,28 @@ void PWM_UpdatePwmDutycycle(PWM_Type *base,
         case kPWM_CenterAligned:
             pulseCnt = base->SM[subModule].VAL1;
             /* Calculate pulse width */
-            pwmHighPulse = ((uint64_t)pulseCnt * dutyCyclePercent) / PWM_DUTY_MAX;
-			if(PWM_DUTY_MAX == dutyCyclePercent)    if(0xffff != pwmHighPulse)    pwmHighPulse++;
+            pwmHighPulse = ((uint64_t) pulseCnt * dutyCyclePercent) / PWM_DUTY_MAX;
+            if (PWM_DUTY_MAX == dutyCyclePercent) if (0xffff != pwmHighPulse) pwmHighPulse++;
             /* Setup the PWM dutycycle */
-            if (pwmSignal == kPWM_PwmA)
-            {
+            if (pwmSignal == kPWM_PwmA) {
                 base->SM[subModule].VAL2 = ((pulseCnt - pwmHighPulse) / 2U);
                 base->SM[subModule].VAL3 = ((pulseCnt + pwmHighPulse) / 2U);
-            }
-            else
-            {
+            } else {
                 base->SM[subModule].VAL4 = ((pulseCnt - pwmHighPulse) / 2U);
                 base->SM[subModule].VAL5 = ((pulseCnt + pwmHighPulse) / 2U);
             }
             break;
         case kPWM_SignedEdgeAligned:
-            modulo   = base->SM[subModule].VAL1;
+            modulo = base->SM[subModule].VAL1;
             pulseCnt = modulo * 2U;
             /* Calculate pulse width */
-            pwmHighPulse = ((uint64_t)pulseCnt * dutyCyclePercent) / PWM_DUTY_MAX;
-			
+            pwmHighPulse = ((uint64_t) pulseCnt * dutyCyclePercent) / PWM_DUTY_MAX;
+
             /* Setup the PWM dutycycle */
-            if (pwmSignal == kPWM_PwmA)
-            {
+            if (pwmSignal == kPWM_PwmA) {
                 base->SM[subModule].VAL2 = PWM_GetComplementU16(modulo);
                 base->SM[subModule].VAL3 = PWM_GetComplementU16(modulo) + pwmHighPulse;
-            }
-            else
-            {
+            } else {
                 base->SM[subModule].VAL4 = PWM_GetComplementU16(modulo);
                 base->SM[subModule].VAL5 = PWM_GetComplementU16(modulo) + pwmHighPulse;
             }
@@ -521,16 +489,13 @@ void PWM_UpdatePwmDutycycle(PWM_Type *base,
         case kPWM_EdgeAligned:
             pulseCnt = base->SM[subModule].VAL1;
             /* Calculate pulse width */
-            pwmHighPulse = ((uint64_t)pulseCnt * dutyCyclePercent) / PWM_DUTY_MAX;
-			if(PWM_DUTY_MAX == dutyCyclePercent)    if(0xffff != pwmHighPulse)    pwmHighPulse++;
+            pwmHighPulse = ((uint64_t) pulseCnt * dutyCyclePercent) / PWM_DUTY_MAX;
+            if (PWM_DUTY_MAX == dutyCyclePercent) if (0xffff != pwmHighPulse) pwmHighPulse++;
             /* Setup the PWM dutycycle */
-            if (pwmSignal == kPWM_PwmA)
-            {
+            if (pwmSignal == kPWM_PwmA) {
                 base->SM[subModule].VAL2 = 0;
                 base->SM[subModule].VAL3 = pwmHighPulse;
-            }
-            else
-            {
+            } else {
                 base->SM[subModule].VAL4 = 0;
                 base->SM[subModule].VAL5 = pwmHighPulse;
             }
@@ -555,11 +520,9 @@ void PWM_UpdatePwmDutycycle(PWM_Type *base,
 void PWM_SetupInputCapture(PWM_Type *base,
                            pwm_submodule_t subModule,
                            pwm_channels_t pwmChannel,
-                           const pwm_input_capture_param_t *inputCaptureParams)
-{
+                           const pwm_input_capture_param_t *inputCaptureParams) {
     uint16_t reg = 0;
-    switch (pwmChannel)
-    {
+    switch (pwmChannel) {
         case kPWM_PwmA:
             /* Setup the capture paramters for PWM A pin */
             reg = (PWM_CAPTCTRLA_INP_SELA(inputCaptureParams->captureInputSel) |
@@ -567,8 +530,7 @@ void PWM_SetupInputCapture(PWM_Type *base,
                    PWM_CAPTCTRLA_ONESHOTA(inputCaptureParams->enableOneShotCapture) |
                    PWM_CAPTCTRLA_CFAWM(inputCaptureParams->fifoWatermark));
             /* Enable the edge counter if using the output edge counter */
-            if (inputCaptureParams->captureInputSel)
-            {
+            if (inputCaptureParams->captureInputSel) {
                 reg |= PWM_CAPTCTRLA_EDGCNTA_EN_MASK;
             }
             /* Enable input capture operation */
@@ -579,7 +541,9 @@ void PWM_SetupInputCapture(PWM_Type *base,
             /* Setup the compare value when using the edge counter as source */
             base->SM[subModule].CAPTCOMPA = PWM_CAPTCOMPA_EDGCMPA(inputCaptureParams->edgeCompareValue);
             /* Setup PWM A pin for input capture */
-            base->OUTEN &= ~((uint16_t)1U << (PWM_OUTEN_PWMA_EN_SHIFT + (uint16_t)subModule));
+            base->OUTEN &= ~((uint16_t)
+            1U << (PWM_OUTEN_PWMA_EN_SHIFT + (uint16_t)
+            subModule));
             break;
         case kPWM_PwmB:
             /* Setup the capture paramters for PWM B pin */
@@ -588,8 +552,7 @@ void PWM_SetupInputCapture(PWM_Type *base,
                    PWM_CAPTCTRLB_ONESHOTB(inputCaptureParams->enableOneShotCapture) |
                    PWM_CAPTCTRLB_CFBWM(inputCaptureParams->fifoWatermark));
             /* Enable the edge counter if using the output edge counter */
-            if (inputCaptureParams->captureInputSel)
-            {
+            if (inputCaptureParams->captureInputSel) {
                 reg |= PWM_CAPTCTRLB_EDGCNTB_EN_MASK;
             }
             /* Enable input capture operation */
@@ -600,7 +563,9 @@ void PWM_SetupInputCapture(PWM_Type *base,
             /* Setup the compare value when using the edge counter as source */
             base->SM[subModule].CAPTCOMPB = PWM_CAPTCOMPB_EDGCMPB(inputCaptureParams->edgeCompareValue);
             /* Setup PWM B pin for input capture */
-            base->OUTEN &= ~((uint16_t)1U << (PWM_OUTEN_PWMB_EN_SHIFT + (uint16_t)subModule));
+            base->OUTEN &= ~((uint16_t)
+            1U << (PWM_OUTEN_PWMB_EN_SHIFT + (uint16_t)
+            subModule));
             break;
         case kPWM_PwmX:
             reg = (PWM_CAPTCTRLX_INP_SELX(inputCaptureParams->captureInputSel) |
@@ -608,8 +573,7 @@ void PWM_SetupInputCapture(PWM_Type *base,
                    PWM_CAPTCTRLX_ONESHOTX(inputCaptureParams->enableOneShotCapture) |
                    PWM_CAPTCTRLX_CFXWM(inputCaptureParams->fifoWatermark));
             /* Enable the edge counter if using the output edge counter */
-            if (inputCaptureParams->captureInputSel)
-            {
+            if (inputCaptureParams->captureInputSel) {
                 reg |= PWM_CAPTCTRLX_EDGCNTX_EN_MASK;
             }
             /* Enable input capture operation */
@@ -620,7 +584,9 @@ void PWM_SetupInputCapture(PWM_Type *base,
             /* Setup the compare value when using the edge counter as source */
             base->SM[subModule].CAPTCOMPX = PWM_CAPTCOMPX_EDGCMPX(inputCaptureParams->edgeCompareValue);
             /* Setup PWM X pin for input capture */
-            base->OUTEN &= ~((uint16_t)1U << (PWM_OUTEN_PWMX_EN_SHIFT + (uint16_t)subModule));
+            base->OUTEN &= ~((uint16_t)
+            1U << (PWM_OUTEN_PWMX_EN_SHIFT + (uint16_t)
+            subModule));
             break;
         default:
             assert(false);
@@ -634,13 +600,11 @@ void PWM_SetupInputCapture(PWM_Type *base,
  * @param base                   PWM peripheral base address
  * @param faultInputFilterParams Parameters passed in to set up the fault input filter.
  */
-void PWM_SetupFaultInputFilter(PWM_Type *base, const pwm_fault_input_filter_param_t *faultInputFilterParams)
-{
+void PWM_SetupFaultInputFilter(PWM_Type *base, const pwm_fault_input_filter_param_t *faultInputFilterParams) {
     assert(NULL != faultInputFilterParams);
 
     /* When changing values for fault period from a non-zero value, first write a value of 0 to clear the filter. */
-    if (0U != (base->FFILT & PWM_FFILT_FILT_PER_MASK))
-    {
+    if (0U != (base->FFILT & PWM_FFILT_FILT_PER_MASK)) {
         base->FFILT &= ~(uint16_t)(PWM_FFILT_FILT_PER_MASK);
     }
 
@@ -658,74 +622,91 @@ void PWM_SetupFaultInputFilter(PWM_Type *base, const pwm_fault_input_filter_para
  * param faultNum    PWM fault to configure.
  * param faultParams Pointer to the PWM fault config structure
  */
-void PWM_SetupFaults(PWM_Type *base, pwm_fault_input_t faultNum, const pwm_fault_param_t *faultParams)
-{
+void PWM_SetupFaults(PWM_Type *base, pwm_fault_input_t faultNum, const pwm_fault_param_t *faultParams) {
     assert(faultParams);
     uint16_t reg;
 
     reg = base->FCTRL;
     /* Set the faults level-settting */
-    if (faultParams->faultLevel)
-    {
-        reg |= ((uint16_t)1U << (PWM_FCTRL_FLVL_SHIFT + (uint16_t)faultNum));
-    }
-    else
-    {
-        reg &= ~((uint16_t)1U << (PWM_FCTRL_FLVL_SHIFT + (uint16_t)faultNum));
+    if (faultParams->faultLevel) {
+        reg |= ((uint16_t)
+        1U << (PWM_FCTRL_FLVL_SHIFT + (uint16_t)
+        faultNum));
+    } else {
+        reg &= ~((uint16_t)
+        1U << (PWM_FCTRL_FLVL_SHIFT + (uint16_t)
+        faultNum));
     }
     /* Set the fault clearing mode */
     if ((uint16_t)faultParams->faultClearingMode != 0U)
     {
         /* Use manual fault clearing */
-        reg &= ~((uint16_t)1U << (PWM_FCTRL_FAUTO_SHIFT + (uint16_t)faultNum));
-        if (faultParams->faultClearingMode == kPWM_ManualSafety)
-        {
+        reg &= ~((uint16_t)
+        1U << (PWM_FCTRL_FAUTO_SHIFT + (uint16_t)
+        faultNum));
+        if (faultParams->faultClearingMode == kPWM_ManualSafety) {
             /* Use manual fault clearing with safety mode enabled */
-            reg |= ((uint16_t)1U << (PWM_FCTRL_FSAFE_SHIFT + (uint16_t)faultNum));
-        }
-        else
-        {
+            reg |= ((uint16_t)
+            1U << (PWM_FCTRL_FSAFE_SHIFT + (uint16_t)
+            faultNum));
+        } else {
             /* Use manual fault clearing with safety mode disabled */
-            reg &= ~((uint16_t)1U << (PWM_FCTRL_FSAFE_SHIFT + (uint16_t)faultNum));
+            reg &= ~((uint16_t)
+            1U << (PWM_FCTRL_FSAFE_SHIFT + (uint16_t)
+            faultNum));
         }
     }
     else
     {
         /* Use automatic fault clearing */
-        reg |= ((uint16_t)1U << (PWM_FCTRL_FAUTO_SHIFT + (uint16_t)faultNum));
+        reg |= ((uint16_t)
+        1U << (PWM_FCTRL_FAUTO_SHIFT + (uint16_t)
+        faultNum));
     }
     base->FCTRL = reg;
 
     /* Set the combinational path option */
-    if (faultParams->enableCombinationalPath)
-    {
+    if (faultParams->enableCombinationalPath) {
         /* Combinational path from the fault input to the PWM output is available */
-        base->FCTRL2 &= ~((uint16_t)1U << (uint16_t)faultNum);
-    }
-    else
-    {
+        base->FCTRL2 &= ~((uint16_t)
+        1U << (uint16_t)
+        faultNum);
+    } else {
         /* No combinational path available, only fault filter & latch signal can disable PWM output */
-        base->FCTRL2 |= ((uint16_t)1U << (uint16_t)faultNum);
+        base->FCTRL2 |= ((uint16_t)
+        1U << (uint16_t)
+        faultNum);
     }
 
     /* Initially clear both recovery modes */
     reg = base->FSTS;
-    reg &= ~(((uint16_t)1U << (PWM_FSTS_FFULL_SHIFT + (uint16_t)faultNum)) |
-             ((uint16_t)1U << (PWM_FSTS_FHALF_SHIFT + (uint16_t)faultNum)));
+    reg &= ~(((uint16_t)
+    1U << (PWM_FSTS_FFULL_SHIFT + (uint16_t)
+    faultNum)) |
+    ((uint16_t)
+    1U << (PWM_FSTS_FHALF_SHIFT + (uint16_t)
+    faultNum)));
     /* Setup fault recovery */
-    switch (faultParams->recoverMode)
-    {
+    switch (faultParams->recoverMode) {
         case kPWM_NoRecovery:
             break;
         case kPWM_RecoverHalfCycle:
-            reg |= ((uint16_t)1U << (PWM_FSTS_FHALF_SHIFT + (uint16_t)faultNum));
+            reg |= ((uint16_t)
+            1U << (PWM_FSTS_FHALF_SHIFT + (uint16_t)
+            faultNum));
             break;
         case kPWM_RecoverFullCycle:
-            reg |= ((uint16_t)1U << (PWM_FSTS_FFULL_SHIFT + (uint16_t)faultNum));
+            reg |= ((uint16_t)
+            1U << (PWM_FSTS_FFULL_SHIFT + (uint16_t)
+            faultNum));
             break;
         case kPWM_RecoverHalfAndFullCycle:
-            reg |= ((uint16_t)1U << (PWM_FSTS_FHALF_SHIFT + (uint16_t)faultNum));
-            reg |= ((uint16_t)1U << (PWM_FSTS_FFULL_SHIFT + (uint16_t)faultNum));
+            reg |= ((uint16_t)
+            1U << (PWM_FSTS_FHALF_SHIFT + (uint16_t)
+            faultNum));
+            reg |= ((uint16_t)
+            1U << (PWM_FSTS_FFULL_SHIFT + (uint16_t)
+            faultNum));
             break;
         default:
             assert(false);
@@ -745,19 +726,22 @@ void PWM_SetupFaults(PWM_Type *base, pwm_fault_input_t faultNum, const pwm_fault
  * param pwmChannel Channel to configure
  * param mode       Signal to output when a FORCE_OUT is triggered
  */
-void PWM_SetupForceSignal(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwmChannel, pwm_force_signal_t mode)
-
-{
+void
+PWM_SetupForceSignal(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwmChannel, pwm_force_signal_t mode) {
     uint16_t shift;
     uint16_t reg;
 
     /* DTSRCSEL register has 4 bits per submodule; 2 bits for PWM A and 2 bits for PWM B */
-    shift = ((uint16_t)subModule * 4U) + ((uint16_t)pwmChannel * 2U);
+    shift = ((uint16_t)
+    subModule * 4U) +((uint16_t)
+    pwmChannel * 2U);
 
     /* Setup the signal to be passed upon occurrence of a FORCE_OUT signal */
     reg = base->DTSRCSEL;
-    reg &= ~((uint16_t)0x3U << shift);
-    reg |= (uint16_t)((uint16_t)mode << shift);
+    reg &= ~((uint16_t)
+    0x3U << shift);
+    reg |= (uint16_t)((uint16_t)
+    mode << shift);
     base->DTSRCSEL = reg;
 }
 
@@ -769,10 +753,10 @@ void PWM_SetupForceSignal(PWM_Type *base, pwm_submodule_t subModule, pwm_channel
  * param mask      The interrupts to enable. This is a logical OR of members of the
  *                  enumeration ::pwm_interrupt_enable_t
  */
-void PWM_EnableInterrupts(PWM_Type *base, pwm_submodule_t subModule, uint32_t mask)
-{
+void PWM_EnableInterrupts(PWM_Type *base, pwm_submodule_t subModule, uint32_t mask) {
     /* Upper 16 bits are for related to the submodule */
-    base->SM[subModule].INTEN |= ((uint16_t)mask & 0xFFFFU);
+    base->SM[subModule].INTEN |= ((uint16_t)
+    mask & 0xFFFFU);
     /* Fault related interrupts */
     base->FCTRL |= ((uint16_t)(mask >> 16U) & PWM_FCTRL_FIE_MASK);
 }
@@ -785,9 +769,9 @@ void PWM_EnableInterrupts(PWM_Type *base, pwm_submodule_t subModule, uint32_t ma
  * param mask      The interrupts to enable. This is a logical OR of members of the
  *                  enumeration ::pwm_interrupt_enable_t
  */
-void PWM_DisableInterrupts(PWM_Type *base, pwm_submodule_t subModule, uint32_t mask)
-{
-    base->SM[subModule].INTEN &= ~((uint16_t)mask & 0xFFFFU);
+void PWM_DisableInterrupts(PWM_Type *base, pwm_submodule_t subModule, uint32_t mask) {
+    base->SM[subModule].INTEN &= ~((uint16_t)
+    mask & 0xFFFFU);
     base->FCTRL &= ~((uint16_t)(mask >> 16U) & PWM_FCTRL_FIE_MASK);
 }
 
@@ -800,12 +784,12 @@ void PWM_DisableInterrupts(PWM_Type *base, pwm_submodule_t subModule, uint32_t m
  * return The enabled interrupts. This is the logical OR of members of the
  *         enumeration ::pwm_interrupt_enable_t
  */
-uint32_t PWM_GetEnabledInterrupts(PWM_Type *base, pwm_submodule_t subModule)
-{
+uint32_t PWM_GetEnabledInterrupts(PWM_Type *base, pwm_submodule_t subModule) {
     uint32_t enabledInterrupts;
 
     enabledInterrupts = base->SM[subModule].INTEN;
-    enabledInterrupts |= (((uint32_t)base->FCTRL & PWM_FCTRL_FIE_MASK) << 16UL);
+    enabledInterrupts |= (((uint32_t)
+    base->FCTRL & PWM_FCTRL_FIE_MASK) << 16UL);
     return enabledInterrupts;
 }
 
@@ -818,12 +802,12 @@ uint32_t PWM_GetEnabledInterrupts(PWM_Type *base, pwm_submodule_t subModule)
  * return The status flags. This is the logical OR of members of the
  *         enumeration ::pwm_status_flags_t
  */
-uint32_t PWM_GetStatusFlags(PWM_Type *base, pwm_submodule_t subModule)
-{
+uint32_t PWM_GetStatusFlags(PWM_Type *base, pwm_submodule_t subModule) {
     uint32_t statusFlags;
 
     statusFlags = base->SM[subModule].STS;
-    statusFlags |= (((uint32_t)base->FSTS & PWM_FSTS_FFLAG_MASK) << 16UL);
+    statusFlags |= (((uint32_t)
+    base->FSTS & PWM_FSTS_FFLAG_MASK) << 16UL);
 
     return statusFlags;
 }
@@ -836,12 +820,12 @@ uint32_t PWM_GetStatusFlags(PWM_Type *base, pwm_submodule_t subModule)
  * param mask      The status flags to clear. This is a logical OR of members of the
  *                  enumeration ::pwm_status_flags_t
  */
-void PWM_ClearStatusFlags(PWM_Type *base, pwm_submodule_t subModule, uint32_t mask)
-{
+void PWM_ClearStatusFlags(PWM_Type *base, pwm_submodule_t subModule, uint32_t mask) {
     uint16_t reg;
 
-    base->SM[subModule].STS = ((uint16_t)mask & 0xFFFFU);
-    reg                     = base->FSTS;
+    base->SM[subModule].STS = ((uint16_t)
+    mask & 0xFFFFU);
+    reg = base->FSTS;
     /* Clear the fault flags and set only the ones we wish to clear as the fault flags are cleared
      * by writing a login one
      */

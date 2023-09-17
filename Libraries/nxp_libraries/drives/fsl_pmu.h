@@ -21,13 +21,12 @@
 /*@{*/
 /*! @brief PMU driver version */
 #define FSL_PMU_DRIVER_VERSION (MAKE_VERSION(2, 1, 1)) /*!< Version 2.1.1. */
-                                                       /*@}*/
+/*@}*/
 
 /*!
  * @brief PMU Status flags.
  */
-enum
-{
+enum {
     kPMU_1P1RegulatorOutputOK = (1U << 0U), /*!< Status bit that signals when the 1p1 regulator output
                                                         is ok. 1 = regulator output > brownout target. */
     kPMU_1P1BrownoutOnOutput = (1U << 1U),  /*!< Status bit that signals when a 1p1 brownout is detected
@@ -45,8 +44,7 @@ enum
 /*!
  * @brief The source for the reference voltage of the weak 1P1 regulator.
  */
-typedef enum _pmu_1p1_weak_reference_source
-{
+typedef enum _pmu_1p1_weak_reference_source {
     kPMU_1P1WeakReferenceSourceAlt0 = 0U, /*!< Weak-linreg output tracks low-power-bandgap voltage. */
     kPMU_1P1WeakReferenceSourceAlt1 = 1U, /*!< Weak-linreg output tracks VDD_SOC_CAP voltage. */
 } pmu_1p1_weak_reference_source_t;
@@ -54,8 +52,7 @@ typedef enum _pmu_1p1_weak_reference_source
 /*!
  * @brief Input voltage source for LDO_3P0 from USB VBus.
  */
-typedef enum _pmu_3p0_vbus_voltage_source
-{
+typedef enum _pmu_3p0_vbus_voltage_source {
     kPMU_3P0VBusVoltageSourceAlt0 = 0U, /*!< USB_OTG1_VBUS - Utilize VBUS OTG1 for power. */
     kPMU_3P0VBusVoltageSourceAlt1 = 1U, /*!< USB_OTG2_VBUS - Utilize VBUS OTG2 for power. */
 } pmu_3p0_vbus_voltage_source_t;
@@ -63,12 +60,11 @@ typedef enum _pmu_3p0_vbus_voltage_source
 /*!
  * @brief Regulator voltage ramp rate.
  */
-typedef enum _pmu_core_reg_voltage_ramp_rate
-{
-    kPMU_CoreRegVoltageRampRateFast       = 0U, /*!< Fast. */
+typedef enum _pmu_core_reg_voltage_ramp_rate {
+    kPMU_CoreRegVoltageRampRateFast = 0U, /*!< Fast. */
     kPMU_CoreRegVoltageRampRateMediumFast = 1U, /*!< Medium Fast. */
     kPMU_CoreRegVoltageRampRateMediumSlow = 2U, /*!< Medium Slow. */
-    kPMU_CoreRegVoltageRampRateSlow       = 0U, /*!< Slow. */
+    kPMU_CoreRegVoltageRampRateSlow = 0U, /*!< Slow. */
 } pmu_core_reg_voltage_ramp_rate_t;
 
 #if defined(FSL_FEATURE_PMU_HAS_LOWPWR_CTRL) && FSL_FEATURE_PMU_HAS_LOWPWR_CTRL
@@ -88,10 +84,9 @@ enum _pmu_power_gate
 /*!
  * @brief Bandgap select.
  */
-typedef enum _pmu_power_bandgap
-{
+typedef enum _pmu_power_bandgap {
     kPMU_NormalPowerBandgap = 0U, /*!< Normal power bandgap. */
-    kPMU_LowPowerBandgap    = 1U, /*!< Low power bandgap. */
+    kPMU_LowPowerBandgap = 1U, /*!< Low power bandgap. */
 } pmu_power_bandgap_t;
 
 /*******************************************************************************
@@ -129,8 +124,7 @@ uint32_t PMU_GetStatusFlags(PMU_Type *base);
  * @param base PMU peripheral base address.
  * @param option The option for reference voltage source, see to #pmu_1p1_weak_reference_source_t.
  */
-static inline void PMU_1P1SetWeakReferenceSource(PMU_Type *base, pmu_1p1_weak_reference_source_t option)
-{
+static inline void PMU_1P1SetWeakReferenceSource(PMU_Type *base, pmu_1p1_weak_reference_source_t option) {
     base->REG_1P1 = (base->REG_1P1 & ~PMU_REG_1P1_SELREF_WEAK_LINREG_MASK) | PMU_REG_1P1_SELREF_WEAK_LINREG(option);
 }
 
@@ -142,14 +136,10 @@ static inline void PMU_1P1SetWeakReferenceSource(PMU_Type *base, pmu_1p1_weak_re
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_1P1EnableWeakRegulator(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_1P1EnableWeakRegulator(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_1P1 |= PMU_REG_1P1_ENABLE_WEAK_LINREG_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_1P1 &= ~PMU_REG_1P1_ENABLE_WEAK_LINREG_MASK;
     }
 }
@@ -168,8 +158,7 @@ static inline void PMU_1P1EnableWeakRegulator(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param value Setting value for the output.
  */
-static inline void PMU_1P1SetRegulatorOutputVoltage(PMU_Type *base, uint32_t value)
-{
+static inline void PMU_1P1SetRegulatorOutputVoltage(PMU_Type *base, uint32_t value) {
     base->REG_1P1 = (base->REG_1P1 & ~PMU_REG_1P1_OUTPUT_TRG_MASK) | PMU_REG_1P1_OUTPUT_TRG(value);
 }
 
@@ -184,8 +173,7 @@ static inline void PMU_1P1SetRegulatorOutputVoltage(PMU_Type *base, uint32_t val
  * @param base PMU peripheral base address.
  * @param value Setting value for the brownout offset. The available range is in 3-bit.
  */
-static inline void PMU_1P1SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t value)
-{
+static inline void PMU_1P1SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t value) {
     base->REG_1P1 = (base->REG_1P1 & ~PMU_REG_1P1_BO_OFFSET_MASK) | PMU_REG_1P1_BO_OFFSET(value);
 }
 
@@ -195,14 +183,10 @@ static inline void PMU_1P1SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t valu
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_1P1EnablePullDown(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_1P1EnablePullDown(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_1P1 |= PMU_REG_1P1_ENABLE_PULLDOWN_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_1P1 &= ~PMU_REG_1P1_ENABLE_PULLDOWN_MASK;
     }
 }
@@ -213,14 +197,10 @@ static inline void PMU_1P1EnablePullDown(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_1P1EnableCurrentLimit(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_1P1EnableCurrentLimit(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_1P1 |= PMU_REG_1P1_ENABLE_ILIMIT_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_1P1 &= ~PMU_REG_1P1_ENABLE_ILIMIT_MASK;
     }
 }
@@ -231,14 +211,10 @@ static inline void PMU_1P1EnableCurrentLimit(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_1P1EnableBrownout(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_1P1EnableBrownout(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_1P1 |= PMU_REG_1P1_ENABLE_BO_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_1P1 &= ~PMU_REG_1P1_ENABLE_BO_MASK;
     }
 }
@@ -249,14 +225,10 @@ static inline void PMU_1P1EnableBrownout(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_1P1EnableOutput(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_1P1EnableOutput(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_1P1 |= PMU_REG_1P1_ENABLE_LINREG_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_1P1 &= ~PMU_REG_1P1_ENABLE_LINREG_MASK;
     }
 }
@@ -281,8 +253,7 @@ static inline void PMU_1P1EnableOutput(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param value Setting value for the output.
  */
-static inline void PMU_3P0SetRegulatorOutputVoltage(PMU_Type *base, uint32_t value)
-{
+static inline void PMU_3P0SetRegulatorOutputVoltage(PMU_Type *base, uint32_t value) {
     base->REG_3P0 = (base->REG_3P0 & ~PMU_REG_3P0_OUTPUT_TRG_MASK) | PMU_REG_3P0_OUTPUT_TRG(value);
 }
 
@@ -295,8 +266,7 @@ static inline void PMU_3P0SetRegulatorOutputVoltage(PMU_Type *base, uint32_t val
  * @param base PMU peripheral base address.
  * @param option User-defined input voltage source for LDO_3P0.
  */
-static inline void PMU_3P0SetVBusVoltageSource(PMU_Type *base, pmu_3p0_vbus_voltage_source_t option)
-{
+static inline void PMU_3P0SetVBusVoltageSource(PMU_Type *base, pmu_3p0_vbus_voltage_source_t option) {
     base->REG_3P0 = (base->REG_3P0 & ~PMU_REG_3P0_VBUS_SEL_MASK) | PMU_REG_3P0_VBUS_SEL(option);
 }
 
@@ -311,8 +281,7 @@ static inline void PMU_3P0SetVBusVoltageSource(PMU_Type *base, pmu_3p0_vbus_volt
  * @param base PMU peripheral base address.
  * @param value Setting value for the brownout offset. The available range is in 3-bit.
  */
-static inline void PMU_3P0SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t value)
-{
+static inline void PMU_3P0SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t value) {
     base->REG_3P0 = (base->REG_3P0 & ~PMU_REG_3P0_BO_OFFSET_MASK) | PMU_REG_3P0_BO_OFFSET(value);
 }
 
@@ -322,14 +291,10 @@ static inline void PMU_3P0SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t valu
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_3P0EnableCurrentLimit(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_3P0EnableCurrentLimit(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_3P0 |= PMU_REG_3P0_ENABLE_ILIMIT_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_3P0 &= ~PMU_REG_3P0_ENABLE_ILIMIT_MASK;
     }
 }
@@ -340,14 +305,10 @@ static inline void PMU_3P0EnableCurrentLimit(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_3P0EnableBrownout(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_3P0EnableBrownout(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_3P0 |= PMU_REG_3P0_ENABLE_BO_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_3P0 &= ~PMU_REG_3P0_ENABLE_BO_MASK;
     }
 }
@@ -358,14 +319,10 @@ static inline void PMU_3P0EnableBrownout(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_3P0EnableOutput(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_3P0EnableOutput(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_3P0 |= PMU_REG_3P0_ENABLE_LINREG_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_3P0 &= ~PMU_REG_3P0_ENABLE_LINREG_MASK;
     }
 }
@@ -386,14 +343,10 @@ static inline void PMU_3P0EnableOutput(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_2P5EnableWeakRegulator(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_2P5EnableWeakRegulator(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_2P5 |= PMU_REG_2P5_ENABLE_WEAK_LINREG_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_2P5 &= ~PMU_REG_2P5_ENABLE_WEAK_LINREG_MASK;
     }
 }
@@ -412,8 +365,7 @@ static inline void PMU_2P5EnableWeakRegulator(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param value Setting value for the output.
  */
-static inline void PMU_2P5SetRegulatorOutputVoltage(PMU_Type *base, uint32_t value)
-{
+static inline void PMU_2P5SetRegulatorOutputVoltage(PMU_Type *base, uint32_t value) {
     base->REG_2P5 = (base->REG_2P5 & ~PMU_REG_2P5_OUTPUT_TRG_MASK) | PMU_REG_2P5_OUTPUT_TRG(value);
 }
 
@@ -428,8 +380,7 @@ static inline void PMU_2P5SetRegulatorOutputVoltage(PMU_Type *base, uint32_t val
  * @param base PMU peripheral base address.
  * @param value Setting value for the brownout offset. The available range is in 3-bit.
  */
-static inline void PMU_2P5SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t value)
-{
+static inline void PMU_2P5SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t value) {
     base->REG_2P5 = (base->REG_2P5 & ~PMU_REG_2P5_BO_OFFSET_MASK) | PMU_REG_2P5_BO_OFFSET(value);
 }
 
@@ -439,14 +390,10 @@ static inline void PMU_2P5SetBrownoutOffsetVoltage(PMU_Type *base, uint32_t valu
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_2P5EnablePullDown(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_2P5EnablePullDown(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_2P5 |= PMU_REG_2P5_ENABLE_PULLDOWN_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_2P5 &= ~PMU_REG_2P5_ENABLE_PULLDOWN_MASK;
     }
 }
@@ -455,14 +402,10 @@ static inline void PMU_2P5EnablePullDown(PMU_Type *base, bool enable)
  * @brief Enable the pull-down circuitry in the 2P5 regulator.
  * @deprecated Do not use this function.  It has been superceded by @ref PMU_2P5EnablePullDown.
  */
-static inline void PMU_2P1EnablePullDown(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_2P1EnablePullDown(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_2P5 |= PMU_REG_2P5_ENABLE_PULLDOWN_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_2P5 &= ~PMU_REG_2P5_ENABLE_PULLDOWN_MASK;
     }
 }
@@ -473,14 +416,10 @@ static inline void PMU_2P1EnablePullDown(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_2P5EnableCurrentLimit(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_2P5EnableCurrentLimit(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_2P5 |= PMU_REG_2P5_ENABLE_ILIMIT_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_2P5 &= ~PMU_REG_2P5_ENABLE_ILIMIT_MASK;
     }
 }
@@ -491,14 +430,10 @@ static inline void PMU_2P5EnableCurrentLimit(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_2P5nableBrownout(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_2P5nableBrownout(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_2P5 |= PMU_REG_2P5_ENABLE_BO_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_2P5 &= ~PMU_REG_2P5_ENABLE_BO_MASK;
     }
 }
@@ -509,14 +444,10 @@ static inline void PMU_2P5nableBrownout(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_2P5EnableOutput(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_2P5EnableOutput(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_2P5 |= PMU_REG_2P5_ENABLE_LINREG_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_2P5 &= ~PMU_REG_2P5_ENABLE_LINREG_MASK;
     }
 }
@@ -540,14 +471,10 @@ static inline void PMU_2P5EnableOutput(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void PMU_CoreEnableIncreaseGateDrive(PMU_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PMU_CoreEnableIncreaseGateDrive(PMU_Type *base, bool enable) {
+    if (enable) {
         base->REG_CORE |= PMU_REG_CORE_FET_ODRIVE_MASK;
-    }
-    else
-    {
+    } else {
         base->REG_CORE &= ~PMU_REG_CORE_FET_ODRIVE_MASK;
     }
 }
@@ -558,8 +485,7 @@ static inline void PMU_CoreEnableIncreaseGateDrive(PMU_Type *base, bool enable)
  * @param base PMU peripheral base address.
  * @param option User-defined option for voltage ramp rate, see to #pmu_core_reg_voltage_ramp_rate_t.
  */
-static inline void PMU_CoreSetRegulatorVoltageRampRate(PMU_Type *base, pmu_core_reg_voltage_ramp_rate_t option)
-{
+static inline void PMU_CoreSetRegulatorVoltageRampRate(PMU_Type *base, pmu_core_reg_voltage_ramp_rate_t option) {
     base->REG_CORE = (base->REG_CORE & ~PMU_REG_CORE_RAMP_RATE_MASK) | PMU_REG_CORE_RAMP_RATE(option);
 }
 
@@ -582,8 +508,7 @@ static inline void PMU_CoreSetRegulatorVoltageRampRate(PMU_Type *base, pmu_core_
  * @param base PMU peripheral base address.
  * @param value Setting value for target voltage. 5-bit available
  */
-static inline void PMU_CoreSetSOCDomainVoltage(PMU_Type *base, uint32_t value)
-{
+static inline void PMU_CoreSetSOCDomainVoltage(PMU_Type *base, uint32_t value) {
     base->REG_CORE = (base->REG_CORE & ~PMU_REG_CORE_REG2_TARG_MASK) | PMU_REG_CORE_REG2_TARG(value);
 }
 
@@ -606,8 +531,7 @@ static inline void PMU_CoreSetSOCDomainVoltage(PMU_Type *base, uint32_t value)
  * @param base PMU peripheral base address.
  * @param value Setting value for target voltage. 5-bit available
  */
-static inline void PMU_CoreSetARMCoreDomainVoltage(PMU_Type *base, uint32_t value)
-{
+static inline void PMU_CoreSetARMCoreDomainVoltage(PMU_Type *base, uint32_t value) {
     base->REG_CORE = (base->REG_CORE & ~PMU_REG_CORE_REG0_TARG_MASK) | PMU_REG_CORE_REG0_TARG(value);
 }
 

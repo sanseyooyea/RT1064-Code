@@ -64,8 +64,7 @@
 #define DEBUG_CONSOLE_DEVICE_TYPE_SWO           9U      /*!< Debug console based on SWO. */
 
 /*! @brief Status group numbers. */
-enum _status_groups
-{
+enum _status_groups {
     kStatusGroup_Generic = 0,                 /*!< Group number for generic status codes. */
     kStatusGroup_FLASH = 1,                   /*!< Group number for FLASH status codes. */
     kStatusGroup_LPSPI = 4,                   /*!< Group number for LPSPI status codes. */
@@ -167,8 +166,7 @@ enum _status_groups
 };
 
 /*! @brief Generic status return codes. */
-enum
-{
+enum {
     kStatus_Success = MAKE_STATUS(kStatusGroup_Generic, 0),
     kStatus_Fail = MAKE_STATUS(kStatusGroup_Generic, 1),
     kStatus_ReadOnly = MAKE_STATUS(kStatusGroup_Generic, 2),
@@ -415,7 +413,7 @@ _Pragma("diag_suppress=Pm120")
 #endif
 /* @} */
 
-#if defined ( __ARMCC_VERSION ) && ( __ARMCC_VERSION >= 6010050 )
+#if defined ( __ARMCC_VERSION ) && (__ARMCC_VERSION >= 6010050)
 void DefaultISR(void);
 #endif
 /*
@@ -437,105 +435,100 @@ void DefaultISR(void);
  ******************************************************************************/
 
 #if defined(__cplusplus)
-        extern "C"
+extern "C"
 {
 #endif
 
-    /*!
-     * @brief Enable specific interrupt.
-     *
-     * Enable LEVEL1 interrupt. For some devices, there might be multiple interrupt
-     * levels. For example, there are NVIC and intmux. Here the interrupts connected
-     * to NVIC are the LEVEL1 interrupts, because they are routed to the core directly.
-     * The interrupts connected to intmux are the LEVEL2 interrupts, they are routed
-     * to NVIC first then routed to core.
-     *
-     * This function only enables the LEVEL1 interrupts. The number of LEVEL1 interrupts
-     * is indicated by the feature macro FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS.
-     *
-     * @param interrupt The IRQ number.
-     * @retval kStatus_Success Interrupt enabled successfully
-     * @retval kStatus_Fail Failed to enable the interrupt
-     */
-    static inline status_t EnableIRQ(IRQn_Type interrupt)
-    {
-        if (NotAvail_IRQn == interrupt)
-        {
-            return kStatus_Fail;
-        }
-
-#if defined(FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS) && (FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS > 0)
-        if (interrupt >= FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS)
-        {
-            return kStatus_Fail;
-        }
-#endif
-
-#if defined(__GIC_PRIO_BITS)
-        GIC_EnableIRQ(interrupt);
-#else
-        NVIC_EnableIRQ(interrupt);
-#endif
-        return kStatus_Success;
+/*!
+ * @brief Enable specific interrupt.
+ *
+ * Enable LEVEL1 interrupt. For some devices, there might be multiple interrupt
+ * levels. For example, there are NVIC and intmux. Here the interrupts connected
+ * to NVIC are the LEVEL1 interrupts, because they are routed to the core directly.
+ * The interrupts connected to intmux are the LEVEL2 interrupts, they are routed
+ * to NVIC first then routed to core.
+ *
+ * This function only enables the LEVEL1 interrupts. The number of LEVEL1 interrupts
+ * is indicated by the feature macro FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS.
+ *
+ * @param interrupt The IRQ number.
+ * @retval kStatus_Success Interrupt enabled successfully
+ * @retval kStatus_Fail Failed to enable the interrupt
+ */
+static inline status_t EnableIRQ(IRQn_Type interrupt) {
+    if (NotAvail_IRQn == interrupt) {
+        return kStatus_Fail;
     }
 
-    /*!
-     * @brief Disable specific interrupt.
-     *
-     * Disable LEVEL1 interrupt. For some devices, there might be multiple interrupt
-     * levels. For example, there are NVIC and intmux. Here the interrupts connected
-     * to NVIC are the LEVEL1 interrupts, because they are routed to the core directly.
-     * The interrupts connected to intmux are the LEVEL2 interrupts, they are routed
-     * to NVIC first then routed to core.
-     *
-     * This function only disables the LEVEL1 interrupts. The number of LEVEL1 interrupts
-     * is indicated by the feature macro FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS.
-     *
-     * @param interrupt The IRQ number.
-     * @retval kStatus_Success Interrupt disabled successfully
-     * @retval kStatus_Fail Failed to disable the interrupt
-     */
-    static inline status_t DisableIRQ(IRQn_Type interrupt)
-    {
-        if (NotAvail_IRQn == interrupt)
-        {
-            return kStatus_Fail;
-        }
-
 #if defined(FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS) && (FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS > 0)
-        if (interrupt >= FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS)
-        {
-            return kStatus_Fail;
-        }
+    if (interrupt >= FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS)
+    {
+        return kStatus_Fail;
+    }
 #endif
 
 #if defined(__GIC_PRIO_BITS)
-        GIC_DisableIRQ(interrupt);
+    GIC_EnableIRQ(interrupt);
+#else
+    NVIC_EnableIRQ(interrupt);
+#endif
+    return kStatus_Success;
+}
+
+/*!
+ * @brief Disable specific interrupt.
+ *
+ * Disable LEVEL1 interrupt. For some devices, there might be multiple interrupt
+ * levels. For example, there are NVIC and intmux. Here the interrupts connected
+ * to NVIC are the LEVEL1 interrupts, because they are routed to the core directly.
+ * The interrupts connected to intmux are the LEVEL2 interrupts, they are routed
+ * to NVIC first then routed to core.
+ *
+ * This function only disables the LEVEL1 interrupts. The number of LEVEL1 interrupts
+ * is indicated by the feature macro FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS.
+ *
+ * @param interrupt The IRQ number.
+ * @retval kStatus_Success Interrupt disabled successfully
+ * @retval kStatus_Fail Failed to disable the interrupt
+ */
+static inline status_t DisableIRQ(IRQn_Type interrupt) {
+    if (NotAvail_IRQn == interrupt) {
+        return kStatus_Fail;
+    }
+
+#if defined(FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS) && (FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS > 0)
+    if (interrupt >= FSL_FEATURE_NUMBER_OF_LEVEL1_INT_VECTORS)
+    {
+        return kStatus_Fail;
+    }
+#endif
+
+#if defined(__GIC_PRIO_BITS)
+    GIC_DisableIRQ(interrupt);
 #else
     NVIC_DisableIRQ(interrupt);
 #endif
-        return kStatus_Success;
-    }
+    return kStatus_Success;
+}
 
-    /*!
-     * @brief Disable the global IRQ
-     *
-     * Disable the global interrupt and return the current primask register. User is required to provided the primask
-     * register for the EnableGlobalIRQ().
-     *
-     * @return Current primask value.
-     */
-    static inline uint32_t DisableGlobalIRQ(void)
-    {
+/*!
+ * @brief Disable the global IRQ
+ *
+ * Disable the global interrupt and return the current primask register. User is required to provided the primask
+ * register for the EnableGlobalIRQ().
+ *
+ * @return Current primask value.
+ */
+static inline uint32_t DisableGlobalIRQ(void) {
 #if defined (__XCC__)
-        return 0;
+    return 0;
 #else
 #if defined(CPSR_I_Msk)
-        uint32_t cpsr = __get_CPSR() & CPSR_I_Msk;
+    uint32_t cpsr = __get_CPSR() & CPSR_I_Msk;
 
-        __disable_irq();
+    __disable_irq();
 
-        return cpsr;
+    return cpsr;
 #else
     uint32_t regPrimask = __get_PRIMASK();
 
@@ -544,100 +537,99 @@ void DefaultISR(void);
     return regPrimask;
 #endif
 #endif
-    }
+}
 
-    /*!
-     * @brief Enable the global IRQ
-     *
-     * Set the primask register with the provided primask value but not just enable the primask. The idea is for the
-     * convenience of integration of RTOS. some RTOS get its own management mechanism of primask. User is required to
-     * use the EnableGlobalIRQ() and DisableGlobalIRQ() in pair.
-     *
-     * @param primask value of primask register to be restored. The primask value is supposed to be provided by the
-     * DisableGlobalIRQ().
-     */
-    static inline void EnableGlobalIRQ(uint32_t primask)
-    {
+/*!
+ * @brief Enable the global IRQ
+ *
+ * Set the primask register with the provided primask value but not just enable the primask. The idea is for the
+ * convenience of integration of RTOS. some RTOS get its own management mechanism of primask. User is required to
+ * use the EnableGlobalIRQ() and DisableGlobalIRQ() in pair.
+ *
+ * @param primask value of primask register to be restored. The primask value is supposed to be provided by the
+ * DisableGlobalIRQ().
+ */
+static inline void EnableGlobalIRQ(uint32_t primask) {
 #if defined (__XCC__)
 #else
 #if defined(CPSR_I_Msk)
-        __set_CPSR((__get_CPSR() & ~CPSR_I_Msk) | primask);
+    __set_CPSR((__get_CPSR() & ~CPSR_I_Msk) | primask);
 #else
     __set_PRIMASK(primask);
 #endif
 #endif
-    }
+}
 
 #if defined(ENABLE_RAM_VECTOR_TABLE)
-    /*!
-     * @brief install IRQ handler
-     *
-     * @param irq IRQ number
-     * @param irqHandler IRQ handler address
-     * @return The old IRQ handler address
-     */
-    uint32_t InstallIRQHandler(IRQn_Type irq, uint32_t irqHandler);
+/*!
+ * @brief install IRQ handler
+ *
+ * @param irq IRQ number
+ * @param irqHandler IRQ handler address
+ * @return The old IRQ handler address
+ */
+uint32_t InstallIRQHandler(IRQn_Type irq, uint32_t irqHandler);
 #endif /* ENABLE_RAM_VECTOR_TABLE. */
 
 #if (defined(FSL_FEATURE_SOC_SYSCON_COUNT) && (FSL_FEATURE_SOC_SYSCON_COUNT > 0))
-    /*!
-     * @brief Enable specific interrupt for wake-up from deep-sleep mode.
-     *
-     * Enable the interrupt for wake-up from deep sleep mode.
-     * Some interrupts are typically used in sleep mode only and will not occur during
-     * deep-sleep mode because relevant clocks are stopped. However, it is possible to enable
-     * those clocks (significantly increasing power consumption in the reduced power mode),
-     * making these wake-ups possible.
-     *
-     * @note This function also enables the interrupt in the NVIC (EnableIRQ() is called internaly).
-     *
-     * @param interrupt The IRQ number.
-     */
-    void EnableDeepSleepIRQ(IRQn_Type interrupt);
+/*!
+ * @brief Enable specific interrupt for wake-up from deep-sleep mode.
+ *
+ * Enable the interrupt for wake-up from deep sleep mode.
+ * Some interrupts are typically used in sleep mode only and will not occur during
+ * deep-sleep mode because relevant clocks are stopped. However, it is possible to enable
+ * those clocks (significantly increasing power consumption in the reduced power mode),
+ * making these wake-ups possible.
+ *
+ * @note This function also enables the interrupt in the NVIC (EnableIRQ() is called internaly).
+ *
+ * @param interrupt The IRQ number.
+ */
+void EnableDeepSleepIRQ(IRQn_Type interrupt);
 
-    /*!
-     * @brief Disable specific interrupt for wake-up from deep-sleep mode.
-     *
-     * Disable the interrupt for wake-up from deep sleep mode.
-     * Some interrupts are typically used in sleep mode only and will not occur during
-     * deep-sleep mode because relevant clocks are stopped. However, it is possible to enable
-     * those clocks (significantly increasing power consumption in the reduced power mode),
-     * making these wake-ups possible.
-     *
-     * @note This function also disables the interrupt in the NVIC (DisableIRQ() is called internaly).
-     *
-     * @param interrupt The IRQ number.
-     */
-    void DisableDeepSleepIRQ(IRQn_Type interrupt);
+/*!
+ * @brief Disable specific interrupt for wake-up from deep-sleep mode.
+ *
+ * Disable the interrupt for wake-up from deep sleep mode.
+ * Some interrupts are typically used in sleep mode only and will not occur during
+ * deep-sleep mode because relevant clocks are stopped. However, it is possible to enable
+ * those clocks (significantly increasing power consumption in the reduced power mode),
+ * making these wake-ups possible.
+ *
+ * @note This function also disables the interrupt in the NVIC (DisableIRQ() is called internaly).
+ *
+ * @param interrupt The IRQ number.
+ */
+void DisableDeepSleepIRQ(IRQn_Type interrupt);
 #endif /* FSL_FEATURE_SOC_SYSCON_COUNT */
 
-    /*!
-     * @brief Allocate memory with given alignment and aligned size.
-     *
-     * This is provided to support the dynamically allocated memory
-     * used in cache-able region.
-     * @param size The length required to malloc.
-     * @param alignbytes The alignment size.
-     * @retval The allocated memory.
-     */
-    void *SDK_Malloc(size_t size, size_t alignbytes);
+/*!
+ * @brief Allocate memory with given alignment and aligned size.
+ *
+ * This is provided to support the dynamically allocated memory
+ * used in cache-able region.
+ * @param size The length required to malloc.
+ * @param alignbytes The alignment size.
+ * @retval The allocated memory.
+ */
+void *SDK_Malloc(size_t size, size_t alignbytes);
 
-    /*!
-     * @brief Free memory.
-     *
-     * @param ptr The memory to be release.
-     */
-    void SDK_Free(void *ptr);
+/*!
+ * @brief Free memory.
+ *
+ * @param ptr The memory to be release.
+ */
+void SDK_Free(void *ptr);
 
-    /*!
-    * @brief Delay at least for some time.
-    *  Please note that, this API uses while loop for delay, different run-time environments make the time not precise,
-    *  if precise delay count was needed, please implement a new delay function with hardware timer.
-    *
-    * @param delay_us  Delay time in unit of microsecond.
-    * @param coreClock_Hz  Core clock frequency with Hz.
-    */
-    void SDK_DelayAtLeastUs(uint32_t delay_us, uint32_t coreClock_Hz);
+/*!
+* @brief Delay at least for some time.
+*  Please note that, this API uses while loop for delay, different run-time environments make the time not precise,
+*  if precise delay count was needed, please implement a new delay function with hardware timer.
+*
+* @param delay_us  Delay time in unit of microsecond.
+* @param coreClock_Hz  Core clock frequency with Hz.
+*/
+void SDK_DelayAtLeastUs(uint32_t delay_us, uint32_t coreClock_Hz);
 
 #if defined(__cplusplus)
 }

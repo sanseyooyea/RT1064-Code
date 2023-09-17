@@ -17,8 +17,7 @@
 #define FSL_COMPONENT_ID "platform.drivers.xbarb"
 #endif
 
-typedef union
-{
+typedef union {
     uint8_t _u8[2];
     uint16_t _u16;
 } xbarb_u8_u16_t;
@@ -51,15 +50,12 @@ static const clock_ip_name_t s_xbarbClock[] = XBARB_CLOCKS;
  * Code
  ******************************************************************************/
 
-static uint32_t XBARB_GetInstance(XBARB_Type *base)
-{
+static uint32_t XBARB_GetInstance(XBARB_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_xbarbBases); instance++)
-    {
-        if (s_xbarbBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_xbarbBases); instance++) {
+        if (s_xbarbBases[instance] == base) {
             break;
         }
     }
@@ -76,8 +72,7 @@ static uint32_t XBARB_GetInstance(XBARB_Type *base)
  *
  * param base XBARB peripheral address.
  */
-void XBARB_Init(XBARB_Type *base)
-{
+void XBARB_Init(XBARB_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     /* Enable XBARB module clock. */
     CLOCK_EnableClock(s_xbarbClock[XBARB_GetInstance(base)]);
@@ -91,8 +86,7 @@ void XBARB_Init(XBARB_Type *base)
  *
  * param base XBARB peripheral address.
  */
-void XBARB_Deinit(XBARB_Type *base)
-{
+void XBARB_Deinit(XBARB_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     /* Disable XBARB module clock. */
     CLOCK_DisableClock(s_xbarbClock[XBARB_GetInstance(base)]);
@@ -110,17 +104,16 @@ void XBARB_Deinit(XBARB_Type *base)
  * param input XBARB input signal.
  * param output XBARB output signal.
  */
-void XBARB_SetSignalsConnection(XBARB_Type *base, xbar_input_signal_t input, xbar_output_signal_t output)
-{
+void XBARB_SetSignalsConnection(XBARB_Type *base, xbar_input_signal_t input, xbar_output_signal_t output) {
     xbarb_u8_u16_t regVal;
     uint8_t byteInReg;
-    uint8_t outputIndex = (uint8_t)output;
+    uint8_t outputIndex = (uint8_t) output;
 
     byteInReg = outputIndex % 2U;
 
     regVal._u16 = XBARB_SELx(base, outputIndex);
 
-    regVal._u8[byteInReg] = (uint8_t)input;
+    regVal._u8[byteInReg] = (uint8_t) input;
 
     XBARB_SELx(base, outputIndex) = regVal._u16;
 }

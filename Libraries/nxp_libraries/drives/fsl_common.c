@@ -7,10 +7,10 @@
  */
 
 #include "fsl_common.h"
+
 #define SDK_MEM_MAGIC_NUMBER 12345U
 
-typedef struct _mem_align_control_block
-{
+typedef struct _mem_align_control_block {
     uint16_t identifier; /*!< Identifier for the memory control block. */
     uint16_t offset;     /*!< offset from aligned address to real address */
 } mem_align_cb_t;
@@ -113,44 +113,38 @@ void DisableDeepSleepIRQ(IRQn_Type interrupt)
 #endif /* FSL_FEATURE_SYSCON_STARTER_DISCONTINUOUS */
 #endif /* FSL_FEATURE_SOC_SYSCON_COUNT */
 
-void *SDK_Malloc(size_t size, size_t alignbytes)
-{
+void *SDK_Malloc(size_t size, size_t alignbytes) {
     mem_align_cb_t *p_cb = NULL;
     uint32_t alignedsize = SDK_SIZEALIGN(size, alignbytes) + alignbytes + sizeof(mem_align_cb_t);
-    union
-    {
+    union {
         void *pointer_value;
         uint32_t unsigned_value;
     } p_align_addr, p_addr;
 
     p_addr.pointer_value = malloc(alignedsize);
 
-    if (p_addr.pointer_value == NULL)
-    {
+    if (p_addr.pointer_value == NULL) {
         return NULL;
     }
 
     p_align_addr.unsigned_value = SDK_SIZEALIGN(p_addr.unsigned_value + sizeof(mem_align_cb_t), alignbytes);
 
-    p_cb             = (mem_align_cb_t *)(p_align_addr.unsigned_value - 4U);
+    p_cb = (mem_align_cb_t *) (p_align_addr.unsigned_value - 4U);
     p_cb->identifier = SDK_MEM_MAGIC_NUMBER;
-    p_cb->offset     = (uint16_t)(p_align_addr.unsigned_value - p_addr.unsigned_value);
+    p_cb->offset = (uint16_t)(p_align_addr.unsigned_value - p_addr.unsigned_value);
 
     return p_align_addr.pointer_value;
 }
 
-void SDK_Free(void *ptr)
-{
-    union
-    {
+void SDK_Free(void *ptr) {
+    union {
         void *pointer_value;
         uint32_t unsigned_value;
     } p_free;
     p_free.pointer_value = ptr;
-    mem_align_cb_t *p_cb = (mem_align_cb_t *)(p_free.unsigned_value - 4U);
+    mem_align_cb_t *p_cb = (mem_align_cb_t *) (p_free.unsigned_value - 4U);
 
-    if (p_cb->identifier != SDK_MEM_MAGIC_NUMBER)
-    {
+    if (p_cb->identifier != SDK_MEM_MAGIC_NUMBER) {
         return;
     }
 
@@ -203,8 +197,7 @@ static void DelayLoop(uint32_t count)
  * @param delay_us  Delay time in unit of microsecond.
  * @param coreClock_Hz  Core clock frequency with Hz.
  */
-void SDK_DelayAtLeastUs(uint32_t delay_us, uint32_t coreClock_Hz)
-{
+void SDK_DelayAtLeastUs(uint32_t delay_us, uint32_t coreClock_Hz) {
     assert(0U != delay_us);
     uint64_t count = USEC_TO_COUNT(delay_us, coreClock_Hz);
     assert(count <= UINT32_MAX);
@@ -220,6 +213,8 @@ void SDK_DelayAtLeastUs(uint32_t delay_us, uint32_t coreClock_Hz)
 #else
     count = count / 4U;
 #endif
-    DelayLoop((uint32_t)count);
+    DelayLoop((uint32_t)
+    count);
 }
+
 #endif

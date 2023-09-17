@@ -29,29 +29,27 @@
 #define USDHC_MAX_BLOCK_COUNT (USDHC_BLK_ATT_BLKCNT_MASK >> USDHC_BLK_ATT_BLKCNT_SHIFT)
 
 /*! @brief _usdhc_status USDHC status */
-enum
-{
-    kStatus_USDHC_BusyTransferring            = MAKE_STATUS(kStatusGroup_USDHC, 0U), /*!< Transfer is on-going */
+enum {
+    kStatus_USDHC_BusyTransferring = MAKE_STATUS(kStatusGroup_USDHC, 0U), /*!< Transfer is on-going */
     kStatus_USDHC_PrepareAdmaDescriptorFailed = MAKE_STATUS(kStatusGroup_USDHC, 1U), /*!< Set DMA descriptor failed */
-    kStatus_USDHC_SendCommandFailed           = MAKE_STATUS(kStatusGroup_USDHC, 2U), /*!< Send command failed */
-    kStatus_USDHC_TransferDataFailed          = MAKE_STATUS(kStatusGroup_USDHC, 3U), /*!< Transfer data failed */
-    kStatus_USDHC_DMADataAddrNotAlign         = MAKE_STATUS(kStatusGroup_USDHC, 4U), /*!< data address not align */
-    kStatus_USDHC_ReTuningRequest             = MAKE_STATUS(kStatusGroup_USDHC, 5U), /*!< re-tuning request */
-    kStatus_USDHC_TuningError                 = MAKE_STATUS(kStatusGroup_USDHC, 6U), /*!< tuning error */
-    kStatus_USDHC_NotSupport                  = MAKE_STATUS(kStatusGroup_USDHC, 7U), /*!< not support */
-    kStatus_USDHC_TransferDataComplete        = MAKE_STATUS(kStatusGroup_USDHC, 8U), /*!< Transfer data complete */
+    kStatus_USDHC_SendCommandFailed = MAKE_STATUS(kStatusGroup_USDHC, 2U), /*!< Send command failed */
+    kStatus_USDHC_TransferDataFailed = MAKE_STATUS(kStatusGroup_USDHC, 3U), /*!< Transfer data failed */
+    kStatus_USDHC_DMADataAddrNotAlign = MAKE_STATUS(kStatusGroup_USDHC, 4U), /*!< data address not align */
+    kStatus_USDHC_ReTuningRequest = MAKE_STATUS(kStatusGroup_USDHC, 5U), /*!< re-tuning request */
+    kStatus_USDHC_TuningError = MAKE_STATUS(kStatusGroup_USDHC, 6U), /*!< tuning error */
+    kStatus_USDHC_NotSupport = MAKE_STATUS(kStatusGroup_USDHC, 7U), /*!< not support */
+    kStatus_USDHC_TransferDataComplete = MAKE_STATUS(kStatusGroup_USDHC, 8U), /*!< Transfer data complete */
 };
 
 /*! @brief _usdhc_capability_flag Host controller capabilities flag mask */
-enum
-{
-    kUSDHC_SupportAdmaFlag          = USDHC_HOST_CTRL_CAP_ADMAS_MASK, /*!< Support ADMA */
-    kUSDHC_SupportHighSpeedFlag     = USDHC_HOST_CTRL_CAP_HSS_MASK,   /*!< Support high-speed */
-    kUSDHC_SupportDmaFlag           = USDHC_HOST_CTRL_CAP_DMAS_MASK,  /*!< Support DMA */
+enum {
+    kUSDHC_SupportAdmaFlag = USDHC_HOST_CTRL_CAP_ADMAS_MASK, /*!< Support ADMA */
+    kUSDHC_SupportHighSpeedFlag = USDHC_HOST_CTRL_CAP_HSS_MASK,   /*!< Support high-speed */
+    kUSDHC_SupportDmaFlag = USDHC_HOST_CTRL_CAP_DMAS_MASK,  /*!< Support DMA */
     kUSDHC_SupportSuspendResumeFlag = USDHC_HOST_CTRL_CAP_SRS_MASK,   /*!< Support suspend/resume */
-    kUSDHC_SupportV330Flag          = USDHC_HOST_CTRL_CAP_VS33_MASK,  /*!< Support voltage 3.3V */
-    kUSDHC_SupportV300Flag          = USDHC_HOST_CTRL_CAP_VS30_MASK,  /*!< Support voltage 3.0V */
-    kUSDHC_SupportV180Flag          = USDHC_HOST_CTRL_CAP_VS18_MASK,  /*!< Support voltage 1.8V */
+    kUSDHC_SupportV330Flag = USDHC_HOST_CTRL_CAP_VS33_MASK,  /*!< Support voltage 3.3V */
+    kUSDHC_SupportV300Flag = USDHC_HOST_CTRL_CAP_VS30_MASK,  /*!< Support voltage 3.0V */
+    kUSDHC_SupportV180Flag = USDHC_HOST_CTRL_CAP_VS18_MASK,  /*!< Support voltage 1.8V */
     /* Put additional two flags in HTCAPBLT_MBL's position. */
     kUSDHC_Support4BitFlag = (USDHC_HOST_CTRL_CAP_MBL_SHIFT << 0U), /*!< Support 4 bit mode */
     kUSDHC_Support8BitFlag = (USDHC_HOST_CTRL_CAP_MBL_SHIFT << 1U), /*!< Support 8 bit mode */
@@ -61,19 +59,18 @@ enum
 #if defined(FSL_FEATURE_USDHC_HAS_SDR104_MODE) && (!FSL_FEATURE_USDHC_HAS_SDR104_MODE)
     kUSDHC_SupportSDR104Flag = 0, /*!< not support SDR104 mode */
 #else
-    kUSDHC_SupportSDR104Flag   = USDHC_HOST_CTRL_CAP_SDR104_SUPPORT_MASK, /*!< support SDR104 mode */
+    kUSDHC_SupportSDR104Flag = USDHC_HOST_CTRL_CAP_SDR104_SUPPORT_MASK, /*!< support SDR104 mode */
 #endif
 #if defined(FSL_FEATURE_USDHC_HAS_SDR50_MODE) && (!FSL_FEATURE_USDHC_HAS_SDR50_MODE)
     kUSDHC_SupportSDR50Flag = 0U, /*!< not support SDR50 mode */
 #else
-    kUSDHC_SupportSDR50Flag    = USDHC_HOST_CTRL_CAP_SDR50_SUPPORT_MASK,  /*!< support SDR50 mode */
+    kUSDHC_SupportSDR50Flag = USDHC_HOST_CTRL_CAP_SDR50_SUPPORT_MASK,  /*!< support SDR50 mode */
 #endif
 };
 
 /*! @brief _usdhc_wakeup_event Wakeup event mask */
-enum
-{
-    kUSDHC_WakeupEventOnCardInt    = USDHC_PROT_CTRL_WECINT_MASK, /*!< Wakeup on card interrupt */
+enum {
+    kUSDHC_WakeupEventOnCardInt = USDHC_PROT_CTRL_WECINT_MASK, /*!< Wakeup on card interrupt */
     kUSDHC_WakeupEventOnCardInsert = USDHC_PROT_CTRL_WECINS_MASK, /*!< Wakeup on card insertion */
     kUSDHC_WakeupEventOnCardRemove = USDHC_PROT_CTRL_WECRM_MASK,  /*!< Wakeup on card removal */
 
@@ -82,57 +79,54 @@ enum
 };
 
 /*! @brief _usdhc_reset Reset type mask */
-enum
-{
-    kUSDHC_ResetAll     = USDHC_SYS_CTRL_RSTA_MASK, /*!< Reset all except card detection */
+enum {
+    kUSDHC_ResetAll = USDHC_SYS_CTRL_RSTA_MASK, /*!< Reset all except card detection */
     kUSDHC_ResetCommand = USDHC_SYS_CTRL_RSTC_MASK, /*!< Reset command line */
-    kUSDHC_ResetData    = USDHC_SYS_CTRL_RSTD_MASK, /*!< Reset data line */
+    kUSDHC_ResetData = USDHC_SYS_CTRL_RSTD_MASK, /*!< Reset data line */
 
 #if defined(FSL_FEATURE_USDHC_HAS_SDR50_MODE) && (!FSL_FEATURE_USDHC_HAS_SDR50_MODE)
     kUSDHC_ResetTuning = 0U, /*!< no reset tuning circuit bit */
 #else
-    kUSDHC_ResetTuning         = USDHC_SYS_CTRL_RSTT_MASK,                /*!< reset tuning circuit */
+    kUSDHC_ResetTuning = USDHC_SYS_CTRL_RSTT_MASK,                /*!< reset tuning circuit */
 #endif
 
     kUSDHC_ResetsAll =
-        (kUSDHC_ResetAll | kUSDHC_ResetCommand | kUSDHC_ResetData | kUSDHC_ResetTuning), /*!< All reset types */
+    (kUSDHC_ResetAll | kUSDHC_ResetCommand | kUSDHC_ResetData | kUSDHC_ResetTuning), /*!< All reset types */
 };
 
 /*! @brief _usdhc_transfer_flag Transfer flag mask */
-enum
-{
+enum {
     kUSDHC_EnableDmaFlag = USDHC_MIX_CTRL_DMAEN_MASK, /*!< Enable DMA */
 
     kUSDHC_CommandTypeSuspendFlag = USDHC_CMD_XFR_TYP_CMDTYP(1U), /*!< Suspend command */
-    kUSDHC_CommandTypeResumeFlag  = USDHC_CMD_XFR_TYP_CMDTYP(2U), /*!< Resume command */
-    kUSDHC_CommandTypeAbortFlag   = USDHC_CMD_XFR_TYP_CMDTYP(3U), /*!< Abort command */
+    kUSDHC_CommandTypeResumeFlag = USDHC_CMD_XFR_TYP_CMDTYP(2U), /*!< Resume command */
+    kUSDHC_CommandTypeAbortFlag = USDHC_CMD_XFR_TYP_CMDTYP(3U), /*!< Abort command */
 
-    kUSDHC_EnableBlockCountFlag    = USDHC_MIX_CTRL_BCEN_MASK,   /*!< Enable block count */
+    kUSDHC_EnableBlockCountFlag = USDHC_MIX_CTRL_BCEN_MASK,   /*!< Enable block count */
     kUSDHC_EnableAutoCommand12Flag = USDHC_MIX_CTRL_AC12EN_MASK, /*!< Enable auto CMD12 */
-    kUSDHC_DataReadFlag            = USDHC_MIX_CTRL_DTDSEL_MASK, /*!< Enable data read */
-    kUSDHC_MultipleBlockFlag       = USDHC_MIX_CTRL_MSBSEL_MASK, /*!< Multiple block data read/write */
+    kUSDHC_DataReadFlag = USDHC_MIX_CTRL_DTDSEL_MASK, /*!< Enable data read */
+    kUSDHC_MultipleBlockFlag = USDHC_MIX_CTRL_MSBSEL_MASK, /*!< Multiple block data read/write */
     kUSDHC_EnableAutoCommand23Flag = USDHC_MIX_CTRL_AC23EN_MASK, /*!< Enable auto CMD23 */
 
-    kUSDHC_ResponseLength136Flag    = USDHC_CMD_XFR_TYP_RSPTYP(1U), /*!< 136 bit response length */
-    kUSDHC_ResponseLength48Flag     = USDHC_CMD_XFR_TYP_RSPTYP(2U), /*!< 48 bit response length */
+    kUSDHC_ResponseLength136Flag = USDHC_CMD_XFR_TYP_RSPTYP(1U), /*!< 136 bit response length */
+    kUSDHC_ResponseLength48Flag = USDHC_CMD_XFR_TYP_RSPTYP(2U), /*!< 48 bit response length */
     kUSDHC_ResponseLength48BusyFlag = USDHC_CMD_XFR_TYP_RSPTYP(3U), /*!< 48 bit response length with busy status */
 
-    kUSDHC_EnableCrcCheckFlag   = USDHC_CMD_XFR_TYP_CCCEN_MASK, /*!< Enable CRC check */
+    kUSDHC_EnableCrcCheckFlag = USDHC_CMD_XFR_TYP_CCCEN_MASK, /*!< Enable CRC check */
     kUSDHC_EnableIndexCheckFlag = USDHC_CMD_XFR_TYP_CICEN_MASK, /*!< Enable index check */
-    kUSDHC_DataPresentFlag      = USDHC_CMD_XFR_TYP_DPSEL_MASK, /*!< Data present flag */
+    kUSDHC_DataPresentFlag = USDHC_CMD_XFR_TYP_DPSEL_MASK, /*!< Data present flag */
 };
 
 /*! @brief _usdhc_present_status_flag Present status flag mask */
-enum
-{
-    kUSDHC_CommandInhibitFlag      = USDHC_PRES_STATE_CIHB_MASK,  /*!< Command inhibit */
-    kUSDHC_DataInhibitFlag         = USDHC_PRES_STATE_CDIHB_MASK, /*!< Data inhibit */
-    kUSDHC_DataLineActiveFlag      = USDHC_PRES_STATE_DLA_MASK,   /*!< Data line active */
-    kUSDHC_SdClockStableFlag       = USDHC_PRES_STATE_SDSTB_MASK, /*!< SD bus clock stable */
+enum {
+    kUSDHC_CommandInhibitFlag = USDHC_PRES_STATE_CIHB_MASK,  /*!< Command inhibit */
+    kUSDHC_DataInhibitFlag = USDHC_PRES_STATE_CDIHB_MASK, /*!< Data inhibit */
+    kUSDHC_DataLineActiveFlag = USDHC_PRES_STATE_DLA_MASK,   /*!< Data line active */
+    kUSDHC_SdClockStableFlag = USDHC_PRES_STATE_SDSTB_MASK, /*!< SD bus clock stable */
     kUSDHC_WriteTransferActiveFlag = USDHC_PRES_STATE_WTA_MASK,   /*!< Write transfer active */
-    kUSDHC_ReadTransferActiveFlag  = USDHC_PRES_STATE_RTA_MASK,   /*!< Read transfer active */
-    kUSDHC_BufferWriteEnableFlag   = USDHC_PRES_STATE_BWEN_MASK,  /*!< Buffer write enable */
-    kUSDHC_BufferReadEnableFlag    = USDHC_PRES_STATE_BREN_MASK,  /*!< Buffer read enable */
+    kUSDHC_ReadTransferActiveFlag = USDHC_PRES_STATE_RTA_MASK,   /*!< Read transfer active */
+    kUSDHC_BufferWriteEnableFlag = USDHC_PRES_STATE_BWEN_MASK,  /*!< Buffer write enable */
+    kUSDHC_BufferReadEnableFlag = USDHC_PRES_STATE_BREN_MASK,  /*!< Buffer read enable */
 
 #if defined(FSL_FEATURE_USDHC_HAS_SDR50_MODE) && (!FSL_FEATURE_USDHC_HAS_SDR50_MODE)
     kUSDHC_DelaySettingFinishedFlag = 0U, /*!< not support */
@@ -142,7 +136,7 @@ enum
     kUSDHC_DelaySettingFinishedFlag = USDHC_PRES_STATE_TSCD_MASK, /*!< delay setting finished flag */
 #endif
 
-    kUSDHC_CardInsertedFlag     = USDHC_PRES_STATE_CINST_MASK, /*!< Card inserted */
+    kUSDHC_CardInsertedFlag = USDHC_PRES_STATE_CINST_MASK, /*!< Card inserted */
     kUSDHC_CommandLineLevelFlag = USDHC_PRES_STATE_CLSL_MASK,  /*!< Command line signal level */
 
     kUSDHC_Data0LineLevelFlag = 1U << USDHC_PRES_STATE_DLSL_SHIFT,               /*!< Data0 line signal level */
@@ -152,55 +146,54 @@ enum
     kUSDHC_Data4LineLevelFlag = 1U << (USDHC_PRES_STATE_DLSL_SHIFT + 4U),        /*!< Data4 line signal level */
     kUSDHC_Data5LineLevelFlag = 1U << (USDHC_PRES_STATE_DLSL_SHIFT + 5U),        /*!< Data5 line signal level */
     kUSDHC_Data6LineLevelFlag = 1U << (USDHC_PRES_STATE_DLSL_SHIFT + 6U),        /*!< Data6 line signal level */
-    kUSDHC_Data7LineLevelFlag = (int)(1U << (USDHC_PRES_STATE_DLSL_SHIFT + 7U)), /*!< Data7 line signal level */
+    kUSDHC_Data7LineLevelFlag = (int) (1U << (USDHC_PRES_STATE_DLSL_SHIFT + 7U)), /*!< Data7 line signal level */
 };
 
 /*! @brief _usdhc_interrupt_status_flag Interrupt status flag mask */
-enum
-{
-    kUSDHC_CommandCompleteFlag  = USDHC_INT_STATUS_CC_MASK,   /*!< Command complete */
-    kUSDHC_DataCompleteFlag     = USDHC_INT_STATUS_TC_MASK,   /*!< Data complete */
-    kUSDHC_BlockGapEventFlag    = USDHC_INT_STATUS_BGE_MASK,  /*!< Block gap event */
-    kUSDHC_DmaCompleteFlag      = USDHC_INT_STATUS_DINT_MASK, /*!< DMA interrupt */
+enum {
+    kUSDHC_CommandCompleteFlag = USDHC_INT_STATUS_CC_MASK,   /*!< Command complete */
+    kUSDHC_DataCompleteFlag = USDHC_INT_STATUS_TC_MASK,   /*!< Data complete */
+    kUSDHC_BlockGapEventFlag = USDHC_INT_STATUS_BGE_MASK,  /*!< Block gap event */
+    kUSDHC_DmaCompleteFlag = USDHC_INT_STATUS_DINT_MASK, /*!< DMA interrupt */
     kUSDHC_BufferWriteReadyFlag = USDHC_INT_STATUS_BWR_MASK,  /*!< Buffer write ready */
-    kUSDHC_BufferReadReadyFlag  = USDHC_INT_STATUS_BRR_MASK,  /*!< Buffer read ready */
-    kUSDHC_CardInsertionFlag    = USDHC_INT_STATUS_CINS_MASK, /*!< Card inserted */
-    kUSDHC_CardRemovalFlag      = USDHC_INT_STATUS_CRM_MASK,  /*!< Card removed */
-    kUSDHC_CardInterruptFlag    = USDHC_INT_STATUS_CINT_MASK, /*!< Card interrupt */
+    kUSDHC_BufferReadReadyFlag = USDHC_INT_STATUS_BRR_MASK,  /*!< Buffer read ready */
+    kUSDHC_CardInsertionFlag = USDHC_INT_STATUS_CINS_MASK, /*!< Card inserted */
+    kUSDHC_CardRemovalFlag = USDHC_INT_STATUS_CRM_MASK,  /*!< Card removed */
+    kUSDHC_CardInterruptFlag = USDHC_INT_STATUS_CINT_MASK, /*!< Card interrupt */
 
 #if defined(FSL_FEATURE_USDHC_HAS_SDR50_MODE) && (!FSL_FEATURE_USDHC_HAS_SDR50_MODE)
     kUSDHC_ReTuningEventFlag = 0U, /*!< Re-Tuning event,only for SD3.0 SDR104 mode */
     kUSDHC_TuningPassFlag    = 0U, /*!< SDR104 mode tuning pass flag */
     kUSDHC_TuningErrorFlag   = 0U, /*!< SDR104 tuning error flag */
 #else
-    kUSDHC_ReTuningEventFlag        = USDHC_INT_STATUS_RTE_MASK,  /*!< Re-Tuning event,only for SD3.0 SDR104 mode */
-    kUSDHC_TuningPassFlag           = USDHC_INT_STATUS_TP_MASK,   /*!< SDR104 mode tuning pass flag */
-    kUSDHC_TuningErrorFlag          = USDHC_INT_STATUS_TNE_MASK,  /*!< SDR104 tuning error flag */
+    kUSDHC_ReTuningEventFlag = USDHC_INT_STATUS_RTE_MASK,  /*!< Re-Tuning event,only for SD3.0 SDR104 mode */
+    kUSDHC_TuningPassFlag = USDHC_INT_STATUS_TP_MASK,   /*!< SDR104 mode tuning pass flag */
+    kUSDHC_TuningErrorFlag = USDHC_INT_STATUS_TNE_MASK,  /*!< SDR104 tuning error flag */
 #endif
 
-    kUSDHC_CommandTimeoutFlag     = USDHC_INT_STATUS_CTOE_MASK,  /*!< Command timeout error */
-    kUSDHC_CommandCrcErrorFlag    = USDHC_INT_STATUS_CCE_MASK,   /*!< Command CRC error */
+    kUSDHC_CommandTimeoutFlag = USDHC_INT_STATUS_CTOE_MASK,  /*!< Command timeout error */
+    kUSDHC_CommandCrcErrorFlag = USDHC_INT_STATUS_CCE_MASK,   /*!< Command CRC error */
     kUSDHC_CommandEndBitErrorFlag = USDHC_INT_STATUS_CEBE_MASK,  /*!< Command end bit error */
-    kUSDHC_CommandIndexErrorFlag  = USDHC_INT_STATUS_CIE_MASK,   /*!< Command index error */
-    kUSDHC_DataTimeoutFlag        = USDHC_INT_STATUS_DTOE_MASK,  /*!< Data timeout error */
-    kUSDHC_DataCrcErrorFlag       = USDHC_INT_STATUS_DCE_MASK,   /*!< Data CRC error */
-    kUSDHC_DataEndBitErrorFlag    = USDHC_INT_STATUS_DEBE_MASK,  /*!< Data end bit error */
+    kUSDHC_CommandIndexErrorFlag = USDHC_INT_STATUS_CIE_MASK,   /*!< Command index error */
+    kUSDHC_DataTimeoutFlag = USDHC_INT_STATUS_DTOE_MASK,  /*!< Data timeout error */
+    kUSDHC_DataCrcErrorFlag = USDHC_INT_STATUS_DCE_MASK,   /*!< Data CRC error */
+    kUSDHC_DataEndBitErrorFlag = USDHC_INT_STATUS_DEBE_MASK,  /*!< Data end bit error */
     kUSDHC_AutoCommand12ErrorFlag = USDHC_INT_STATUS_AC12E_MASK, /*!< Auto CMD12 error */
-    kUSDHC_DmaErrorFlag           = USDHC_INT_STATUS_DMAE_MASK,  /*!< DMA error */
+    kUSDHC_DmaErrorFlag = USDHC_INT_STATUS_DMAE_MASK,  /*!< DMA error */
 
     kUSDHC_CommandErrorFlag = (kUSDHC_CommandTimeoutFlag | kUSDHC_CommandCrcErrorFlag | kUSDHC_CommandEndBitErrorFlag |
                                kUSDHC_CommandIndexErrorFlag), /*!< Command error */
-    kUSDHC_DataErrorFlag    = (kUSDHC_DataTimeoutFlag | kUSDHC_DataCrcErrorFlag | kUSDHC_DataEndBitErrorFlag |
+    kUSDHC_DataErrorFlag = (kUSDHC_DataTimeoutFlag | kUSDHC_DataCrcErrorFlag | kUSDHC_DataEndBitErrorFlag |
                             kUSDHC_AutoCommand12ErrorFlag),                                        /*!< Data error */
-    kUSDHC_ErrorFlag        = (kUSDHC_CommandErrorFlag | kUSDHC_DataErrorFlag | kUSDHC_DmaErrorFlag), /*!< All error */
+    kUSDHC_ErrorFlag = (kUSDHC_CommandErrorFlag | kUSDHC_DataErrorFlag | kUSDHC_DmaErrorFlag), /*!< All error */
 
     kUSDHC_DataFlag = (kUSDHC_DataCompleteFlag | kUSDHC_BufferWriteReadyFlag | kUSDHC_BufferReadReadyFlag |
                        kUSDHC_DataErrorFlag), /*!< Data interrupts */
 
     kUSDHC_DataDMAFlag = (kUSDHC_DataCompleteFlag | kUSDHC_DataErrorFlag | kUSDHC_DmaErrorFlag), /*!< Data interrupts */
 
-    kUSDHC_CommandFlag      = (kUSDHC_CommandErrorFlag | kUSDHC_CommandCompleteFlag), /*!< Command interrupts */
-    kUSDHC_CardDetectFlag   = (kUSDHC_CardInsertionFlag | kUSDHC_CardRemovalFlag),    /*!< Card detection interrupts */
+    kUSDHC_CommandFlag = (kUSDHC_CommandErrorFlag | kUSDHC_CommandCompleteFlag), /*!< Command interrupts */
+    kUSDHC_CardDetectFlag = (kUSDHC_CardInsertionFlag | kUSDHC_CardRemovalFlag),    /*!< Card detection interrupts */
     kUSDHC_SDR104TuningFlag = (kUSDHC_TuningErrorFlag | kUSDHC_TuningPassFlag | kUSDHC_ReTuningEventFlag),
 
     kUSDHC_AllInterruptFlags = (kUSDHC_BlockGapEventFlag | kUSDHC_CardInterruptFlag | kUSDHC_CommandFlag |
@@ -208,33 +201,30 @@ enum
 };
 
 /*! @brief _usdhc_auto_command12_error_status_flag Auto CMD12 error status flag mask */
-enum
-{
+enum {
     kUSDHC_AutoCommand12NotExecutedFlag = USDHC_AUTOCMD12_ERR_STATUS_AC12NE_MASK,    /*!< Not executed error */
-    kUSDHC_AutoCommand12TimeoutFlag     = USDHC_AUTOCMD12_ERR_STATUS_AC12TOE_MASK,   /*!< Timeout error */
+    kUSDHC_AutoCommand12TimeoutFlag = USDHC_AUTOCMD12_ERR_STATUS_AC12TOE_MASK,   /*!< Timeout error */
     kUSDHC_AutoCommand12EndBitErrorFlag = USDHC_AUTOCMD12_ERR_STATUS_AC12EBE_MASK,   /*!< End bit error */
-    kUSDHC_AutoCommand12CrcErrorFlag    = USDHC_AUTOCMD12_ERR_STATUS_AC12CE_MASK,    /*!< CRC error */
-    kUSDHC_AutoCommand12IndexErrorFlag  = USDHC_AUTOCMD12_ERR_STATUS_AC12IE_MASK,    /*!< Index error */
-    kUSDHC_AutoCommand12NotIssuedFlag   = USDHC_AUTOCMD12_ERR_STATUS_CNIBAC12E_MASK, /*!< Not issued error */
+    kUSDHC_AutoCommand12CrcErrorFlag = USDHC_AUTOCMD12_ERR_STATUS_AC12CE_MASK,    /*!< CRC error */
+    kUSDHC_AutoCommand12IndexErrorFlag = USDHC_AUTOCMD12_ERR_STATUS_AC12IE_MASK,    /*!< Index error */
+    kUSDHC_AutoCommand12NotIssuedFlag = USDHC_AUTOCMD12_ERR_STATUS_CNIBAC12E_MASK, /*!< Not issued error */
 };
 
 /*! @brief _usdhc_standard_tuning standard tuning flag */
-enum
-{
+enum {
 #if defined(FSL_FEATURE_USDHC_HAS_SDR50_MODE) && (!FSL_FEATURE_USDHC_HAS_SDR50_MODE)
     kUSDHC_ExecuteTuning        = 0U, /*!< not support */
     kUSDHC_TuningSampleClockSel = 0U, /*!< not support */
 #else
-    kUSDHC_ExecuteTuning        = USDHC_AUTOCMD12_ERR_STATUS_EXECUTE_TUNING_MASK, /*!< used to start tuning procedure */
+    kUSDHC_ExecuteTuning = USDHC_AUTOCMD12_ERR_STATUS_EXECUTE_TUNING_MASK, /*!< used to start tuning procedure */
     kUSDHC_TuningSampleClockSel = USDHC_AUTOCMD12_ERR_STATUS_SMP_CLK_SEL_MASK, /*!< when std_tuning_en bit is set, this
                                                                                 bit is used select sampleing clock */
 #endif
 };
 
 /*! @brief _usdhc_adma_error_status_flag ADMA error status flag mask */
-enum
-{
-    kUSDHC_AdmaLenghMismatchFlag   = USDHC_ADMA_ERR_STATUS_ADMALME_MASK, /*!< Length mismatch error */
+enum {
+    kUSDHC_AdmaLenghMismatchFlag = USDHC_ADMA_ERR_STATUS_ADMALME_MASK, /*!< Length mismatch error */
     kUSDHC_AdmaDescriptorErrorFlag = USDHC_ADMA_ERR_STATUS_ADMADCE_MASK, /*!< Descriptor error */
 };
 
@@ -243,16 +233,15 @@ enum
  *
  * This state is the detail state when ADMA error has occurred.
  */
-enum
-{
+enum {
     kUSDHC_AdmaErrorStateStopDma =
-        0x00U, /*!< Stop DMA, previous location set in the ADMA system address is error address */
+    0x00U, /*!< Stop DMA, previous location set in the ADMA system address is error address */
     kUSDHC_AdmaErrorStateFetchDescriptor =
-        0x01U, /*!< Fetch descriptor, current location set in the ADMA system address is error address */
+    0x01U, /*!< Fetch descriptor, current location set in the ADMA system address is error address */
     kUSDHC_AdmaErrorStateChangeAddress = 0x02U, /*!< Change address, no DMA error is occurred */
     kUSDHC_AdmaErrorStateTransferData =
-        0x03U, /*!< Transfer data, previous location set in the ADMA system address is error address */
-    kUSDHC_AdmaErrorStateInvalidLength     = 0x04U, /*!< Invalid length in ADMA descriptor */
+    0x03U, /*!< Transfer data, previous location set in the ADMA system address is error address */
+    kUSDHC_AdmaErrorStateInvalidLength = 0x04U, /*!< Invalid length in ADMA descriptor */
     kUSDHC_AdmaErrorStateInvalidDescriptor = 0x08U, /*!< Invalid descriptor fetched by ADMA */
 
     kUSDHC_AdmaErrorState = kUSDHC_AdmaErrorStateInvalidLength | kUSDHC_AdmaErrorStateInvalidDescriptor |
@@ -260,24 +249,23 @@ enum
 };
 
 /*! @brief _usdhc_force_event Force event bit position */
-enum
-{
+enum {
     kUSDHC_ForceEventAutoCommand12NotExecuted = USDHC_FORCE_EVENT_FEVTAC12NE_MASK, /*!< Auto CMD12 not executed error */
-    kUSDHC_ForceEventAutoCommand12Timeout     = USDHC_FORCE_EVENT_FEVTAC12TOE_MASK, /*!< Auto CMD12 timeout error */
-    kUSDHC_ForceEventAutoCommand12CrcError    = USDHC_FORCE_EVENT_FEVTAC12CE_MASK,  /*!< Auto CMD12 CRC error */
-    kUSDHC_ForceEventEndBitError              = USDHC_FORCE_EVENT_FEVTAC12EBE_MASK, /*!< Auto CMD12 end bit error */
-    kUSDHC_ForceEventAutoCommand12IndexError  = USDHC_FORCE_EVENT_FEVTAC12IE_MASK,  /*!< Auto CMD12 index error */
+    kUSDHC_ForceEventAutoCommand12Timeout = USDHC_FORCE_EVENT_FEVTAC12TOE_MASK, /*!< Auto CMD12 timeout error */
+    kUSDHC_ForceEventAutoCommand12CrcError = USDHC_FORCE_EVENT_FEVTAC12CE_MASK,  /*!< Auto CMD12 CRC error */
+    kUSDHC_ForceEventEndBitError = USDHC_FORCE_EVENT_FEVTAC12EBE_MASK, /*!< Auto CMD12 end bit error */
+    kUSDHC_ForceEventAutoCommand12IndexError = USDHC_FORCE_EVENT_FEVTAC12IE_MASK,  /*!< Auto CMD12 index error */
     kUSDHC_ForceEventAutoCommand12NotIssued = USDHC_FORCE_EVENT_FEVTCNIBAC12E_MASK, /*!< Auto CMD12 not issued error */
-    kUSDHC_ForceEventCommandTimeout         = USDHC_FORCE_EVENT_FEVTCTOE_MASK,      /*!< Command timeout error */
-    kUSDHC_ForceEventCommandCrcError        = USDHC_FORCE_EVENT_FEVTCCE_MASK,       /*!< Command CRC error */
-    kUSDHC_ForceEventCommandEndBitError     = USDHC_FORCE_EVENT_FEVTCEBE_MASK,      /*!< Command end bit error */
-    kUSDHC_ForceEventCommandIndexError      = USDHC_FORCE_EVENT_FEVTCIE_MASK,       /*!< Command index error */
-    kUSDHC_ForceEventDataTimeout            = USDHC_FORCE_EVENT_FEVTDTOE_MASK,      /*!< Data timeout error */
-    kUSDHC_ForceEventDataCrcError           = USDHC_FORCE_EVENT_FEVTDCE_MASK,       /*!< Data CRC error */
-    kUSDHC_ForceEventDataEndBitError        = USDHC_FORCE_EVENT_FEVTDEBE_MASK,      /*!< Data end bit error */
-    kUSDHC_ForceEventAutoCommand12Error     = USDHC_FORCE_EVENT_FEVTAC12E_MASK,     /*!< Auto CMD12 error */
-    kUSDHC_ForceEventCardInt                = (int)USDHC_FORCE_EVENT_FEVTCINT_MASK, /*!< Card interrupt */
-    kUSDHC_ForceEventDmaError               = USDHC_FORCE_EVENT_FEVTDMAE_MASK,      /*!< Dma error */
+    kUSDHC_ForceEventCommandTimeout = USDHC_FORCE_EVENT_FEVTCTOE_MASK,      /*!< Command timeout error */
+    kUSDHC_ForceEventCommandCrcError = USDHC_FORCE_EVENT_FEVTCCE_MASK,       /*!< Command CRC error */
+    kUSDHC_ForceEventCommandEndBitError = USDHC_FORCE_EVENT_FEVTCEBE_MASK,      /*!< Command end bit error */
+    kUSDHC_ForceEventCommandIndexError = USDHC_FORCE_EVENT_FEVTCIE_MASK,       /*!< Command index error */
+    kUSDHC_ForceEventDataTimeout = USDHC_FORCE_EVENT_FEVTDTOE_MASK,      /*!< Data timeout error */
+    kUSDHC_ForceEventDataCrcError = USDHC_FORCE_EVENT_FEVTDCE_MASK,       /*!< Data CRC error */
+    kUSDHC_ForceEventDataEndBitError = USDHC_FORCE_EVENT_FEVTDEBE_MASK,      /*!< Data end bit error */
+    kUSDHC_ForceEventAutoCommand12Error = USDHC_FORCE_EVENT_FEVTAC12E_MASK,     /*!< Auto CMD12 error */
+    kUSDHC_ForceEventCardInt = (int) USDHC_FORCE_EVENT_FEVTCINT_MASK, /*!< Card interrupt */
+    kUSDHC_ForceEventDmaError = USDHC_FORCE_EVENT_FEVTDMAE_MASK,      /*!< Dma error */
 #if defined(FSL_FEATURE_USDHC_HAS_SDR50_MODE) && (!FSL_FEATURE_USDHC_HAS_SDR50_MODE)
     kUSDHC_ForceEventTuningError = 0U, /*!< not support */
 #else
@@ -285,72 +273,65 @@ enum
 #endif
 
     kUSDHC_ForceEventsAll =
-        (int)(USDHC_FORCE_EVENT_FEVTAC12NE_MASK | USDHC_FORCE_EVENT_FEVTAC12TOE_MASK |
-              USDHC_FORCE_EVENT_FEVTAC12CE_MASK | USDHC_FORCE_EVENT_FEVTAC12EBE_MASK |
-              USDHC_FORCE_EVENT_FEVTAC12IE_MASK | USDHC_FORCE_EVENT_FEVTCNIBAC12E_MASK |
-              USDHC_FORCE_EVENT_FEVTCTOE_MASK | USDHC_FORCE_EVENT_FEVTCCE_MASK | USDHC_FORCE_EVENT_FEVTCEBE_MASK |
-              USDHC_FORCE_EVENT_FEVTCIE_MASK | USDHC_FORCE_EVENT_FEVTDTOE_MASK | USDHC_FORCE_EVENT_FEVTDCE_MASK |
-              USDHC_FORCE_EVENT_FEVTDEBE_MASK | USDHC_FORCE_EVENT_FEVTAC12E_MASK | USDHC_FORCE_EVENT_FEVTCINT_MASK |
-              USDHC_FORCE_EVENT_FEVTDMAE_MASK | kUSDHC_ForceEventTuningError), /*!< All force event flags mask */
+    (int) (USDHC_FORCE_EVENT_FEVTAC12NE_MASK | USDHC_FORCE_EVENT_FEVTAC12TOE_MASK |
+           USDHC_FORCE_EVENT_FEVTAC12CE_MASK | USDHC_FORCE_EVENT_FEVTAC12EBE_MASK |
+           USDHC_FORCE_EVENT_FEVTAC12IE_MASK | USDHC_FORCE_EVENT_FEVTCNIBAC12E_MASK |
+           USDHC_FORCE_EVENT_FEVTCTOE_MASK | USDHC_FORCE_EVENT_FEVTCCE_MASK | USDHC_FORCE_EVENT_FEVTCEBE_MASK |
+           USDHC_FORCE_EVENT_FEVTCIE_MASK | USDHC_FORCE_EVENT_FEVTDTOE_MASK | USDHC_FORCE_EVENT_FEVTDCE_MASK |
+           USDHC_FORCE_EVENT_FEVTDEBE_MASK | USDHC_FORCE_EVENT_FEVTAC12E_MASK | USDHC_FORCE_EVENT_FEVTCINT_MASK |
+           USDHC_FORCE_EVENT_FEVTDMAE_MASK | kUSDHC_ForceEventTuningError), /*!< All force event flags mask */
 };
 
 /*! @brief data transfer direction */
-typedef enum _usdhc_transfer_direction
-{
+typedef enum _usdhc_transfer_direction {
     kUSDHC_TransferDirectionReceive = 1U, /*!< USDHC transfer direction receive */
-    kUSDHC_TransferDirectionSend    = 0U, /*!< USDHC transfer direction send */
+    kUSDHC_TransferDirectionSend = 0U, /*!< USDHC transfer direction send */
 } usdhc_transfer_direction_t;
 
 /*! @brief Data transfer width */
-typedef enum _usdhc_data_bus_width
-{
+typedef enum _usdhc_data_bus_width {
     kUSDHC_DataBusWidth1Bit = 0U, /*!< 1-bit mode */
     kUSDHC_DataBusWidth4Bit = 1U, /*!< 4-bit mode */
     kUSDHC_DataBusWidth8Bit = 2U, /*!< 8-bit mode */
 } usdhc_data_bus_width_t;
 
 /*! @brief Endian mode */
-typedef enum _usdhc_endian_mode
-{
-    kUSDHC_EndianModeBig         = 0U, /*!< Big endian mode */
+typedef enum _usdhc_endian_mode {
+    kUSDHC_EndianModeBig = 0U, /*!< Big endian mode */
     kUSDHC_EndianModeHalfWordBig = 1U, /*!< Half word big endian mode */
-    kUSDHC_EndianModeLittle      = 2U, /*!< Little endian mode */
+    kUSDHC_EndianModeLittle = 2U, /*!< Little endian mode */
 } usdhc_endian_mode_t;
 
 /*! @brief DMA mode */
-typedef enum _usdhc_dma_mode
-{
+typedef enum _usdhc_dma_mode {
     kUSDHC_DmaModeSimple = 0U, /*!< external DMA */
-    kUSDHC_DmaModeAdma1  = 1U, /*!< ADMA1 is selected */
-    kUSDHC_DmaModeAdma2  = 2U, /*!< ADMA2 is selected */
-    kUSDHC_ExternalDMA   = 3U, /*!< external dma mode select */
+    kUSDHC_DmaModeAdma1 = 1U, /*!< ADMA1 is selected */
+    kUSDHC_DmaModeAdma2 = 2U, /*!< ADMA2 is selected */
+    kUSDHC_ExternalDMA = 3U, /*!< external dma mode select */
 } usdhc_dma_mode_t;
 
 /*! @brief _usdhc_sdio_control_flag SDIO control flag mask */
-enum
-{
-    kUSDHC_StopAtBlockGapFlag      = USDHC_PROT_CTRL_SABGREQ_MASK,         /*!< Stop at block gap */
-    kUSDHC_ReadWaitControlFlag     = USDHC_PROT_CTRL_RWCTL_MASK,           /*!< Read wait control */
+enum {
+    kUSDHC_StopAtBlockGapFlag = USDHC_PROT_CTRL_SABGREQ_MASK,         /*!< Stop at block gap */
+    kUSDHC_ReadWaitControlFlag = USDHC_PROT_CTRL_RWCTL_MASK,           /*!< Read wait control */
     kUSDHC_InterruptAtBlockGapFlag = USDHC_PROT_CTRL_IABG_MASK,            /*!< Interrupt at block gap */
-    kUSDHC_ReadDoneNo8CLK          = USDHC_PROT_CTRL_RD_DONE_NO_8CLK_MASK, /*!< read done without 8 clk for block gap */
+    kUSDHC_ReadDoneNo8CLK = USDHC_PROT_CTRL_RD_DONE_NO_8CLK_MASK, /*!< read done without 8 clk for block gap */
     kUSDHC_ExactBlockNumberReadFlag = USDHC_PROT_CTRL_NON_EXACT_BLK_RD_MASK, /*!< Exact block number read */
 };
 
 /*! @brief MMC card boot mode */
-typedef enum _usdhc_boot_mode
-{
-    kUSDHC_BootModeNormal      = 0U, /*!< Normal boot */
+typedef enum _usdhc_boot_mode {
+    kUSDHC_BootModeNormal = 0U, /*!< Normal boot */
     kUSDHC_BootModeAlternative = 1U, /*!< Alternative boot */
 } usdhc_boot_mode_t;
 
 /*! @brief The command type */
-typedef enum _usdhc_card_command_type
-{
-    kCARD_CommandTypeNormal  = 0U, /*!< Normal command */
+typedef enum _usdhc_card_command_type {
+    kCARD_CommandTypeNormal = 0U, /*!< Normal command */
     kCARD_CommandTypeSuspend = 1U, /*!< Suspend command */
-    kCARD_CommandTypeResume  = 2U, /*!< Resume command */
-    kCARD_CommandTypeAbort   = 3U, /*!< Abort command */
-    kCARD_CommandTypeEmpty   = 4U, /*!< Empty command */
+    kCARD_CommandTypeResume = 2U, /*!< Resume command */
+    kCARD_CommandTypeAbort = 3U, /*!< Abort command */
+    kCARD_CommandTypeEmpty = 4U, /*!< Empty command */
 } usdhc_card_command_type_t;
 
 /*!
@@ -358,18 +339,17 @@ typedef enum _usdhc_card_command_type
  *
  * Define the command response type from card to host controller.
  */
-typedef enum _usdhc_card_response_type
-{
+typedef enum _usdhc_card_response_type {
     kCARD_ResponseTypeNone = 0U, /*!< Response type: none */
-    kCARD_ResponseTypeR1   = 1U, /*!< Response type: R1 */
-    kCARD_ResponseTypeR1b  = 2U, /*!< Response type: R1b */
-    kCARD_ResponseTypeR2   = 3U, /*!< Response type: R2 */
-    kCARD_ResponseTypeR3   = 4U, /*!< Response type: R3 */
-    kCARD_ResponseTypeR4   = 5U, /*!< Response type: R4 */
-    kCARD_ResponseTypeR5   = 6U, /*!< Response type: R5 */
-    kCARD_ResponseTypeR5b  = 7U, /*!< Response type: R5b */
-    kCARD_ResponseTypeR6   = 8U, /*!< Response type: R6 */
-    kCARD_ResponseTypeR7   = 9U, /*!< Response type: R7 */
+    kCARD_ResponseTypeR1 = 1U, /*!< Response type: R1 */
+    kCARD_ResponseTypeR1b = 2U, /*!< Response type: R1b */
+    kCARD_ResponseTypeR2 = 3U, /*!< Response type: R2 */
+    kCARD_ResponseTypeR3 = 4U, /*!< Response type: R3 */
+    kCARD_ResponseTypeR4 = 5U, /*!< Response type: R4 */
+    kCARD_ResponseTypeR5 = 6U, /*!< Response type: R5 */
+    kCARD_ResponseTypeR5b = 7U, /*!< Response type: R5b */
+    kCARD_ResponseTypeR6 = 8U, /*!< Response type: R6 */
+    kCARD_ResponseTypeR7 = 9U, /*!< Response type: R7 */
 } usdhc_card_response_type_t;
 
 /*! @brief The alignment size for ADDRESS filed in ADMA1's descriptor */
@@ -420,20 +400,19 @@ typedef enum _usdhc_card_response_type
 #define USDHC_ADMA1_DESCRIPTOR_MAX_LENGTH_PER_ENTRY (USDHC_ADMA1_DESCRIPTOR_LENGTH_MASK + 1U - 4096U)
 
 /*! @brief _usdhc_adma1_descriptor_flag The mask for the control/status field in ADMA1 descriptor */
-enum
-{
-    kUSDHC_Adma1DescriptorValidFlag     = (1U << 0U),                        /*!< Valid flag */
-    kUSDHC_Adma1DescriptorEndFlag       = (1U << 1U),                        /*!< End flag */
-    kUSDHC_Adma1DescriptorInterrupFlag  = (1U << 2U),                        /*!< Interrupt flag */
+enum {
+    kUSDHC_Adma1DescriptorValidFlag = (1U << 0U),                        /*!< Valid flag */
+    kUSDHC_Adma1DescriptorEndFlag = (1U << 1U),                        /*!< End flag */
+    kUSDHC_Adma1DescriptorInterrupFlag = (1U << 2U),                        /*!< Interrupt flag */
     kUSDHC_Adma1DescriptorActivity1Flag = (1U << 4U),                        /*!< Activity 1 flag */
     kUSDHC_Adma1DescriptorActivity2Flag = (1U << 5U),                        /*!< Activity 2 flag */
-    kUSDHC_Adma1DescriptorTypeNop       = (kUSDHC_Adma1DescriptorValidFlag), /*!< No operation */
+    kUSDHC_Adma1DescriptorTypeNop = (kUSDHC_Adma1DescriptorValidFlag), /*!< No operation */
     kUSDHC_Adma1DescriptorTypeTransfer =
-        (kUSDHC_Adma1DescriptorActivity2Flag | kUSDHC_Adma1DescriptorValidFlag), /*!< Transfer data */
+    (kUSDHC_Adma1DescriptorActivity2Flag | kUSDHC_Adma1DescriptorValidFlag), /*!< Transfer data */
     kUSDHC_Adma1DescriptorTypeLink = (kUSDHC_Adma1DescriptorActivity1Flag | kUSDHC_Adma1DescriptorActivity2Flag |
                                       kUSDHC_Adma1DescriptorValidFlag), /*!< Link descriptor */
     kUSDHC_Adma1DescriptorTypeSetLength =
-        (kUSDHC_Adma1DescriptorActivity1Flag | kUSDHC_Adma1DescriptorValidFlag), /*!< Set data length */
+    (kUSDHC_Adma1DescriptorActivity1Flag | kUSDHC_Adma1DescriptorValidFlag), /*!< Set data length */
 };
 
 /* ADMA2 descriptor table
@@ -465,28 +444,26 @@ enum
 #define USDHC_ADMA2_DESCRIPTOR_MAX_LENGTH_PER_ENTRY (USDHC_ADMA2_DESCRIPTOR_LENGTH_MASK - 3U)
 
 /*! @brief _usdhc_adma2_descriptor_flag ADMA1 descriptor control and status mask */
-enum
-{
-    kUSDHC_Adma2DescriptorValidFlag     = (1U << 0U), /*!< Valid flag */
-    kUSDHC_Adma2DescriptorEndFlag       = (1U << 1U), /*!< End flag */
+enum {
+    kUSDHC_Adma2DescriptorValidFlag = (1U << 0U), /*!< Valid flag */
+    kUSDHC_Adma2DescriptorEndFlag = (1U << 1U), /*!< End flag */
     kUSDHC_Adma2DescriptorInterruptFlag = (1U << 2U), /*!< Interrupt flag */
     kUSDHC_Adma2DescriptorActivity1Flag = (1U << 4U), /*!< Activity 1 mask */
     kUSDHC_Adma2DescriptorActivity2Flag = (1U << 5U), /*!< Activity 2 mask */
 
     kUSDHC_Adma2DescriptorTypeNop = (kUSDHC_Adma2DescriptorValidFlag), /*!< No operation */
     kUSDHC_Adma2DescriptorTypeReserved =
-        (kUSDHC_Adma2DescriptorActivity1Flag | kUSDHC_Adma2DescriptorValidFlag), /*!< Reserved */
+    (kUSDHC_Adma2DescriptorActivity1Flag | kUSDHC_Adma2DescriptorValidFlag), /*!< Reserved */
     kUSDHC_Adma2DescriptorTypeTransfer =
-        (kUSDHC_Adma2DescriptorActivity2Flag | kUSDHC_Adma2DescriptorValidFlag), /*!< Transfer type */
+    (kUSDHC_Adma2DescriptorActivity2Flag | kUSDHC_Adma2DescriptorValidFlag), /*!< Transfer type */
     kUSDHC_Adma2DescriptorTypeLink = (kUSDHC_Adma2DescriptorActivity1Flag | kUSDHC_Adma2DescriptorActivity2Flag |
                                       kUSDHC_Adma2DescriptorValidFlag), /*!< Link type */
 };
 
 /*! @brief _usdhc_adma_flag ADMA descriptor configuration flag */
-enum
-{
+enum {
     kUSDHC_AdmaDescriptorSingleFlag =
-        0U, /*!< try to finish the transfer in a single ADMA descriptor, if transfer size is bigger than one
+    0U, /*!< try to finish the transfer in a single ADMA descriptor, if transfer size is bigger than one
             ADMA descriptor's ability, new another descriptor for data transfer */
     kUSDHC_AdmaDescriptorMultipleFlag = 1U, /*!< create multiple ADMA descriptor within the ADMA table, this is used for
                                              mmc boot mode specifically, which need
@@ -495,19 +472,17 @@ enum
 };
 
 /*! @brief dma transfer burst len config. */
-typedef enum _usdhc_burst_len
-{
-    kUSDHC_EnBurstLenForINCR         = 0x01U, /*!< enable burst len for INCR */
-    kUSDHC_EnBurstLenForINCR4816     = 0x02U, /*!< enable burst len for INCR4/INCR8/INCR16 */
+typedef enum _usdhc_burst_len {
+    kUSDHC_EnBurstLenForINCR = 0x01U, /*!< enable burst len for INCR */
+    kUSDHC_EnBurstLenForINCR4816 = 0x02U, /*!< enable burst len for INCR4/INCR8/INCR16 */
     kUSDHC_EnBurstLenForINCR4816WRAP = 0x04U, /*!< enable burst len for INCR4/8/16 WRAP */
 } usdhc_burst_len_t;
 
 /*! @brief _usdhc_transfer_data_type transfer data type definition. */
-enum
-{
-    kUSDHC_TransferDataNormal        = 0U, /*!< transfer normal read/write data */
-    kUSDHC_TransferDataTuning        = 1U, /*!< transfer tuning data */
-    kUSDHC_TransferDataBoot          = 2U, /*!< transfer boot data */
+enum {
+    kUSDHC_TransferDataNormal = 0U, /*!< transfer normal read/write data */
+    kUSDHC_TransferDataTuning = 1U, /*!< transfer tuning data */
+    kUSDHC_TransferDataBoot = 2U, /*!< transfer boot data */
     kUSDHC_TransferDataBootcontinous = 3U, /*!< transfer boot data continous */
 };
 
@@ -515,8 +490,7 @@ enum
 typedef uint32_t usdhc_adma1_descriptor_t;
 
 /*! @brief Defines the ADMA2 descriptor structure. */
-typedef struct _usdhc_adma2_descriptor
-{
+typedef struct _usdhc_adma2_descriptor {
     uint32_t attribute;      /*!< The control and status field */
     const uint32_t *address; /*!< The address field */
 } usdhc_adma2_descriptor_t;
@@ -526,8 +500,7 @@ typedef struct _usdhc_adma2_descriptor
  *
  * Defines a structure to save the capability information of USDHC.
  */
-typedef struct _usdhc_capability
-{
+typedef struct _usdhc_capability {
     uint32_t sdVersion;      /*!< support SD card/sdio version */
     uint32_t mmcVersion;     /*!< support emmc card version */
     uint32_t maxBlockLength; /*!< Maximum block length united as byte */
@@ -536,8 +509,7 @@ typedef struct _usdhc_capability
 } usdhc_capability_t;
 
 /*! @brief Data structure to configure the MMC boot feature */
-typedef struct _usdhc_boot_config
-{
+typedef struct _usdhc_boot_config {
     uint32_t ackTimeoutCount;      /*!< Timeout value for the boot ACK. The available range is 0 ~ 15. */
     usdhc_boot_mode_t bootMode;    /*!< Boot mode selection. */
     uint32_t blockCount;           /*!< Stop at block gap value of automatic mode. Available range is 0 ~ 65535. */
@@ -547,8 +519,7 @@ typedef struct _usdhc_boot_config
 } usdhc_boot_config_t;
 
 /*! @brief Data structure to initialize the USDHC */
-typedef struct _usdhc_config
-{
+typedef struct _usdhc_config {
     uint32_t dataTimeout;           /*!< Data timeout value */
     usdhc_endian_mode_t endianMode; /*!< Endian mode */
     uint8_t readWatermarkLevel;     /*!< Watermark level for DMA read operation. Available range is 1 ~ 128. */
@@ -567,8 +538,7 @@ typedef struct _usdhc_config
  * want to ignore the error event to read/write all the data not to stop read/write immediately when error event
  * happen for example bus testing procedure for MMC card.
  */
-typedef struct _usdhc_data
-{
+typedef struct _usdhc_data {
     bool enableAutoCommand12; /*!< Enable auto CMD12 */
     bool enableAutoCommand23; /*!< Enable auto CMD23 */
     bool enableIgnoreError;   /*!< Enable to ignore error event to read/write all the data */
@@ -584,8 +554,7 @@ typedef struct _usdhc_data
  *
  * Define card command-related attribute.
  */
-typedef struct _usdhc_command
-{
+typedef struct _usdhc_command {
     uint32_t index;                          /*!< Command index */
     uint32_t argument;                       /*!< Command argument */
     usdhc_card_command_type_t type;          /*!< Command type */
@@ -597,8 +566,7 @@ typedef struct _usdhc_command
 } usdhc_command_t;
 
 /*! @brief ADMA configuration */
-typedef struct _usdhc_adma_config
-{
+typedef struct _usdhc_adma_config {
     usdhc_dma_mode_t dmaMode; /*!< DMA mode */
 #if !(defined(FSL_FEATURE_USDHC_HAS_NO_RW_BURST_LEN) && FSL_FEATURE_USDHC_HAS_NO_RW_BURST_LEN)
     usdhc_burst_len_t burstLen; /*!< burst len config */
@@ -608,8 +576,7 @@ typedef struct _usdhc_adma_config
 } usdhc_adma_config_t;
 
 /*! @brief Transfer state */
-typedef struct _usdhc_transfer
-{
+typedef struct _usdhc_transfer {
     usdhc_data_t *data;       /*!< Data to transfer */
     usdhc_command_t *command; /*!< Command to send */
 } usdhc_transfer_t;
@@ -618,8 +585,7 @@ typedef struct _usdhc_transfer
 typedef struct _usdhc_handle usdhc_handle_t;
 
 /*! @brief USDHC callback functions. */
-typedef struct _usdhc_transfer_callback
-{
+typedef struct _usdhc_transfer_callback {
     void (*CardInserted)(USDHC_Type *base,
                          void *userData); /*!< Card inserted occurs when DAT3/CD pin is for card detect */
     void (*CardRemoved)(USDHC_Type *base, void *userData);   /*!< Card removed occurs */
@@ -641,8 +607,7 @@ typedef struct _usdhc_transfer_callback
  *
  * @note All the fields except interruptFlags and transferredWords must be allocated by the user.
  */
-struct _usdhc_handle
-{
+struct _usdhc_handle {
     /* Transfer parameter */
     usdhc_data_t *volatile data;       /*!< Data to transfer */
     usdhc_command_t *volatile command; /*!< Command to send */
@@ -659,8 +624,7 @@ struct _usdhc_handle
 typedef status_t (*usdhc_transfer_function_t)(USDHC_Type *base, usdhc_transfer_t *content);
 
 /*! @brief USDHC host descriptor */
-typedef struct _usdhc_host
-{
+typedef struct _usdhc_host {
     USDHC_Type *base;                   /*!< USDHC peripheral base address */
     uint32_t sourceClock_Hz;            /*!< USDHC source clock frequency united in Hz */
     usdhc_config_t config;              /*!< USDHC configuration */
@@ -772,7 +736,8 @@ status_t USDHC_SetInternalDmaConfig(USDHC_Type *base,
  * @retval kStatus_Success Operate successfully.
  */
 status_t USDHC_SetADMA2Descriptor(
-    uint32_t *admaTable, uint32_t admaTableWords, const uint32_t *dataBufferAddr, uint32_t dataBytes, uint32_t flags);
+        uint32_t *admaTable, uint32_t admaTableWords, const uint32_t *dataBufferAddr, uint32_t dataBytes,
+        uint32_t flags);
 
 /*!
  * @brief Sets the ADMA1 descriptor table configuration.
@@ -787,7 +752,8 @@ status_t USDHC_SetADMA2Descriptor(
  * @retval kStatus_Success Operate successfully.
  */
 status_t USDHC_SetADMA1Descriptor(
-    uint32_t *admaTable, uint32_t admaTableWords, const uint32_t *dataBufferAddr, uint32_t dataBytes, uint32_t flags);
+        uint32_t *admaTable, uint32_t admaTableWords, const uint32_t *dataBufferAddr, uint32_t dataBytes,
+        uint32_t flags);
 
 /*!
  * @brief enable internal DMA.
@@ -795,14 +761,10 @@ status_t USDHC_SetADMA1Descriptor(
  * @param base USDHC peripheral base address.
  * @param enable enable or disable flag
  */
-static inline void USDHC_EnableInternalDMA(USDHC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void USDHC_EnableInternalDMA(USDHC_Type *base, bool enable) {
+    if (enable) {
         base->MIX_CTRL |= USDHC_MIX_CTRL_DMAEN_MASK;
-    }
-    else
-    {
+    } else {
         base->MIX_CTRL &= ~USDHC_MIX_CTRL_DMAEN_MASK;
         base->PROT_CTRL &= ~USDHC_PROT_CTRL_DMASEL_MASK;
     }
@@ -821,8 +783,7 @@ static inline void USDHC_EnableInternalDMA(USDHC_Type *base, bool enable)
  * @param base USDHC peripheral base address.
  * @param mask Interrupt status flags mask(_usdhc_interrupt_status_flag).
  */
-static inline void USDHC_EnableInterruptStatus(USDHC_Type *base, uint32_t mask)
-{
+static inline void USDHC_EnableInterruptStatus(USDHC_Type *base, uint32_t mask) {
     base->INT_STATUS_EN |= mask;
 }
 
@@ -832,8 +793,7 @@ static inline void USDHC_EnableInterruptStatus(USDHC_Type *base, uint32_t mask)
  * @param base USDHC peripheral base address.
  * @param mask The interrupt status flags mask(_usdhc_interrupt_status_flag).
  */
-static inline void USDHC_DisableInterruptStatus(USDHC_Type *base, uint32_t mask)
-{
+static inline void USDHC_DisableInterruptStatus(USDHC_Type *base, uint32_t mask) {
     base->INT_STATUS_EN &= ~mask;
 }
 
@@ -843,8 +803,7 @@ static inline void USDHC_DisableInterruptStatus(USDHC_Type *base, uint32_t mask)
  * @param base USDHC peripheral base address.
  * @param mask The interrupt status flags mask(_usdhc_interrupt_status_flag).
  */
-static inline void USDHC_EnableInterruptSignal(USDHC_Type *base, uint32_t mask)
-{
+static inline void USDHC_EnableInterruptSignal(USDHC_Type *base, uint32_t mask) {
     base->INT_SIGNAL_EN |= mask;
 }
 
@@ -854,8 +813,7 @@ static inline void USDHC_EnableInterruptSignal(USDHC_Type *base, uint32_t mask)
  * @param base USDHC peripheral base address.
  * @param mask The interrupt status flags mask(_usdhc_interrupt_status_flag).
  */
-static inline void USDHC_DisableInterruptSignal(USDHC_Type *base, uint32_t mask)
-{
+static inline void USDHC_DisableInterruptSignal(USDHC_Type *base, uint32_t mask) {
     base->INT_SIGNAL_EN &= ~mask;
 }
 
@@ -872,8 +830,7 @@ static inline void USDHC_DisableInterruptSignal(USDHC_Type *base, uint32_t mask)
  * @param base USDHC peripheral base address.
  * @return Current interrupt status flags mask(_usdhc_interrupt_status_flag).
  */
-static inline uint32_t USDHC_GetEnabledInterruptStatusFlags(USDHC_Type *base)
-{
+static inline uint32_t USDHC_GetEnabledInterruptStatusFlags(USDHC_Type *base) {
     uint32_t intStatus = base->INT_STATUS;
 
     return intStatus & base->INT_SIGNAL_EN;
@@ -885,8 +842,7 @@ static inline uint32_t USDHC_GetEnabledInterruptStatusFlags(USDHC_Type *base)
  * @param base USDHC peripheral base address.
  * @return Current interrupt status flags mask(_usdhc_interrupt_status_flag).
  */
-static inline uint32_t USDHC_GetInterruptStatusFlags(USDHC_Type *base)
-{
+static inline uint32_t USDHC_GetInterruptStatusFlags(USDHC_Type *base) {
     return base->INT_STATUS;
 }
 
@@ -896,8 +852,7 @@ static inline uint32_t USDHC_GetInterruptStatusFlags(USDHC_Type *base)
  * @param base USDHC peripheral base address.
  * @param mask The interrupt status flags mask(_usdhc_interrupt_status_flag).
  */
-static inline void USDHC_ClearInterruptStatusFlags(USDHC_Type *base, uint32_t mask)
-{
+static inline void USDHC_ClearInterruptStatusFlags(USDHC_Type *base, uint32_t mask) {
     base->INT_STATUS = mask;
 }
 
@@ -907,8 +862,7 @@ static inline void USDHC_ClearInterruptStatusFlags(USDHC_Type *base, uint32_t ma
  * @param base USDHC peripheral base address.
  * @return Auto command 12 error status flags mask(_usdhc_auto_command12_error_status_flag).
  */
-static inline uint32_t USDHC_GetAutoCommand12ErrorStatusFlags(USDHC_Type *base)
-{
+static inline uint32_t USDHC_GetAutoCommand12ErrorStatusFlags(USDHC_Type *base) {
     return base->AUTOCMD12_ERR_STATUS;
 }
 
@@ -918,8 +872,7 @@ static inline uint32_t USDHC_GetAutoCommand12ErrorStatusFlags(USDHC_Type *base)
  * @param base USDHC peripheral base address.
  * @return ADMA error status flags mask(_usdhc_adma_error_status_flag).
  */
-static inline uint32_t USDHC_GetAdmaErrorStatusFlags(USDHC_Type *base)
-{
+static inline uint32_t USDHC_GetAdmaErrorStatusFlags(USDHC_Type *base) {
     return base->ADMA_ERR_STATUS & 0xFUL;
 }
 
@@ -931,8 +884,7 @@ static inline uint32_t USDHC_GetAdmaErrorStatusFlags(USDHC_Type *base)
  * @param base USDHC peripheral base address.
  * @return Present USDHC's status flags mask(_usdhc_present_status_flag).
  */
-static inline uint32_t USDHC_GetPresentStatusFlags(USDHC_Type *base)
-{
+static inline uint32_t USDHC_GetPresentStatusFlags(USDHC_Type *base) {
     return base->PRES_STATE;
 }
 
@@ -957,14 +909,10 @@ void USDHC_GetCapability(USDHC_Type *base, usdhc_capability_t *capability);
  * @param base USDHC peripheral base address.
  * @param enable/disable flag.
  */
-static inline void USDHC_ForceClockOn(USDHC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void USDHC_ForceClockOn(USDHC_Type *base, bool enable) {
+    if (enable) {
         base->VEND_SPEC |= USDHC_VEND_SPEC_FRC_SDCLK_ON_MASK;
-    }
-    else
-    {
+    } else {
         base->VEND_SPEC &= ~USDHC_VEND_SPEC_FRC_SDCLK_ON_MASK;
     }
 }
@@ -999,14 +947,10 @@ bool USDHC_SetCardActive(USDHC_Type *base, uint32_t timeout);
  * @param base USDHC peripheral base address.
  * @param 1 or 0 level
  */
-static inline void USDHC_AssertHardwareReset(USDHC_Type *base, bool high)
-{
-    if (high)
-    {
+static inline void USDHC_AssertHardwareReset(USDHC_Type *base, bool high) {
+    if (high) {
         base->SYS_CTRL |= USDHC_SYS_CTRL_IPP_RST_N_MASK;
-    }
-    else
-    {
+    } else {
         base->SYS_CTRL &= ~USDHC_SYS_CTRL_IPP_RST_N_MASK;
     }
 }
@@ -1017,8 +961,7 @@ static inline void USDHC_AssertHardwareReset(USDHC_Type *base, bool high)
  * @param base USDHC peripheral base address.
  * @param width Data transfer width.
  */
-static inline void USDHC_SetDataBusWidth(USDHC_Type *base, usdhc_data_bus_width_t width)
-{
+static inline void USDHC_SetDataBusWidth(USDHC_Type *base, usdhc_data_bus_width_t width) {
     base->PROT_CTRL = ((base->PROT_CTRL & ~USDHC_PROT_CTRL_DTW_MASK) | USDHC_PROT_CTRL_DTW(width));
 }
 
@@ -1030,8 +973,7 @@ static inline void USDHC_SetDataBusWidth(USDHC_Type *base, usdhc_data_bus_width_
  * @param base USDHC peripheral base address.
  * @param data The data about to be sent.
  */
-static inline void USDHC_WriteData(USDHC_Type *base, uint32_t data)
-{
+static inline void USDHC_WriteData(USDHC_Type *base, uint32_t data) {
     base->DATA_BUFF_ACC_PORT = data;
 }
 
@@ -1043,8 +985,7 @@ static inline void USDHC_WriteData(USDHC_Type *base, uint32_t data)
  * @param base USDHC peripheral base address.
  * @return The data has been read.
  */
-static inline uint32_t USDHC_ReadData(USDHC_Type *base)
-{
+static inline uint32_t USDHC_ReadData(USDHC_Type *base) {
     return base->DATA_BUFF_ACC_PORT;
 }
 
@@ -1063,14 +1004,10 @@ void USDHC_SendCommand(USDHC_Type *base, usdhc_command_t *command);
  * @param mask Wakeup events mask(_usdhc_wakeup_event).
  * @param enable True to enable, false to disable.
  */
-static inline void USDHC_EnableWakeupEvent(USDHC_Type *base, uint32_t mask, bool enable)
-{
-    if (enable)
-    {
+static inline void USDHC_EnableWakeupEvent(USDHC_Type *base, uint32_t mask, bool enable) {
+    if (enable) {
         base->PROT_CTRL |= mask;
-    }
-    else
-    {
+    } else {
         base->PROT_CTRL &= ~mask;
     }
 }
@@ -1081,14 +1018,10 @@ static inline void USDHC_EnableWakeupEvent(USDHC_Type *base, uint32_t mask, bool
  * @param base USDHC peripheral base address.
  * @param enable/disable flag
  */
-static inline void USDHC_CardDetectByData3(USDHC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void USDHC_CardDetectByData3(USDHC_Type *base, bool enable) {
+    if (enable) {
         base->PROT_CTRL |= USDHC_PROT_CTRL_D3CD_MASK;
-    }
-    else
-    {
+    } else {
         base->PROT_CTRL &= ~USDHC_PROT_CTRL_D3CD_MASK;
     }
 }
@@ -1098,9 +1031,8 @@ static inline void USDHC_CardDetectByData3(USDHC_Type *base, bool enable)
  *
  * @param base USDHC peripheral base address.
  */
-static inline bool USDHC_DetectCardInsert(USDHC_Type *base)
-{
-    return ((base->PRES_STATE & (uint32_t)kUSDHC_CardInsertedFlag) != 0UL) ? true : false;
+static inline bool USDHC_DetectCardInsert(USDHC_Type *base) {
+    return ((base->PRES_STATE & (uint32_t) kUSDHC_CardInsertedFlag) != 0UL) ? true : false;
 }
 
 /*!
@@ -1110,14 +1042,10 @@ static inline bool USDHC_DetectCardInsert(USDHC_Type *base)
  * @param mask SDIO card control flags mask(_usdhc_sdio_control_flag).
  * @param enable True to enable, false to disable.
  */
-static inline void USDHC_EnableSdioControl(USDHC_Type *base, uint32_t mask, bool enable)
-{
-    if (enable)
-    {
+static inline void USDHC_EnableSdioControl(USDHC_Type *base, uint32_t mask, bool enable) {
+    if (enable) {
         base->PROT_CTRL |= mask;
-    }
-    else
-    {
+    } else {
         base->PROT_CTRL &= ~mask;
     }
 }
@@ -1127,8 +1055,7 @@ static inline void USDHC_EnableSdioControl(USDHC_Type *base, uint32_t mask, bool
  *
  * @param base USDHC peripheral base address.
  */
-static inline void USDHC_SetContinueRequest(USDHC_Type *base)
-{
+static inline void USDHC_SetContinueRequest(USDHC_Type *base) {
     base->PROT_CTRL |= USDHC_PROT_CTRL_CREQ_MASK;
 }
 
@@ -1138,14 +1065,10 @@ static inline void USDHC_SetContinueRequest(USDHC_Type *base)
  * @param base USDHC peripheral base address.
  * @param enable true to stop at block gap, false to normal transfer
  */
-static inline void USDHC_RequestStopAtBlockGap(USDHC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void USDHC_RequestStopAtBlockGap(USDHC_Type *base, bool enable) {
+    if (enable) {
         base->PROT_CTRL |= USDHC_PROT_CTRL_SABGREQ_MASK;
-    }
-    else
-    {
+    } else {
         base->PROT_CTRL &= ~USDHC_PROT_CTRL_SABGREQ_MASK;
     }
 }
@@ -1176,14 +1099,10 @@ void USDHC_SetMmcBootConfig(USDHC_Type *base, const usdhc_boot_config_t *config)
  * @param base USDHC peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void USDHC_EnableMmcBoot(USDHC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void USDHC_EnableMmcBoot(USDHC_Type *base, bool enable) {
+    if (enable) {
         base->MMC_BOOT |= USDHC_MMC_BOOT_BOOT_EN_MASK;
-    }
-    else
-    {
+    } else {
         base->MMC_BOOT &= ~USDHC_MMC_BOOT_BOOT_EN_MASK;
     }
 }
@@ -1194,8 +1113,7 @@ static inline void USDHC_EnableMmcBoot(USDHC_Type *base, bool enable)
  * @param base USDHC peripheral base address.
  * @param mask The force events bit posistion (_usdhc_force_event).
  */
-static inline void USDHC_SetForceEvent(USDHC_Type *base, uint32_t mask)
-{
+static inline void USDHC_SetForceEvent(USDHC_Type *base, uint32_t mask) {
     base->FORCE_EVENT = mask;
 }
 
@@ -1205,14 +1123,10 @@ static inline void USDHC_SetForceEvent(USDHC_Type *base, uint32_t mask)
  * @param base USDHC peripheral base address.
  * @param true 1.8V, false 3.0V
  */
-static inline void UDSHC_SelectVoltage(USDHC_Type *base, bool en18v)
-{
-    if (en18v)
-    {
+static inline void UDSHC_SelectVoltage(USDHC_Type *base, bool en18v) {
+    if (en18v) {
         base->VEND_SPEC |= USDHC_VEND_SPEC_VSELECT_MASK;
-    }
-    else
-    {
+    } else {
         base->VEND_SPEC &= ~USDHC_VEND_SPEC_VSELECT_MASK;
     }
 }
@@ -1340,6 +1254,7 @@ static inline uint32_t USDHC_CheckTuningError(USDHC_Type *base)
 }
 
 #endif
+
 /*!
  * @brief the enable/disable DDR mode
  *

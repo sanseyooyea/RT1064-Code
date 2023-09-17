@@ -20,9 +20,8 @@
  * param base GPC peripheral base address.
  * param irqId ID number of IRQ to be enabled, available range is 32-159. 0-31 is available in some platforms.
  */
-void GPC_EnableIRQ(GPC_Type *base, uint32_t irqId)
-{
-    uint32_t irqRegNum      = irqId / 32U;
+void GPC_EnableIRQ(GPC_Type *base, uint32_t irqId) {
+    uint32_t irqRegNum = irqId / 32U;
     uint32_t irqRegShiftNum = irqId % 32U;
 
     assert(irqRegNum <= GPC_IMR_COUNT);
@@ -48,9 +47,8 @@ void GPC_EnableIRQ(GPC_Type *base, uint32_t irqId)
  * param base GPC peripheral base address.
  * param irqId ID number of IRQ to be disabled, available range is 32-159. 0-31 is available in some platforms.
  */
-void GPC_DisableIRQ(GPC_Type *base, uint32_t irqId)
-{
-    uint32_t irqRegNum      = irqId / 32U;
+void GPC_DisableIRQ(GPC_Type *base, uint32_t irqId) {
+    uint32_t irqRegNum = irqId / 32U;
     uint32_t irqRegShiftNum = irqId % 32U;
 
     assert(irqRegNum <= GPC_IMR_COUNT);
@@ -77,9 +75,8 @@ void GPC_DisableIRQ(GPC_Type *base, uint32_t irqId)
  * param irqId ID number of IRQ to be enabled, available range is 32-159. 0-31 is available in some platforms.
  * return Indicated IRQ/Event is asserted or not.
  */
-bool GPC_GetIRQStatusFlag(GPC_Type *base, uint32_t irqId)
-{
-    uint32_t irqRegNum      = irqId / 32U;
+bool GPC_GetIRQStatusFlag(GPC_Type *base, uint32_t irqId) {
+    uint32_t irqRegNum = irqId / 32U;
     uint32_t irqRegShiftNum = irqId % 32U;
     uint32_t ret;
 

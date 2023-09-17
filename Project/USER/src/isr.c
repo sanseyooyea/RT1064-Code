@@ -21,36 +21,30 @@
 #include "isr.h"
 
 
-void CSI_IRQHandler(void)
-{
+void CSI_IRQHandler(void) {
     rt_interrupt_leave();
-    
+
     CSI_DriverIRQHandler();     //调用SDK自带的中断函数 这个函数最后会调用我们设置的回调函数
     __DSB();                    //数据同步隔离
     rt_interrupt_enter();
 }
 
-void PIT_IRQHandler(void)
-{
+void PIT_IRQHandler(void) {
     rt_interrupt_leave();
-    if(PIT_FLAG_GET(PIT_CH0))
-    {
+    if (PIT_FLAG_GET(PIT_CH0)) {
         PIT_FLAG_CLEAR(PIT_CH0);
-        
+
     }
-    
-    if(PIT_FLAG_GET(PIT_CH1))
-    {
+
+    if (PIT_FLAG_GET(PIT_CH1)) {
         PIT_FLAG_CLEAR(PIT_CH1);
     }
-    
-    if(PIT_FLAG_GET(PIT_CH2))
-    {
+
+    if (PIT_FLAG_GET(PIT_CH2)) {
         PIT_FLAG_CLEAR(PIT_CH2);
     }
-    
-    if(PIT_FLAG_GET(PIT_CH3))
-    {
+
+    if (PIT_FLAG_GET(PIT_CH3)) {
         PIT_FLAG_CLEAR(PIT_CH3);
     }
 
@@ -59,26 +53,21 @@ void PIT_IRQHandler(void)
 }
 
 
-void GPIO2_Combined_16_31_IRQHandler(void)
-{
+void GPIO2_Combined_16_31_IRQHandler(void) {
     rt_interrupt_leave();
-    if(GET_GPIO_FLAG(C16))
-    {
+    if (GET_GPIO_FLAG(C16)) {
         CLEAR_GPIO_FLAG(C16);//清除中断标志位
     }
     rt_interrupt_enter();
-    
+
 }
 
 
-
-void GPIO2_Combined_0_15_IRQHandler(void)
-{
+void GPIO2_Combined_0_15_IRQHandler(void) {
     rt_interrupt_leave();
-    if(GET_GPIO_FLAG(MT9V03X_VSYNC_PIN))
-    {
+    if (GET_GPIO_FLAG(MT9V03X_VSYNC_PIN)) {
         //不用清除标志位，标志位在mt9v03x_vsync函数内部会清除
-        if(CAMERA_GRAYSCALE == flexio_camera_type)mt9v03x_vsync();
+        if (CAMERA_GRAYSCALE == flexio_camera_type)mt9v03x_vsync();
     }
     rt_interrupt_enter();
 }

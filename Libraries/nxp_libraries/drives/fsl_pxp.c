@@ -31,14 +31,12 @@
 #define AS_CLRKEYHIGH AS_CLRKEYHIGH_0
 #endif
 
-typedef union _u32_f32
-{
+typedef union _u32_f32 {
     float f32;
     uint32_t u32;
 } u32_f32_t;
 
-typedef union _pxp_pvoid_u32
-{
+typedef union _pxp_pvoid_u32 {
     void *pvoid;
     uint32_t u32;
 } pxp_pvoid_u32_t;
@@ -56,6 +54,7 @@ typedef union _pxp_pvoid_u32
 static uint32_t PXP_GetInstance(PXP_Type *base);
 
 #if !(defined(FSL_FEATURE_PXP_HAS_NO_CSC2) && FSL_FEATURE_PXP_HAS_NO_CSC2)
+
 /*!
  * @brief Convert IEEE 754 float value to the value could be written to registers.
  *
@@ -75,6 +74,7 @@ static uint32_t PXP_GetInstance(PXP_Type *base);
  * @return The value to set to register.
  */
 static uint32_t PXP_ConvertFloat(float floatValue, uint8_t intBits, uint8_t fracBits);
+
 #endif
 
 /*!
@@ -101,15 +101,12 @@ static const clock_ip_name_t s_pxpClocks[] = PXP_CLOCKS;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static uint32_t PXP_GetInstance(PXP_Type *base)
-{
+static uint32_t PXP_GetInstance(PXP_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_pxpBases); instance++)
-    {
-        if (s_pxpBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_pxpBases); instance++) {
+        if (s_pxpBases[instance] == base) {
             break;
         }
     }
@@ -120,79 +117,64 @@ static uint32_t PXP_GetInstance(PXP_Type *base)
 }
 
 #if !(defined(FSL_FEATURE_PXP_HAS_NO_CSC2) && FSL_FEATURE_PXP_HAS_NO_CSC2)
-static uint32_t PXP_ConvertFloat(float floatValue, uint8_t intBits, uint8_t fracBits)
-{
+
+static uint32_t PXP_ConvertFloat(float floatValue, uint8_t intBits, uint8_t fracBits) {
     /* One bit reserved for sign bit. */
     assert(intBits + fracBits < 32);
 
     u32_f32_t u32_f32;
     uint32_t ret;
 
-    u32_f32.f32        = floatValue;
+    u32_f32.f32 = floatValue;
     uint32_t floatBits = u32_f32.u32;
-    int32_t expValue   = (int32_t)((floatBits & 0x7F800000U) >> 23U) - 127;
+    int32_t expValue = (int32_t)((floatBits & 0x7F800000U) >> 23U) - 127;
 
     ret = (floatBits & 0x007FFFFFU) | 0x00800000U;
     expValue += fracBits;
 
-    if (expValue < 0)
-    {
+    if (expValue < 0) {
         return 0U;
-    }
-    else if (expValue > 23)
-    {
+    } else if (expValue > 23) {
         /* should not exceed 31-bit when left shift. */
         assert((expValue - 23) <= 7);
         ret <<= (expValue - 23);
-    }
-    else
-    {
+    } else {
         ret >>= (23 - expValue);
     }
 
     /* Set the sign bit. */
-    if (floatBits & 0x80000000U)
-    {
-        ret = ((~ret) + 1U) & ~(((uint32_t)-1) << (intBits + fracBits + 1));
+    if (floatBits & 0x80000000U) {
+        ret = ((~ret) + 1U) & ~(((uint32_t) - 1) << (intBits + fracBits + 1));
     }
 
     return ret;
 }
+
 #endif
 
-static void PXP_GetScalerParam(uint16_t inputDimension, uint16_t outputDimension, uint8_t *dec, uint32_t *scale)
-{
-    uint32_t scaleFact = ((uint32_t)inputDimension << 12U) / outputDimension;
+static void PXP_GetScalerParam(uint16_t inputDimension, uint16_t outputDimension, uint8_t *dec, uint32_t *scale) {
+    uint32_t
+    scaleFact = ((uint32_t)
+    inputDimension << 12U) / outputDimension;
 
-    if (scaleFact >= (16UL << 12U))
-    {
+    if (scaleFact >= (16UL << 12U)) {
         /* Desired fact is two large, use the largest support value. */
-        *dec   = 3U;
+        *dec = 3U;
         *scale = 0x2000U;
-    }
-    else
-    {
-        if (scaleFact > (8UL << 12U))
-        {
+    } else {
+        if (scaleFact > (8UL << 12U)) {
             *dec = 3U;
-        }
-        else if (scaleFact > (4UL << 12U))
-        {
+        } else if (scaleFact > (4UL << 12U)) {
             *dec = 2U;
-        }
-        else if (scaleFact > (2UL << 12U))
-        {
+        } else if (scaleFact > (2UL << 12U)) {
             *dec = 1U;
-        }
-        else
-        {
+        } else {
             *dec = 0U;
         }
 
         *scale = scaleFact >> (*dec);
 
-        if (0U == *scale)
-        {
+        if (0U == *scale) {
             *scale = 1U;
         }
     }
@@ -206,8 +188,7 @@ static void PXP_GetScalerParam(uint16_t inputDimension, uint16_t outputDimension
  *
  * param base PXP peripheral base address.
  */
-void PXP_Init(PXP_Type *base)
-{
+void PXP_Init(PXP_Type *base) {
     uint32_t ctrl = 0U;
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     uint32_t instance = PXP_GetInstance(base);
@@ -243,8 +224,7 @@ void PXP_Init(PXP_Type *base)
  *
  * param base PXP peripheral base address.
  */
-void PXP_Deinit(PXP_Type *base)
-{
+void PXP_Deinit(PXP_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     uint32_t instance = PXP_GetInstance(base);
     CLOCK_DisableClock(s_pxpClocks[instance]);
@@ -258,8 +238,7 @@ void PXP_Deinit(PXP_Type *base)
  *
  * param base PXP peripheral base address.
  */
-void PXP_Reset(PXP_Type *base)
-{
+void PXP_Reset(PXP_Type *base) {
     base->CTRL_SET = PXP_CTRL_SFTRST_MASK;
     base->CTRL_CLR = (PXP_CTRL_SFTRST_MASK | PXP_CTRL_CLKGATE_MASK);
 }
@@ -270,13 +249,12 @@ void PXP_Reset(PXP_Type *base)
  * param base PXP peripheral base address.
  * param config Pointer to the configuration.
  */
-void PXP_SetAlphaSurfaceBufferConfig(PXP_Type *base, const pxp_as_buffer_config_t *config)
-{
+void PXP_SetAlphaSurfaceBufferConfig(PXP_Type *base, const pxp_as_buffer_config_t *config) {
     assert(NULL != config);
 
     base->AS_CTRL = (base->AS_CTRL & ~PXP_AS_CTRL_FORMAT_MASK) | PXP_AS_CTRL_FORMAT(config->pixelFormat);
 
-    base->AS_BUF   = config->bufferAddr;
+    base->AS_BUF = config->bufferAddr;
     base->AS_PITCH = config->pitchBytes;
 }
 
@@ -286,19 +264,18 @@ void PXP_SetAlphaSurfaceBufferConfig(PXP_Type *base, const pxp_as_buffer_config_
  * param base PXP peripheral base address.
  * param config Pointer to the configuration structure.
  */
-void PXP_SetAlphaSurfaceBlendConfig(PXP_Type *base, const pxp_as_blend_config_t *config)
-{
+void PXP_SetAlphaSurfaceBlendConfig(PXP_Type *base, const pxp_as_blend_config_t *config) {
     assert(NULL != config);
     uint32_t reg;
 
     reg = base->AS_CTRL;
     reg &=
-        ~(PXP_AS_CTRL_ALPHA0_INVERT_MASK | PXP_AS_CTRL_ROP_MASK | PXP_AS_CTRL_ALPHA_MASK | PXP_AS_CTRL_ALPHA_CTRL_MASK);
+            ~(PXP_AS_CTRL_ALPHA0_INVERT_MASK | PXP_AS_CTRL_ROP_MASK | PXP_AS_CTRL_ALPHA_MASK |
+              PXP_AS_CTRL_ALPHA_CTRL_MASK);
     reg |= (PXP_AS_CTRL_ROP(config->ropMode) | PXP_AS_CTRL_ALPHA(config->alpha) |
             PXP_AS_CTRL_ALPHA_CTRL(config->alphaMode));
 
-    if (config->invertAlpha)
-    {
+    if (config->invertAlpha) {
         reg |= PXP_AS_CTRL_ALPHA0_INVERT_MASK;
     }
 
@@ -315,8 +292,7 @@ void PXP_SetAlphaSurfaceBlendConfig(PXP_Type *base, const pxp_as_blend_config_t 
  * param lowerRightY Y of the lower right corner.
  */
 void PXP_SetAlphaSurfacePosition(
-    PXP_Type *base, uint16_t upperLeftX, uint16_t upperLeftY, uint16_t lowerRightX, uint16_t lowerRightY)
-{
+        PXP_Type *base, uint16_t upperLeftX, uint16_t upperLeftY, uint16_t lowerRightX, uint16_t lowerRightY) {
     base->OUT_AS_ULC = PXP_OUT_AS_ULC_Y(upperLeftY) | PXP_OUT_AS_ULC_X(upperLeftX);
     base->OUT_AS_LRC = PXP_OUT_AS_LRC_Y(lowerRightY) | PXP_OUT_AS_LRC_X(lowerRightX);
 }
@@ -335,9 +311,8 @@ void PXP_SetAlphaSurfacePosition(
  *
  * note Colorkey operations are higher priority than alpha or ROP operations
  */
-void PXP_SetAlphaSurfaceOverlayColorKey(PXP_Type *base, uint32_t colorKeyLow, uint32_t colorKeyHigh)
-{
-    base->AS_CLRKEYLOW  = colorKeyLow;
+void PXP_SetAlphaSurfaceOverlayColorKey(PXP_Type *base, uint32_t colorKeyLow, uint32_t colorKeyHigh) {
+    base->AS_CLRKEYLOW = colorKeyLow;
     base->AS_CLRKEYHIGH = colorKeyHigh;
 }
 
@@ -347,16 +322,15 @@ void PXP_SetAlphaSurfaceOverlayColorKey(PXP_Type *base, uint32_t colorKeyLow, ui
  * param base PXP peripheral base address.
  * param config Pointer to the configuration.
  */
-void PXP_SetProcessSurfaceBufferConfig(PXP_Type *base, const pxp_ps_buffer_config_t *config)
-{
+void PXP_SetProcessSurfaceBufferConfig(PXP_Type *base, const pxp_ps_buffer_config_t *config) {
     assert(NULL != config);
 
     base->PS_CTRL = ((base->PS_CTRL & ~(PXP_PS_CTRL_FORMAT_MASK | PXP_PS_CTRL_WB_SWAP_MASK)) |
                      PXP_PS_CTRL_FORMAT(config->pixelFormat) | PXP_PS_CTRL_WB_SWAP(config->swapByte));
 
-    base->PS_BUF   = config->bufferAddr;
-    base->PS_UBUF  = config->bufferAddrU;
-    base->PS_VBUF  = config->bufferAddrV;
+    base->PS_BUF = config->bufferAddr;
+    base->PS_UBUF = config->bufferAddrU;
+    base->PS_VBUF = config->bufferAddrV;
     base->PS_PITCH = config->pitchBytes;
 }
 
@@ -372,8 +346,7 @@ void PXP_SetProcessSurfaceBufferConfig(PXP_Type *base, const pxp_ps_buffer_confi
  * param outputHeight Output image height.
  */
 void PXP_SetProcessSurfaceScaler(
-    PXP_Type *base, uint16_t inputWidth, uint16_t inputHeight, uint16_t outputWidth, uint16_t outputHeight)
-{
+        PXP_Type *base, uint16_t inputWidth, uint16_t inputHeight, uint16_t outputWidth, uint16_t outputHeight) {
     uint8_t decX, decY;
     uint32_t scaleX, scaleY;
 
@@ -396,8 +369,7 @@ void PXP_SetProcessSurfaceScaler(
  * param lowerRightY Y of the lower right corner.
  */
 void PXP_SetProcessSurfacePosition(
-    PXP_Type *base, uint16_t upperLeftX, uint16_t upperLeftY, uint16_t lowerRightX, uint16_t lowerRightY)
-{
+        PXP_Type *base, uint16_t upperLeftX, uint16_t upperLeftY, uint16_t lowerRightX, uint16_t lowerRightY) {
     base->OUT_PS_ULC = PXP_OUT_PS_ULC_Y(upperLeftY) | PXP_OUT_PS_ULC_X(upperLeftX);
     base->OUT_PS_LRC = PXP_OUT_PS_LRC_Y(lowerRightY) | PXP_OUT_PS_LRC_X(lowerRightX);
 }
@@ -412,9 +384,8 @@ void PXP_SetProcessSurfacePosition(
  * param colorKeyLow Color key low range.
  * param colorKeyHigh Color key high range.
  */
-void PXP_SetProcessSurfaceColorKey(PXP_Type *base, uint32_t colorKeyLow, uint32_t colorKeyHigh)
-{
-    base->PS_CLRKEYLOW  = colorKeyLow;
+void PXP_SetProcessSurfaceColorKey(PXP_Type *base, uint32_t colorKeyLow, uint32_t colorKeyHigh) {
+    base->PS_CLRKEYLOW = colorKeyLow;
     base->PS_CLRKEYHIGH = colorKeyHigh;
 }
 
@@ -424,18 +395,19 @@ void PXP_SetProcessSurfaceColorKey(PXP_Type *base, uint32_t colorKeyLow, uint32_
  * param base PXP peripheral base address.
  * param config Pointer to the configuration.
  */
-void PXP_SetOutputBufferConfig(PXP_Type *base, const pxp_output_buffer_config_t *config)
-{
+void PXP_SetOutputBufferConfig(PXP_Type *base, const pxp_output_buffer_config_t *config) {
     assert(NULL != config);
 
     base->OUT_CTRL = (base->OUT_CTRL & ~(PXP_OUT_CTRL_FORMAT_MASK | PXP_OUT_CTRL_INTERLACED_OUTPUT_MASK)) |
                      PXP_OUT_CTRL_FORMAT(config->pixelFormat) | PXP_OUT_CTRL_INTERLACED_OUTPUT(config->interlacedMode);
 
-    base->OUT_BUF  = config->buffer0Addr;
+    base->OUT_BUF = config->buffer0Addr;
     base->OUT_BUF2 = config->buffer1Addr;
 
     base->OUT_PITCH = config->pitchBytes;
-    base->OUT_LRC   = PXP_OUT_LRC_Y((uint32_t)config->height - 1U) | PXP_OUT_LRC_X((uint32_t)config->width - 1U);
+    base->OUT_LRC = PXP_OUT_LRC_Y((uint32_t)
+    config->height - 1U) | PXP_OUT_LRC_X((uint32_t)
+    config->width - 1U);
 
 /*
  * The dither store size must be set to the same with the output buffer size,
@@ -467,8 +439,7 @@ void PXP_SetOutputBufferConfig(PXP_Type *base, const pxp_output_buffer_config_t 
  * param base PXP peripheral base address.
  * param commandAddr Address of the new command.
  */
-void PXP_SetNextCommand(PXP_Type *base, void *commandAddr)
-{
+void PXP_SetNextCommand(PXP_Type *base, void *commandAddr) {
     pxp_pvoid_u32_t addr;
 
     /* Make sure commands have been saved to memory. */
@@ -480,6 +451,7 @@ void PXP_SetNextCommand(PXP_Type *base, void *commandAddr)
 }
 
 #if !(defined(FSL_FEATURE_PXP_HAS_NO_CSC2) && FSL_FEATURE_PXP_HAS_NO_CSC2)
+
 /*!
  * brief Set the CSC2 configuration.
  *
@@ -490,34 +462,43 @@ void PXP_SetNextCommand(PXP_Type *base, void *commandAddr)
  * param base PXP peripheral base address.
  * param config Pointer to the configuration.
  */
-void PXP_SetCsc2Config(PXP_Type *base, const pxp_csc2_config_t *config)
-{
+void PXP_SetCsc2Config(PXP_Type *base, const pxp_csc2_config_t *config) {
     assert(NULL != config);
 
     base->CSC2_CTRL = (base->CSC2_CTRL & ~PXP_CSC2_CTRL_CSC_MODE_MASK) | PXP_CSC2_CTRL_CSC_MODE(config->mode);
 
     base->CSC2_COEF0 =
-        (PXP_ConvertFloat(config->A1, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF0_A1_SHIFT) |
-        (PXP_ConvertFloat(config->A2, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF0_A2_SHIFT);
+            (PXP_ConvertFloat(config->A1, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF0_A1_SHIFT) |
+            (PXP_ConvertFloat(config->A2, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF0_A2_SHIFT);
 
     base->CSC2_COEF1 =
-        (PXP_ConvertFloat(config->A3, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF1_A3_SHIFT) |
-        (PXP_ConvertFloat(config->B1, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF1_B1_SHIFT);
+            (PXP_ConvertFloat(config->A3, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF1_A3_SHIFT) |
+            (PXP_ConvertFloat(config->B1, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF1_B1_SHIFT);
 
     base->CSC2_COEF2 =
-        (PXP_ConvertFloat(config->B2, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF2_B2_SHIFT) |
-        (PXP_ConvertFloat(config->B3, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF2_B3_SHIFT);
+            (PXP_ConvertFloat(config->B2, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF2_B2_SHIFT) |
+            (PXP_ConvertFloat(config->B3, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF2_B3_SHIFT);
 
     base->CSC2_COEF3 =
-        (PXP_ConvertFloat(config->C1, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF3_C1_SHIFT) |
-        (PXP_ConvertFloat(config->C2, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF3_C2_SHIFT);
+            (PXP_ConvertFloat(config->C1, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF3_C1_SHIFT) |
+            (PXP_ConvertFloat(config->C2, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF3_C2_SHIFT);
 
     base->CSC2_COEF4 =
-        (PXP_ConvertFloat(config->C3, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH) << PXP_CSC2_COEF4_C3_SHIFT) |
-        PXP_CSC2_COEF4_D1(config->D1);
+            (PXP_ConvertFloat(config->C3, PXP_CSC2_COEF_INT_WIDTH, PXP_CSC2_COEF_FRAC_WIDTH)
+                    << PXP_CSC2_COEF4_C3_SHIFT) |
+            PXP_CSC2_COEF4_D1(config->D1);
 
     base->CSC2_COEF5 = PXP_CSC2_COEF5_D2(config->D2) | PXP_CSC2_COEF5_D3(config->D3);
 }
+
 #endif
 
 /*!
@@ -530,8 +511,7 @@ void PXP_SetCsc2Config(PXP_Type *base, const pxp_csc2_config_t *config)
  * param base PXP peripheral base address.
  * param mode The conversion mode.
  */
-void PXP_SetCsc1Mode(PXP_Type *base, pxp_csc1_mode_t mode)
-{
+void PXP_SetCsc1Mode(PXP_Type *base, pxp_csc1_mode_t mode) {
     /*
      * The equations used for Colorspace conversion are:
      *
@@ -540,8 +520,7 @@ void PXP_SetCsc1Mode(PXP_Type *base, pxp_csc1_mode_t mode)
      * B = C0*(Y+Y_OFFSET) + C4(U+UV_OFFSET)
      */
 
-    if (kPXP_Csc1YUV2RGB == mode)
-    {
+    if (kPXP_Csc1YUV2RGB == mode) {
         base->CSC1_COEF0 = (base->CSC1_COEF0 & ~(PXP_CSC1_COEF0_C0_MASK | PXP_CSC1_COEF0_Y_OFFSET_MASK |
                                                  PXP_CSC1_COEF0_UV_OFFSET_MASK | PXP_CSC1_COEF0_YCBCR_MODE_MASK)) |
                            PXP_CSC1_COEF0_C0(0x100U)         /* 1.00. */
@@ -551,9 +530,7 @@ void PXP_SetCsc1Mode(PXP_Type *base, pxp_csc1_mode_t mode)
                            | PXP_CSC1_COEF1_C4(0x0208U);     /* 2.032. */
         base->CSC1_COEF2 = PXP_CSC1_COEF2_C2(0x076BU)        /* -0.851. */
                            | PXP_CSC1_COEF2_C3(0x079BU);     /* -0.394. */
-    }
-    else
-    {
+    } else {
         base->CSC1_COEF0 = (base->CSC1_COEF0 &
                             ~(PXP_CSC1_COEF0_C0_MASK | PXP_CSC1_COEF0_Y_OFFSET_MASK | PXP_CSC1_COEF0_UV_OFFSET_MASK)) |
                            PXP_CSC1_COEF0_YCBCR_MODE_MASK | PXP_CSC1_COEF0_C0(0x12AU) /* 1.164. */
@@ -567,6 +544,7 @@ void PXP_SetCsc1Mode(PXP_Type *base, pxp_csc1_mode_t mode)
 }
 
 #if !(defined(FSL_FEATURE_PXP_HAS_NO_LUT) && FSL_FEATURE_PXP_HAS_NO_LUT)
+
 /*!
  * brief Set the LUT configuration.
  *
@@ -580,14 +558,12 @@ void PXP_SetCsc1Mode(PXP_Type *base, pxp_csc1_mode_t mode)
  * param base PXP peripheral base address.
  * param config Pointer to the configuration.
  */
-void PXP_SetLutConfig(PXP_Type *base, const pxp_lut_config_t *config)
-{
+void PXP_SetLutConfig(PXP_Type *base, const pxp_lut_config_t *config) {
     base->LUT_CTRL = (base->LUT_CTRL & ~(PXP_LUT_CTRL_OUT_MODE_MASK | PXP_LUT_CTRL_LOOKUP_MODE_MASK)) |
                      PXP_LUT_CTRL_LRU_UPD_MASK | /* Use Least Recently Used Policy Update Control. */
                      PXP_LUT_CTRL_OUT_MODE(config->outMode) | PXP_LUT_CTRL_LOOKUP_MODE(config->lookupMode);
 
-    if (kPXP_LutOutRGBW4444CFA == config->outMode)
-    {
+    if (kPXP_LutOutRGBW4444CFA == config->outMode) {
         base->CFA = config->cfaValue;
     }
 }
@@ -615,28 +591,23 @@ void PXP_SetLutConfig(PXP_Type *base, const pxp_lut_config_t *config)
  * retval kStatus_InvalidArgument Failed because of invalid argument.
  */
 status_t PXP_LoadLutTable(
-    PXP_Type *base, pxp_lut_lookup_mode_t lookupMode, uint32_t bytesNum, uint32_t memAddr, uint16_t lutStartAddr)
-{
-    if (kPXP_LutCacheRGB565 == lookupMode)
-    {
+        PXP_Type *base, pxp_lut_lookup_mode_t lookupMode, uint32_t bytesNum, uint32_t memAddr, uint16_t lutStartAddr) {
+    if (kPXP_LutCacheRGB565 == lookupMode) {
         /* Make sure the previous memory write is finished, especially the LUT data memory. */
         __DSB();
 
         base->LUT_EXTMEM = memAddr;
         /* Invalid cache. */
         base->LUT_CTRL |= PXP_LUT_CTRL_INVALID_MASK;
-    }
-    else
-    {
+    } else {
         /* Number of bytes must be divisable by 8. */
         if ((bytesNum & 0x07U) || (bytesNum < 8U) || (lutStartAddr & 0x07U) ||
-            (bytesNum + lutStartAddr > PXP_LUT_TABLE_BYTE))
-        {
+            (bytesNum + lutStartAddr > PXP_LUT_TABLE_BYTE)) {
             return kStatus_InvalidArgument;
         }
 
         base->LUT_EXTMEM = memAddr;
-        base->LUT_ADDR   = PXP_LUT_ADDR_ADDR(lutStartAddr) | PXP_LUT_ADDR_NUM_BYTES(bytesNum);
+        base->LUT_ADDR = PXP_LUT_ADDR_ADDR(lutStartAddr) | PXP_LUT_ADDR_NUM_BYTES(bytesNum);
 
         base->STAT_CLR = PXP_STAT_LUT_DMA_LOAD_DONE_IRQ_MASK;
 
@@ -646,13 +617,13 @@ status_t PXP_LoadLutTable(
         __DSB();
 
         /* Wait for transfer completed. */
-        while (!(base->STAT & PXP_STAT_LUT_DMA_LOAD_DONE_IRQ_MASK))
-        {
+        while (!(base->STAT & PXP_STAT_LUT_DMA_LOAD_DONE_IRQ_MASK)) {
         }
     }
 
     return kStatus_Success;
 }
+
 #endif /* FSL_FEATURE_PXP_HAS_NO_LUT */
 
 #if (defined(FSL_FEATURE_PXP_HAS_DITHER) && FSL_FEATURE_PXP_HAS_DITHER)

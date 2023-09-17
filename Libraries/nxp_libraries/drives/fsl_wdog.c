@@ -27,15 +27,12 @@ static const IRQn_Type s_wdogIRQ[] = WDOG_IRQS;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static uint32_t WDOG_GetInstance(WDOG_Type *base)
-{
+static uint32_t WDOG_GetInstance(WDOG_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_wdogBases); instance++)
-    {
-        if (s_wdogBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_wdogBases); instance++) {
+        if (s_wdogBases[instance] == base) {
             break;
         }
     }
@@ -65,23 +62,22 @@ static uint32_t WDOG_GetInstance(WDOG_Type *base)
  * param config Pointer to the WDOG configuration structure.
  * see wdog_config_t
  */
-void WDOG_GetDefaultConfig(wdog_config_t *config)
-{
+void WDOG_GetDefaultConfig(wdog_config_t *config) {
     assert(NULL != config);
 
     /* Initializes the configure structure to zero. */
-    (void)memset(config, 0, sizeof(*config));
+    (void) memset(config, 0, sizeof(*config));
 
-    config->enableWdog             = true;
-    config->workMode.enableWait    = false;
-    config->workMode.enableStop    = false;
-    config->workMode.enableDebug   = false;
-    config->enableInterrupt        = false;
+    config->enableWdog = true;
+    config->workMode.enableWait = false;
+    config->workMode.enableStop = false;
+    config->workMode.enableDebug = false;
+    config->enableInterrupt = false;
     config->softwareResetExtension = false;
-    config->enablePowerDown        = false;
-    config->timeoutValue           = 0xffu;
-    config->interruptTimeValue     = 0x04u;
-    config->enableTimeOutAssert    = false;
+    config->enablePowerDown = false;
+    config->timeoutValue = 0xffu;
+    config->interruptTimeValue = 0x04u;
+    config->enableTimeOutAssert = false;
 }
 
 /*!
@@ -101,11 +97,10 @@ void WDOG_GetDefaultConfig(wdog_config_t *config)
  * param base   WDOG peripheral base address
  * param config The configuration of WDOG
  */
-void WDOG_Init(WDOG_Type *base, const wdog_config_t *config)
-{
+void WDOG_Init(WDOG_Type *base, const wdog_config_t *config) {
     assert(NULL != config);
 
-    uint16_t value        = 0u;
+    uint16_t value = 0u;
     uint32_t primaskValue = 0U;
 
     value = WDOG_WCR_WDE(config->enableWdog) | WDOG_WCR_WDW(config->workMode.enableWait) |
@@ -119,13 +114,12 @@ void WDOG_Init(WDOG_Type *base, const wdog_config_t *config)
 #endif
 
     primaskValue = DisableGlobalIRQ();
-    base->WICR   = WDOG_WICR_WICT(config->interruptTimeValue) | WDOG_WICR_WIE(config->enableInterrupt);
-    base->WMCR   = WDOG_WMCR_PDE(config->enablePowerDown);
-    base->WCR    = value;
+    base->WICR = WDOG_WICR_WICT(config->interruptTimeValue) | WDOG_WICR_WIE(config->enableInterrupt);
+    base->WMCR = WDOG_WMCR_PDE(config->enablePowerDown);
+    base->WCR = value;
     EnableGlobalIRQ(primaskValue);
-    if (config->enableInterrupt)
-    {
-        (void)EnableIRQ(s_wdogIRQ[WDOG_GetInstance(base)]);
+    if (config->enableInterrupt) {
+        (void) EnableIRQ(s_wdogIRQ[WDOG_GetInstance(base)]);
     }
 }
 
@@ -137,10 +131,8 @@ void WDOG_Init(WDOG_Type *base, const wdog_config_t *config)
  * possible to clear this bit by a software write, once the bit is set.
  * This bit(WDE) can be set/reset only in debug mode(exception).
  */
-void WDOG_Deinit(WDOG_Type *base)
-{
-    if (0U != (base->WCR & WDOG_WCR_WDBG_MASK))
-    {
+void WDOG_Deinit(WDOG_Type *base) {
+    if (0U != (base->WCR & WDOG_WCR_WDBG_MASK)) {
         WDOG_Disable(base);
     }
 }
@@ -159,8 +151,7 @@ void WDOG_Deinit(WDOG_Type *base)
  *                    - true: a related status flag has been set.
  *                    - false: a related status flag is not set.
  */
-uint16_t WDOG_GetStatusFlags(WDOG_Type *base)
-{
+uint16_t WDOG_GetStatusFlags(WDOG_Type *base) {
     uint16_t status_flag = 0U;
 
     status_flag |= (base->WCR & WDOG_WCR_WDE_MASK);
@@ -186,10 +177,8 @@ uint16_t WDOG_GetStatusFlags(WDOG_Type *base)
  *                    The parameter could be any combination of the following values.
  *                    kWDOG_TimeoutFlag
  */
-void WDOG_ClearInterruptStatus(WDOG_Type *base, uint16_t mask)
-{
-    if (0U != (mask & (uint16_t)kWDOG_InterruptFlag))
-    {
+void WDOG_ClearInterruptStatus(WDOG_Type *base, uint16_t mask) {
+    if (0U != (mask & (uint16_t) kWDOG_InterruptFlag)) {
         base->WICR |= WDOG_WICR_WTIS_MASK;
     }
 }
@@ -202,13 +191,12 @@ void WDOG_ClearInterruptStatus(WDOG_Type *base, uint16_t mask)
  *
  * param base WDOG peripheral base address
  */
-void WDOG_Refresh(WDOG_Type *base)
-{
+void WDOG_Refresh(WDOG_Type *base) {
     uint32_t primaskValue = 0U;
 
     /* Disable the global interrupt to protect refresh sequence */
     primaskValue = DisableGlobalIRQ();
-    base->WSR    = WDOG_REFRESH_KEY & 0xFFFFU;
-    base->WSR    = (WDOG_REFRESH_KEY >> 16U) & 0xFFFFU;
+    base->WSR = WDOG_REFRESH_KEY & 0xFFFFU;
+    base->WSR = (WDOG_REFRESH_KEY >> 16U) & 0xFFFFU;
     EnableGlobalIRQ(primaskValue);
 }

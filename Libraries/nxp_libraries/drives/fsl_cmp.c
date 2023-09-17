@@ -36,15 +36,12 @@ static const clock_ip_name_t s_cmpClocks[] = CMP_CLOCKS;
 /*******************************************************************************
  * Codes
  ******************************************************************************/
-static uint32_t CMP_GetInstance(CMP_Type *base)
-{
+static uint32_t CMP_GetInstance(CMP_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_cmpBases); instance++)
-    {
-        if (s_cmpBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_cmpBases); instance++) {
+        if (s_cmpBases[instance] == base) {
             break;
         }
     }
@@ -67,8 +64,7 @@ static uint32_t CMP_GetInstance(CMP_Type *base)
  * param base   CMP peripheral base address.
  * param config Pointer to the configuration structure.
  */
-void CMP_Init(CMP_Type *base, const cmp_config_t *config)
-{
+void CMP_Init(CMP_Type *base, const cmp_config_t *config) {
     assert(NULL != config);
 
     uint8_t tmp8;
@@ -82,20 +78,16 @@ void CMP_Init(CMP_Type *base, const cmp_config_t *config)
     CMP_Enable(base, false); /* Disable the CMP module during configuring. */
     /* CMPx_CR1. */
     tmp8 = (uint8_t)(base->CR1 & ~(CMP_CR1_PMODE_MASK | CMP_CR1_INV_MASK | CMP_CR1_COS_MASK | CMP_CR1_OPE_MASK));
-    if (true == config->enableHighSpeed)
-    {
+    if (true == config->enableHighSpeed) {
         tmp8 |= CMP_CR1_PMODE_MASK;
     }
-    if (true == config->enableInvertOutput)
-    {
+    if (true == config->enableInvertOutput) {
         tmp8 |= CMP_CR1_INV_MASK;
     }
-    if (true == config->useUnfilteredOutput)
-    {
+    if (true == config->useUnfilteredOutput) {
         tmp8 |= CMP_CR1_COS_MASK;
     }
-    if (true == config->enablePinOut)
-    {
+    if (true == config->enablePinOut) {
         tmp8 |= CMP_CR1_OPE_MASK;
     }
 #if defined(FSL_FEATURE_CMP_HAS_TRIGGER_MODE) && FSL_FEATURE_CMP_HAS_TRIGGER_MODE
@@ -111,7 +103,7 @@ void CMP_Init(CMP_Type *base, const cmp_config_t *config)
     base->CR1 = tmp8;
 
     /* CMPx_CR0. */
-    tmp8 = base->CR0 & ~(uint8_t)CMP_CR0_HYSTCTR_MASK;
+    tmp8 = base->CR0 & ~(uint8_t) CMP_CR0_HYSTCTR_MASK;
     tmp8 |= CMP_CR0_HYSTCTR(config->hysteresisMode);
     base->CR0 = tmp8;
 
@@ -131,8 +123,7 @@ void CMP_Init(CMP_Type *base, const cmp_config_t *config)
  *
  * param base CMP peripheral base address.
  */
-void CMP_Deinit(CMP_Type *base)
-{
+void CMP_Deinit(CMP_Type *base) {
     /* Disable the CMP module. */
     CMP_Enable(base, false);
 
@@ -157,19 +148,18 @@ void CMP_Deinit(CMP_Type *base)
  * endcode
  * param config Pointer to the configuration structure.
  */
-void CMP_GetDefaultConfig(cmp_config_t *config)
-{
+void CMP_GetDefaultConfig(cmp_config_t *config) {
     assert(NULL != config);
 
     /* Initializes the configure structure to zero. */
-    (void)memset(config, 0, sizeof(*config));
+    (void) memset(config, 0, sizeof(*config));
 
-    config->enableCmp           = true; /* Enable the CMP module after initialization. */
-    config->hysteresisMode      = kCMP_HysteresisLevel0;
-    config->enableHighSpeed     = false;
-    config->enableInvertOutput  = false;
+    config->enableCmp = true; /* Enable the CMP module after initialization. */
+    config->hysteresisMode = kCMP_HysteresisLevel0;
+    config->enableHighSpeed = false;
+    config->enableInvertOutput = false;
     config->useUnfilteredOutput = false;
-    config->enablePinOut        = false;
+    config->enablePinOut = false;
 #if defined(FSL_FEATURE_CMP_HAS_TRIGGER_MODE) && FSL_FEATURE_CMP_HAS_TRIGGER_MODE
     config->enableTriggerMode = false;
 #endif /* FSL_FEATURE_CMP_HAS_TRIGGER_MODE */
@@ -186,8 +176,7 @@ void CMP_GetDefaultConfig(cmp_config_t *config)
  * param  positiveChannel Positive side input channel number. Available range is 0-7.
  * param  negativeChannel Negative side input channel number. Available range is 0-7.
  */
-void CMP_SetInputChannels(CMP_Type *base, uint8_t positiveChannel, uint8_t negativeChannel)
-{
+void CMP_SetInputChannels(CMP_Type *base, uint8_t positiveChannel, uint8_t negativeChannel) {
     uint8_t tmp8 = base->MUXCR;
 
     tmp8 &= ~(uint8_t)(CMP_MUXCR_PSEL_MASK | CMP_MUXCR_MSEL_MASK);
@@ -229,8 +218,7 @@ void CMP_EnableDMA(CMP_Type *base, bool enable)
  * param  base   CMP peripheral base address.
  * param  config Pointer to the configuration structure.
  */
-void CMP_SetFilterConfig(CMP_Type *base, const cmp_filter_config_t *config)
-{
+void CMP_SetFilterConfig(CMP_Type *base, const cmp_filter_config_t *config) {
     assert(NULL != config);
 
     uint8_t tmp8;
@@ -260,20 +248,17 @@ void CMP_SetFilterConfig(CMP_Type *base, const cmp_filter_config_t *config)
  * param base   CMP peripheral base address.
  * param config Pointer to the configuration structure. "NULL" disables the feature.
  */
-void CMP_SetDACConfig(CMP_Type *base, const cmp_dac_config_t *config)
-{
+void CMP_SetDACConfig(CMP_Type *base, const cmp_dac_config_t *config) {
     uint8_t tmp8 = 0U;
 
-    if (NULL == config)
-    {
+    if (NULL == config) {
         /* Passing "NULL" as input parameter means no available configuration. So the DAC feature is disabled.*/
         base->DACCR = 0U;
         return;
     }
     /* CMPx_DACCR. */
     tmp8 |= CMP_DACCR_DACEN_MASK; /* Enable the internal DAC. */
-    if (kCMP_VrefSourceVin2 == config->referenceVoltageSource)
-    {
+    if (kCMP_VrefSourceVin2 == config->referenceVoltageSource) {
         tmp8 |= CMP_DACCR_VRSEL_MASK;
     }
     tmp8 |= CMP_DACCR_VOSEL(config->DACValue);
@@ -287,8 +272,7 @@ void CMP_SetDACConfig(CMP_Type *base, const cmp_dac_config_t *config)
  * param base    CMP peripheral base address.
  * param mask    Mask value for interrupts. See "_cmp_interrupt_enable".
  */
-void CMP_EnableInterrupts(CMP_Type *base, uint32_t mask)
-{
+void CMP_EnableInterrupts(CMP_Type *base, uint32_t mask) {
     uint8_t tmp8 = (uint8_t)(base->SCR & ~(CMP_SCR_CFR_MASK | CMP_SCR_CFF_MASK)); /* To avoid change the w1c bits. */
 
     if (0U != ((uint32_t)kCMP_OutputRisingInterruptEnable & mask))
@@ -308,17 +292,16 @@ void CMP_EnableInterrupts(CMP_Type *base, uint32_t mask)
  * param base    CMP peripheral base address.
  * param mask    Mask value for interrupts. See "_cmp_interrupt_enable".
  */
-void CMP_DisableInterrupts(CMP_Type *base, uint32_t mask)
-{
+void CMP_DisableInterrupts(CMP_Type *base, uint32_t mask) {
     uint8_t tmp8 = (uint8_t)(base->SCR & ~(CMP_SCR_CFR_MASK | CMP_SCR_CFF_MASK)); /* To avoid change the w1c bits. */
 
     if (0U != ((uint32_t)kCMP_OutputRisingInterruptEnable & mask))
     {
-        tmp8 &= ~(uint8_t)CMP_SCR_IER_MASK;
+        tmp8 &= ~(uint8_t) CMP_SCR_IER_MASK;
     }
     if (0U != ((uint32_t)kCMP_OutputFallingInterruptEnable & mask))
     {
-        tmp8 &= ~(uint8_t)CMP_SCR_IEF_MASK;
+        tmp8 &= ~(uint8_t) CMP_SCR_IEF_MASK;
     }
     base->SCR = tmp8;
 }
@@ -330,21 +313,20 @@ void CMP_DisableInterrupts(CMP_Type *base, uint32_t mask)
  *
  * return          Mask value for the asserted flags. See "_cmp_status_flags".
  */
-uint32_t CMP_GetStatusFlags(CMP_Type *base)
-{
+uint32_t CMP_GetStatusFlags(CMP_Type *base) {
     uint32_t ret32 = 0U;
 
-    if (0U != (CMP_SCR_CFR_MASK & base->SCR))
-    {
-        ret32 |= (uint32_t)kCMP_OutputRisingEventFlag;
+    if (0U != (CMP_SCR_CFR_MASK & base->SCR)) {
+        ret32 |= (uint32_t)
+        kCMP_OutputRisingEventFlag;
     }
-    if (0U != (CMP_SCR_CFF_MASK & base->SCR))
-    {
-        ret32 |= (uint32_t)kCMP_OutputFallingEventFlag;
+    if (0U != (CMP_SCR_CFF_MASK & base->SCR)) {
+        ret32 |= (uint32_t)
+        kCMP_OutputFallingEventFlag;
     }
-    if (0U != (CMP_SCR_COUT_MASK & base->SCR))
-    {
-        ret32 |= (uint32_t)kCMP_OutputAssertEventFlag;
+    if (0U != (CMP_SCR_COUT_MASK & base->SCR)) {
+        ret32 |= (uint32_t)
+        kCMP_OutputAssertEventFlag;
     }
     return ret32;
 }
@@ -355,8 +337,7 @@ uint32_t CMP_GetStatusFlags(CMP_Type *base)
  * param base     CMP peripheral base address.
  * param mask     Mask value for the flags. See "_cmp_status_flags".
  */
-void CMP_ClearStatusFlags(CMP_Type *base, uint32_t mask)
-{
+void CMP_ClearStatusFlags(CMP_Type *base, uint32_t mask) {
     uint8_t tmp8 = (uint8_t)(base->SCR & ~(CMP_SCR_CFR_MASK | CMP_SCR_CFF_MASK)); /* To avoid change the w1c bits. */
 
     if (0U != ((uint32_t)kCMP_OutputRisingEventFlag & mask))

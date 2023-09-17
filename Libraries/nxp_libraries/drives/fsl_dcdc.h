@@ -21,20 +21,18 @@
  ******************************************************************************/
 /*! @brief DCDC driver version. */
 #define FSL_DCDC_DRIVER_VERSION (MAKE_VERSION(2, 1, 0)) /*!< Version 2.1.0. */
-                                                        /*!
-                                                         * @brief DCDC status flags.
-                                                         */
-enum _dcdc_status_flags_t
-{
+/*!
+ * @brief DCDC status flags.
+ */
+enum _dcdc_status_flags_t {
     kDCDC_LockedOKStatus = (1U << 0U), /*!< Indicate DCDC status. 1'b1: DCDC already settled 1'b0: DCDC is settling. */
 };
 
 /*!
  * @brief The current bias of low power comparator.
  */
-typedef enum _dcdc_comparator_current_bias
-{
-    kDCDC_ComparatorCurrentBias50nA  = 0U, /*!< The current bias of low power comparator is 50nA. */
+typedef enum _dcdc_comparator_current_bias {
+    kDCDC_ComparatorCurrentBias50nA = 0U, /*!< The current bias of low power comparator is 50nA. */
     kDCDC_ComparatorCurrentBias100nA = 1U, /*!< The current bias of low power comparator is 100nA. */
     kDCDC_ComparatorCurrentBias200nA = 2U, /*!< The current bias of low power comparator is 200nA. */
     kDCDC_ComparatorCurrentBias400nA = 3U, /*!< The current bias of low power comparator is 400nA. */
@@ -43,8 +41,7 @@ typedef enum _dcdc_comparator_current_bias
 /*!
  * @brief The threshold of over current detection.
  */
-typedef enum _dcdc_over_current_threshold
-{
+typedef enum _dcdc_over_current_threshold {
     kDCDC_OverCurrentThresholdAlt0 = 0U, /*!< 1A in the run mode, 0.25A in the power save mode. */
     kDCDC_OverCurrentThresholdAlt1 = 1U, /*!< 2A in the run mode, 0.25A in the power save mode. */
     kDCDC_OverCurrentThresholdAlt2 = 2U, /*!< 1A in the run mode, 0.2A in the power save mode. */
@@ -54,8 +51,7 @@ typedef enum _dcdc_over_current_threshold
 /*!
  * @brief The threshold if peak current detection.
  */
-typedef enum _dcdc_peak_current_threshold
-{
+typedef enum _dcdc_peak_current_threshold {
     kDCDC_PeakCurrentThresholdAlt0 = 0U, /*!< 150mA peak current threshold. */
     kDCDC_PeakCurrentThresholdAlt1 = 1U, /*!< 250mA peak current threshold. */
     kDCDC_PeakCurrentThresholdAlt2 = 2U, /*!< 350mA peak current threshold. */
@@ -67,29 +63,26 @@ typedef enum _dcdc_peak_current_threshold
 /*!
  * @brief The period of counting the charging times in power save mode.
  */
-typedef enum _dcdc_count_charging_time_period
-{
-    kDCDC_CountChargingTimePeriod8Cycle  = 0U, /*!< Eight 32k cycle. */
+typedef enum _dcdc_count_charging_time_period {
+    kDCDC_CountChargingTimePeriod8Cycle = 0U, /*!< Eight 32k cycle. */
     kDCDC_CountChargingTimePeriod16Cycle = 1U, /*!< Sixteen 32k cycle. */
 } dcdc_count_charging_time_period_t;
 
 /*!
  * @brief The threshold of the counting number of charging times
  */
-typedef enum _dcdc_count_charging_time_threshold
-{
+typedef enum _dcdc_count_charging_time_threshold {
     kDCDC_CountChargingTimeThreshold32 = 0U, /*!< 0x0: 32. */
     kDCDC_CountChargingTimeThreshold64 = 1U, /*!< 0x1: 64. */
     kDCDC_CountChargingTimeThreshold16 = 2U, /*!< 0x2: 16. */
-    kDCDC_CountChargingTimeThreshold8  = 3U, /*!< 0x3: 8. */
+    kDCDC_CountChargingTimeThreshold8 = 3U, /*!< 0x3: 8. */
 } dcdc_count_charging_time_threshold_t;
 
 /*!
  * @brief Oscillator clock option.
  */
-typedef enum _dcdc_clock_source
-{
-    kDCDC_ClockAutoSwitch  = 0U, /*!< Automatic clock switch from internal oscillator to external clock. */
+typedef enum _dcdc_clock_source {
+    kDCDC_ClockAutoSwitch = 0U, /*!< Automatic clock switch from internal oscillator to external clock. */
     kDCDC_ClockInternalOsc = 1U, /*!< Use internal oscillator. */
     kDCDC_ClockExternalOsc = 2U, /*!< Use external 24M crystal oscillator. */
 } dcdc_clock_source_t;
@@ -97,8 +90,7 @@ typedef enum _dcdc_clock_source
 /*!
  * @brief Configuration for DCDC detection.
  */
-typedef struct _dcdc_detection_config
-{
+typedef struct _dcdc_detection_config {
     bool enableXtalokDetection;         /*!< Enable xtalok detection circuit. */
     bool powerDownOverVoltageDetection; /*!< Power down over-voltage detection comparator. */
     bool powerDownLowVlotageDetection;  /*!< Power down low-voltage detection comparator. */
@@ -113,8 +105,7 @@ typedef struct _dcdc_detection_config
 /*!
  * @brief Configuration for the loop control.
  */
-typedef struct _dcdc_loop_control_config
-{
+typedef struct _dcdc_loop_control_config {
     bool enableCommonHysteresis;         /*!< Enable hysteresis in switching converter common mode analog comparators.
                                               This feature will improve transient supply ripple and efficiency. */
     bool enableCommonThresholdDetection; /*!< Increase the threshold detection for common mode analog comparator. */
@@ -136,24 +127,22 @@ typedef struct _dcdc_loop_control_config
 /*!
  * @brief Configuration for DCDC low power.
  */
-typedef struct _dcdc_low_power_config
-{
+typedef struct _dcdc_low_power_config {
     bool enableOverloadDetection; /*!< Enable the overload detection in power save mode, if current is larger than the
                                      overloading threshold (typical value is 50 mA), DCDC will switch to the run mode
                                      automatically. */
     bool enableAdjustHystereticValue; /*!< Adjust hysteretic value in low power from 12.5mV to 25mV. */
     dcdc_count_charging_time_period_t
-        countChargingTimePeriod; /*!< The period of counting the charging times in power save mode. */
+            countChargingTimePeriod; /*!< The period of counting the charging times in power save mode. */
     dcdc_count_charging_time_threshold_t
-        countChargingTimeThreshold; /*!< the threshold of the counting number of charging times during
+            countChargingTimeThreshold; /*!< the threshold of the counting number of charging times during
                                          the period that lp_overload_freq_sel sets in power save mode. */
 } dcdc_low_power_config_t;
 
 /*!
  * @brief Configuration for DCDC internal regulator.
  */
-typedef struct _dcdc_internal_regulator_config
-{
+typedef struct _dcdc_internal_regulator_config {
     bool enableLoadResistor; /*!< control the load resistor of the internal regulator of DCDC, the load resistor is
                                 connected as default "true", and need set to "false" to disconnect the load
                                 resistor. */
@@ -163,8 +152,7 @@ typedef struct _dcdc_internal_regulator_config
 /*!
  * @brief Configuration for min power setting.
  */
-typedef struct _dcdc_min_power_config
-{
+typedef struct _dcdc_min_power_config {
     bool enableUseHalfFreqForContinuous; /*!< Set DCDC clock to half frequency for the continuous mode. */
 } dcdc_min_power_config_t;
 #if defined(__cplusplus)
@@ -223,14 +211,10 @@ uint32_t DCDC_GetstatusFlags(DCDC_Type *base);
  * @param base DCDC peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void DCDC_EnableOutputRangeComparator(DCDC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void DCDC_EnableOutputRangeComparator(DCDC_Type *base, bool enable) {
+    if (enable) {
         base->REG0 &= ~DCDC_REG0_PWD_CMP_OFFSET_MASK;
-    }
-    else
-    {
+    } else {
         base->REG0 |= DCDC_REG0_PWD_CMP_OFFSET_MASK;
     }
 }
@@ -309,8 +293,7 @@ void DCDC_ResetCurrentAlertSignal(DCDC_Type *base, bool enable);
  * @param base DCDC peripheral base address.
  * @param TrimValue The bangap trim value. Available range is 0U-31U.
  */
-static inline void DCDC_SetBandgapVoltageTrimValue(DCDC_Type *base, uint32_t trimValue)
-{
+static inline void DCDC_SetBandgapVoltageTrimValue(DCDC_Type *base, uint32_t trimValue) {
     base->REG1 &= ~DCDC_REG1_VBG_TRIM_MASK;
     base->REG1 |= DCDC_REG1_VBG_TRIM(trimValue);
 }
@@ -357,14 +340,12 @@ void DCDC_SetMinPowerConfig(DCDC_Type *base, const dcdc_min_power_config_t *conf
  * @param base DCDC peripheral base address.
  * @param biasVaule The current bias of low power comparator. Refer to "dcdc_comparator_current_bias_t".
  */
-static inline void DCDC_SetLPComparatorBiasValue(DCDC_Type *base, dcdc_comparator_current_bias_t biasVaule)
-{
+static inline void DCDC_SetLPComparatorBiasValue(DCDC_Type *base, dcdc_comparator_current_bias_t biasVaule) {
     base->REG1 &= ~DCDC_REG1_LP_CMP_ISRC_SEL_MASK;
     base->REG1 |= DCDC_REG1_LP_CMP_ISRC_SEL(biasVaule);
 }
 
-static inline void DCDC_LockTargetVoltage(DCDC_Type *base)
-{
+static inline void DCDC_LockTargetVoltage(DCDC_Type *base) {
     base->REG3 |= DCDC_REG3_DISABLE_STEP_MASK;
 }
 
@@ -424,14 +405,10 @@ void DCDC_SetInternalRegulatorConfig(DCDC_Type *base, const dcdc_internal_regula
  * @param base DCDC peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void DCDC_EnableAdjustDelay(DCDC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void DCDC_EnableAdjustDelay(DCDC_Type *base, bool enable) {
+    if (enable) {
         base->REG3 |= DCDC_REG3_MISC_DELAY_TIMING_MASK;
-    }
-    else
-    {
+    } else {
         base->REG3 &= ~DCDC_REG3_MISC_DELAY_TIMING_MASK;
     }
 }
@@ -443,14 +420,10 @@ static inline void DCDC_EnableAdjustDelay(DCDC_Type *base, bool enable)
  * @param base DCDC peripheral base address.
  * @param enable Enable the feature or not.
  */
-static inline void DCDC_EnableImproveTransition(DCDC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void DCDC_EnableImproveTransition(DCDC_Type *base, bool enable) {
+    if (enable) {
         base->REG2 |= DCDC_REG2_DCM_SET_CTRL_MASK;
-    }
-    else
-    {
+    } else {
         base->REG2 &= ~DCDC_REG2_DCM_SET_CTRL_MASK;
     }
 }

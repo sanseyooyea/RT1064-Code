@@ -69,7 +69,8 @@ void run_cross() {
 
         aim_distance = 0.4;
         //近角点过少，进入远线控制
-        if ((Xfound && (Lpt0_rpts0s_id < 0.1 / sample_dist || Lpt1_rpts1s_id < 0.1 / sample_dist))/* || (rpts1_num <30 && rpts0_num<30)*/) {
+        if ((Xfound && (Lpt0_rpts0s_id < 0.1 / sample_dist ||
+                        Lpt1_rpts1s_id < 0.1 / sample_dist))/* || (rpts1_num <30 && rpts0_num<30)*/) {
             cross_type = CROSS_IN;
             cross_encoder = current_encoder;
         }
@@ -96,10 +97,12 @@ void run_cross() {
 void draw_cross() {
     if (cross_type == CROSS_IN && line_show_sample) {
         for (int i = 0; i < far_rpts0s_num; i++) {
-            AT_IMAGE(&img_line, clip(far_rpts0s[i][0], 0, img_line.width - 1), clip(far_rpts0s[i][1], 0, img_line.height - 1)) = 100;
+            AT_IMAGE(&img_line, clip(far_rpts0s[i][0], 0, img_line.width - 1),
+                     clip(far_rpts0s[i][1], 0, img_line.height - 1)) = 100;
         }
         for (int i = 0; i < far_rpts1s_num; i++) {
-            AT_IMAGE(&img_line, clip(far_rpts1s[i][0], 0, img_line.width - 1), clip(far_rpts1s[i][1], 0, img_line.height - 1)) = 100;
+            AT_IMAGE(&img_line, clip(far_rpts1s[i][0], 0, img_line.width - 1),
+                     clip(far_rpts1s[i][1], 0, img_line.height - 1)) = 100;
         }
 
         if (far_Lpt0_found) {
@@ -109,10 +112,14 @@ void draw_cross() {
             draw_o(&img_line, far_rpts1s[far_Lpt1_rpts1s_id][0], far_rpts1s[far_Lpt1_rpts1s_id][1], 3, 255);
         }
 
-        draw_o(&img_line, clip(mapx[(int) begin_y][far_x1], 0, img_line.width - 1), clip(mapy[(int) begin_y][far_x1], 0, img_line.height - 1), 3, 255);
-        draw_o(&img_line, clip(mapx[(int) begin_y][far_x2], 0, img_line.width - 1), clip(mapy[(int) begin_y][far_x1], 0, img_line.height - 1), 3, 255);
-        draw_o(&img_line, clip(mapx[far_y1][far_x1], 0, img_line.width - 1), clip(mapy[far_y1][far_x1], 0, img_line.height - 1), 3, 255);
-        draw_o(&img_line, clip(mapx[far_y2][far_x2], 0, img_line.width - 1), clip(mapy[far_y2][far_x2], 0, img_line.height - 1), 3, 255);
+        draw_o(&img_line, clip(mapx[(int) begin_y][far_x1], 0, img_line.width - 1),
+               clip(mapy[(int) begin_y][far_x1], 0, img_line.height - 1), 3, 255);
+        draw_o(&img_line, clip(mapx[(int) begin_y][far_x2], 0, img_line.width - 1),
+               clip(mapy[(int) begin_y][far_x1], 0, img_line.height - 1), 3, 255);
+        draw_o(&img_line, clip(mapx[far_y1][far_x1], 0, img_line.width - 1),
+               clip(mapy[far_y1][far_x1], 0, img_line.height - 1), 3, 255);
+        draw_o(&img_line, clip(mapx[far_y2][far_x2], 0, img_line.width - 1),
+               clip(mapy[far_y2][far_x2], 0, img_line.height - 1), 3, 255);
 
         /*
         for(int y1=begin_y; y1>far_y1; y1--){

@@ -56,31 +56,31 @@ typedef struct _ivt_ {
   ((((major) & IVT_MAJOR_VERSION_MASK) << IVT_MAJOR_VERSION_SHIFT) |  \
   (((minor) & IVT_MINOR_VERSION_MASK) << IVT_MINOR_VERSION_SHIFT))
 
-/* IVT header */  
+/* IVT header */
 #define IVT_TAG_HEADER        0xD1       /**< Image Vector Table */
 #define IVT_SIZE              0x2000
 #define IVT_PAR               IVT_VERSION(IVT_MAJOR_VERSION, IVT_MINOR_VERSION)
 #define IVT_HEADER           (IVT_TAG_HEADER | (IVT_SIZE << 8) | (IVT_PAR << 24))
 
 /* Set resume entry */
-#if defined(__CC_ARM) || defined(__ARMCC_VERSION) 
-    extern uint32_t __Vectors[];
-    extern uint32_t Image$$RW_m_config_text$$Base[];
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION)
+extern uint32_t __Vectors[];
+extern uint32_t Image$$RW_m_config_text$$Base[];
 #define IMAGE_ENTRY_ADDRESS ((uint32_t)__Vectors) 
 #define FLASH_BASE ((uint32_t)Image$$RW_m_config_text$$Base)   
 #elif defined(__MCUXPRESSO)
-    extern uint32_t __Vectors[];
-    extern uint32_t __boot_hdr_start__[];
+extern uint32_t __Vectors[];
+extern uint32_t __boot_hdr_start__[];
 #define IMAGE_ENTRY_ADDRESS ((uint32_t)__Vectors)
 #define FLASH_BASE          ((uint32_t)__boot_hdr_start__)
 #elif defined(__ICCARM__)
-    extern uint32_t __VECTOR_TABLE[];
-    extern uint32_t m_boot_hdr_conf_start[];
+extern uint32_t __VECTOR_TABLE[];
+extern uint32_t m_boot_hdr_conf_start[];
 #define IMAGE_ENTRY_ADDRESS ((uint32_t)__VECTOR_TABLE)    
 #define FLASH_BASE ((uint32_t)m_boot_hdr_conf_start)   
 #elif defined(__GNUC__)
-    extern uint32_t __VECTOR_TABLE[];
-    extern uint32_t __FLASH_BASE[];
+extern uint32_t __VECTOR_TABLE[];
+extern uint32_t __FLASH_BASE[];
 #define IMAGE_ENTRY_ADDRESS ((uint32_t)__VECTOR_TABLE)     
 #define FLASH_BASE ((uint32_t)__FLASH_BASE)   
 #endif
@@ -99,11 +99,11 @@ typedef struct _ivt_ {
  *  Boot Data 
  *************************************/
 typedef struct _boot_data_ {
-  uint32_t start;           /* boot start location */
-  uint32_t size;            /* size */
-  uint32_t plugin;          /* plugin flag - 1 if downloaded application is plugin */
-  uint32_t placeholder;		/* placehoder to make even 0x10 size */
-}BOOT_DATA_T;
+    uint32_t start;           /* boot start location */
+    uint32_t size;            /* size */
+    uint32_t plugin;          /* plugin flag - 1 if downloaded application is plugin */
+    uint32_t placeholder;        /* placehoder to make even 0x10 size */
+} BOOT_DATA_T;
 
 #if defined(BOARD_FLASH_SIZE)
 #define FLASH_SIZE            BOARD_FLASH_SIZE

@@ -27,30 +27,27 @@
 /*@}*/
 
 /*! @brief GPIO direction definition. */
-typedef enum _gpio_pin_direction
-{
-    kGPIO_DigitalInput  = 0U, /*!< Set current pin as digital input.*/
+typedef enum _gpio_pin_direction {
+    kGPIO_DigitalInput = 0U, /*!< Set current pin as digital input.*/
     kGPIO_DigitalOutput = 1U, /*!< Set current pin as digital output.*/
 } gpio_pin_direction_t;
 
 /*! @brief GPIO interrupt mode definition. */
-typedef enum _gpio_interrupt_mode
-{
-    kGPIO_NoIntmode              = 0U, /*!< Set current pin general IO functionality.*/
-    kGPIO_IntLowLevel            = 1U, /*!< Set current pin interrupt is low-level sensitive.*/
-    kGPIO_IntHighLevel           = 2U, /*!< Set current pin interrupt is high-level sensitive.*/
-    kGPIO_IntRisingEdge          = 3U, /*!< Set current pin interrupt is rising-edge sensitive.*/
-    kGPIO_IntFallingEdge         = 4U, /*!< Set current pin interrupt is falling-edge sensitive.*/
+typedef enum _gpio_interrupt_mode {
+    kGPIO_NoIntmode = 0U, /*!< Set current pin general IO functionality.*/
+    kGPIO_IntLowLevel = 1U, /*!< Set current pin interrupt is low-level sensitive.*/
+    kGPIO_IntHighLevel = 2U, /*!< Set current pin interrupt is high-level sensitive.*/
+    kGPIO_IntRisingEdge = 3U, /*!< Set current pin interrupt is rising-edge sensitive.*/
+    kGPIO_IntFallingEdge = 4U, /*!< Set current pin interrupt is falling-edge sensitive.*/
     kGPIO_IntRisingOrFallingEdge = 5U, /*!< Enable the edge select bit to override the ICR register's configuration.*/
 } gpio_interrupt_mode_t;
 
 /*! @brief GPIO Init structure definition. */
-typedef struct _gpio_pin_config
-{
+typedef struct _gpio_pin_config {
     gpio_pin_direction_t direction; /*!< Specifies the pin direction. */
     uint8_t outputLogic;            /*!< Set a default output logic, which has no use in input */
     gpio_interrupt_mode_t
-        interruptMode; /*!< Specifies the pin interrupt mode, a value of @ref gpio_interrupt_mode_t. */
+            interruptMode; /*!< Specifies the pin interrupt mode, a value of @ref gpio_interrupt_mode_t. */
 } gpio_pin_config_t;
 
 /*******************************************************************************
@@ -98,8 +95,7 @@ void GPIO_PinWrite(GPIO_Type *base, uint32_t pin, uint8_t output);
  * @brief Sets the output level of the individual GPIO pin to logic 1 or 0.
  * @deprecated Do not use this function.  It has been superceded by @ref GPIO_PinWrite.
  */
-static inline void GPIO_WritePinOutput(GPIO_Type *base, uint32_t pin, uint8_t output)
-{
+static inline void GPIO_WritePinOutput(GPIO_Type *base, uint32_t pin, uint8_t output) {
     GPIO_PinWrite(base, pin, output);
 }
 
@@ -109,8 +105,7 @@ static inline void GPIO_WritePinOutput(GPIO_Type *base, uint32_t pin, uint8_t ou
  * @param base GPIO peripheral base pointer (GPIO1, GPIO2, GPIO3, and so on.)
  * @param mask GPIO pin number macro
  */
-static inline void GPIO_PortSet(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_PortSet(GPIO_Type *base, uint32_t mask) {
 #if (defined(FSL_FEATURE_IGPIO_HAS_DR_SET) && (FSL_FEATURE_IGPIO_HAS_DR_SET == 1))
     base->DR_SET = mask;
 #else
@@ -122,8 +117,7 @@ static inline void GPIO_PortSet(GPIO_Type *base, uint32_t mask)
  * @brief Sets the output level of the multiple GPIO pins to the logic 1.
  * @deprecated Do not use this function.  It has been superceded by @ref GPIO_PortSet.
  */
-static inline void GPIO_SetPinsOutput(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_SetPinsOutput(GPIO_Type *base, uint32_t mask) {
     GPIO_PortSet(base, mask);
 }
 
@@ -133,8 +127,7 @@ static inline void GPIO_SetPinsOutput(GPIO_Type *base, uint32_t mask)
  * @param base GPIO peripheral base pointer (GPIO1, GPIO2, GPIO3, and so on.)
  * @param mask GPIO pin number macro
  */
-static inline void GPIO_PortClear(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_PortClear(GPIO_Type *base, uint32_t mask) {
 #if (defined(FSL_FEATURE_IGPIO_HAS_DR_CLEAR) && (FSL_FEATURE_IGPIO_HAS_DR_CLEAR == 1))
     base->DR_CLEAR = mask;
 #else
@@ -146,8 +139,7 @@ static inline void GPIO_PortClear(GPIO_Type *base, uint32_t mask)
  * @brief Sets the output level of the multiple GPIO pins to the logic 0.
  * @deprecated Do not use this function.  It has been superceded by @ref GPIO_PortClear.
  */
-static inline void GPIO_ClearPinsOutput(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_ClearPinsOutput(GPIO_Type *base, uint32_t mask) {
     GPIO_PortClear(base, mask);
 }
 
@@ -157,8 +149,7 @@ static inline void GPIO_ClearPinsOutput(GPIO_Type *base, uint32_t mask)
  * @param base GPIO peripheral base pointer (GPIO1, GPIO2, GPIO3, and so on.)
  * @param mask GPIO pin number macro
  */
-static inline void GPIO_PortToggle(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_PortToggle(GPIO_Type *base, uint32_t mask) {
 #if (defined(FSL_FEATURE_IGPIO_HAS_DR_TOGGLE) && (FSL_FEATURE_IGPIO_HAS_DR_TOGGLE == 1))
     base->DR_TOGGLE = mask;
 #endif /* FSL_FEATURE_IGPIO_HAS_DR_TOGGLE */
@@ -171,8 +162,7 @@ static inline void GPIO_PortToggle(GPIO_Type *base, uint32_t mask)
  * @param pin GPIO port pin number.
  * @retval GPIO port input value.
  */
-static inline uint32_t GPIO_PinRead(GPIO_Type *base, uint32_t pin)
-{
+static inline uint32_t GPIO_PinRead(GPIO_Type *base, uint32_t pin) {
     assert(pin < 32U);
 
     return (((base->DR) >> pin) & 0x1U);
@@ -182,8 +172,7 @@ static inline uint32_t GPIO_PinRead(GPIO_Type *base, uint32_t pin)
  * @brief Reads the current input value of the GPIO port.
  * @deprecated Do not use this function.  It has been superceded by @ref GPIO_PinRead.
  */
-static inline uint32_t GPIO_ReadPinInput(GPIO_Type *base, uint32_t pin)
-{
+static inline uint32_t GPIO_ReadPinInput(GPIO_Type *base, uint32_t pin) {
     return GPIO_PinRead(base, pin);
 }
 /*@}*/
@@ -200,8 +189,7 @@ static inline uint32_t GPIO_ReadPinInput(GPIO_Type *base, uint32_t pin)
  * @param pin GPIO port pin number.
  * @retval GPIO pin pad status value.
  */
-static inline uint8_t GPIO_PinReadPadStatus(GPIO_Type *base, uint32_t pin)
-{
+static inline uint8_t GPIO_PinReadPadStatus(GPIO_Type *base, uint32_t pin) {
     assert(pin < 32U);
 
     return (uint8_t)(((base->PSR) >> pin) & 0x1U);
@@ -211,8 +199,7 @@ static inline uint8_t GPIO_PinReadPadStatus(GPIO_Type *base, uint32_t pin)
  * @brief Reads the current GPIO pin pad status.
  * @deprecated Do not use this function.  It has been superceded by @ref GPIO_PinReadPadStatus.
  */
-static inline uint8_t GPIO_ReadPadStatus(GPIO_Type *base, uint32_t pin)
-{
+static inline uint8_t GPIO_ReadPadStatus(GPIO_Type *base, uint32_t pin) {
     return GPIO_PinReadPadStatus(base, pin);
 }
 
@@ -237,8 +224,7 @@ void GPIO_PinSetInterruptConfig(GPIO_Type *base, uint32_t pin, gpio_interrupt_mo
  * @brief Sets the current pin interrupt mode.
  * @deprecated Do not use this function.  It has been superceded by @ref GPIO_PinSetInterruptConfig.
  */
-static inline void GPIO_SetPinInterruptConfig(GPIO_Type *base, uint32_t pin, gpio_interrupt_mode_t pinInterruptMode)
-{
+static inline void GPIO_SetPinInterruptConfig(GPIO_Type *base, uint32_t pin, gpio_interrupt_mode_t pinInterruptMode) {
     GPIO_PinSetInterruptConfig(base, pin, pinInterruptMode);
 }
 
@@ -248,8 +234,7 @@ static inline void GPIO_SetPinInterruptConfig(GPIO_Type *base, uint32_t pin, gpi
  * @param base GPIO base pointer.
  * @param mask GPIO pin number macro.
  */
-static inline void GPIO_PortEnableInterrupts(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_PortEnableInterrupts(GPIO_Type *base, uint32_t mask) {
     base->IMR |= mask;
 }
 
@@ -259,8 +244,7 @@ static inline void GPIO_PortEnableInterrupts(GPIO_Type *base, uint32_t mask)
  * @param base GPIO base pointer.
  * @param mask GPIO pin number macro.
  */
-static inline void GPIO_EnableInterrupts(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_EnableInterrupts(GPIO_Type *base, uint32_t mask) {
     GPIO_PortEnableInterrupts(base, mask);
 }
 
@@ -270,8 +254,7 @@ static inline void GPIO_EnableInterrupts(GPIO_Type *base, uint32_t mask)
  * @param base GPIO base pointer.
  * @param mask GPIO pin number macro.
  */
-static inline void GPIO_PortDisableInterrupts(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_PortDisableInterrupts(GPIO_Type *base, uint32_t mask) {
     base->IMR &= ~mask;
 }
 
@@ -279,8 +262,7 @@ static inline void GPIO_PortDisableInterrupts(GPIO_Type *base, uint32_t mask)
  * @brief Disables the specific pin interrupt.
  * @deprecated Do not use this function.  It has been superceded by @ref GPIO_PortDisableInterrupts.
  */
-static inline void GPIO_DisableInterrupts(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_DisableInterrupts(GPIO_Type *base, uint32_t mask) {
     GPIO_PortDisableInterrupts(base, mask);
 }
 
@@ -290,8 +272,7 @@ static inline void GPIO_DisableInterrupts(GPIO_Type *base, uint32_t mask)
  * @param base GPIO base pointer.
  * @retval current pin interrupt status flag.
  */
-static inline uint32_t GPIO_PortGetInterruptFlags(GPIO_Type *base)
-{
+static inline uint32_t GPIO_PortGetInterruptFlags(GPIO_Type *base) {
     return base->ISR;
 }
 
@@ -301,8 +282,7 @@ static inline uint32_t GPIO_PortGetInterruptFlags(GPIO_Type *base)
  * @param base GPIO base pointer.
  * @retval current pin interrupt status flag.
  */
-static inline uint32_t GPIO_GetPinsInterruptFlags(GPIO_Type *base)
-{
+static inline uint32_t GPIO_GetPinsInterruptFlags(GPIO_Type *base) {
     return GPIO_PortGetInterruptFlags(base);
 }
 
@@ -313,8 +293,7 @@ static inline uint32_t GPIO_GetPinsInterruptFlags(GPIO_Type *base)
  * @param base GPIO base pointer.
  * @param mask GPIO pin number macro.
  */
-static inline void GPIO_PortClearInterruptFlags(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_PortClearInterruptFlags(GPIO_Type *base, uint32_t mask) {
     base->ISR = mask;
 }
 
@@ -325,8 +304,7 @@ static inline void GPIO_PortClearInterruptFlags(GPIO_Type *base, uint32_t mask)
  * @param base GPIO base pointer.
  * @param mask GPIO pin number macro.
  */
-static inline void GPIO_ClearPinsInterruptFlags(GPIO_Type *base, uint32_t mask)
-{
+static inline void GPIO_ClearPinsInterruptFlags(GPIO_Type *base, uint32_t mask) {
     GPIO_PortClearInterruptFlags(base, mask);
 }
 /*@}*/

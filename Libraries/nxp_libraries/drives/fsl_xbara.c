@@ -20,8 +20,7 @@
 /* Macros for entire XBARA_CTRL register.  */
 #define XBARA_CTRLx(base, index) (((volatile uint16_t *)(&((base)->CTRL0)))[(index)])
 
-typedef union
-{
+typedef union {
     uint8_t _u8[2];
     uint16_t _u16;
 } xbara_u8_u16_t;
@@ -54,15 +53,12 @@ static const clock_ip_name_t s_xbaraClock[] = XBARA_CLOCKS;
  * Code
  ******************************************************************************/
 
-static uint32_t XBARA_GetInstance(XBARA_Type *base)
-{
+static uint32_t XBARA_GetInstance(XBARA_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_xbaraBases); instance++)
-    {
-        if (s_xbaraBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_xbaraBases); instance++) {
+        if (s_xbaraBases[instance] == base) {
             break;
         }
     }
@@ -79,8 +75,7 @@ static uint32_t XBARA_GetInstance(XBARA_Type *base)
  *
  * param base XBARA peripheral address.
  */
-void XBARA_Init(XBARA_Type *base)
-{
+void XBARA_Init(XBARA_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     /* Enable XBARA module clock. */
     CLOCK_EnableClock(s_xbaraClock[XBARA_GetInstance(base)]);
@@ -94,8 +89,7 @@ void XBARA_Init(XBARA_Type *base)
  *
  * param base XBARA peripheral address.
  */
-void XBARA_Deinit(XBARA_Type *base)
-{
+void XBARA_Deinit(XBARA_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     /* Disable XBARA module clock. */
     CLOCK_DisableClock(s_xbaraClock[XBARA_GetInstance(base)]);
@@ -118,17 +112,16 @@ void XBARA_Deinit(XBARA_Type *base)
  * param input XBARA input signal.
  * param output XBARA output signal.
  */
-void XBARA_SetSignalsConnection(XBARA_Type *base, xbar_input_signal_t input, xbar_output_signal_t output)
-{
+void XBARA_SetSignalsConnection(XBARA_Type *base, xbar_input_signal_t input, xbar_output_signal_t output) {
     xbara_u8_u16_t regVal;
     uint8_t byteInReg;
-    uint8_t outputIndex = (uint8_t)output;
+    uint8_t outputIndex = (uint8_t) output;
 
     byteInReg = outputIndex % 2U;
 
     regVal._u16 = XBARA_SELx(base, outputIndex);
 
-    regVal._u8[byteInReg] = (uint8_t)input;
+    regVal._u8[byteInReg] = (uint8_t) input;
 
     XBARA_SELx(base, outputIndex) = regVal._u16;
 }
@@ -145,13 +138,14 @@ void XBARA_SetSignalsConnection(XBARA_Type *base, xbar_input_signal_t input, xba
  * param base XBARA peripheral address.
  * return the mask of these status flag bits.
  */
-uint32_t XBARA_GetStatusFlags(XBARA_Type *base)
-{
+uint32_t XBARA_GetStatusFlags(XBARA_Type *base) {
     uint32_t status_flag;
 
-    status_flag = ((uint32_t)base->CTRL0 & (XBARA_CTRL0_STS0_MASK | XBARA_CTRL0_STS1_MASK));
+    status_flag = ((uint32_t)
+    base->CTRL0 & (XBARA_CTRL0_STS0_MASK | XBARA_CTRL0_STS1_MASK));
 
-    status_flag |= (((uint32_t)base->CTRL1 & (XBARA_CTRL1_STS2_MASK | XBARA_CTRL1_STS3_MASK)) << 16U);
+    status_flag |= (((uint32_t)
+    base->CTRL1 & (XBARA_CTRL1_STS2_MASK | XBARA_CTRL1_STS3_MASK)) << 16U);
 
     return status_flag;
 }
@@ -162,8 +156,7 @@ uint32_t XBARA_GetStatusFlags(XBARA_Type *base)
  * param base XBARA peripheral address.
  * param mask the status flags to clear.
  */
-void XBARA_ClearStatusFlags(XBARA_Type *base, uint32_t mask)
-{
+void XBARA_ClearStatusFlags(XBARA_Type *base, uint32_t mask) {
     uint16_t regVal;
 
     /* Assign regVal to CTRL0 register's value */
@@ -205,16 +198,16 @@ void XBARA_ClearStatusFlags(XBARA_Type *base, uint32_t mask)
  */
 void XBARA_SetOutputSignalConfig(XBARA_Type *base,
                                  xbar_output_signal_t output,
-                                 const xbara_control_config_t *controlConfig)
-{
-    uint8_t outputIndex = (uint8_t)output;
+                                 const xbara_control_config_t *controlConfig) {
+    uint8_t outputIndex = (uint8_t) output;
     uint8_t regIndex;
     uint8_t byteInReg;
     xbara_u8_u16_t regVal;
 
-    assert(outputIndex < (uint32_t)FSL_FEATURE_XBARA_INTERRUPT_COUNT);
+    assert(outputIndex < (uint32_t)
+    FSL_FEATURE_XBARA_INTERRUPT_COUNT);
 
-    regIndex  = outputIndex / 2U;
+    regIndex = outputIndex / 2U;
     byteInReg = outputIndex % 2U;
 
     regVal._u16 = XBARA_CTRLx(base, regIndex);
@@ -223,7 +216,8 @@ void XBARA_SetOutputSignalConfig(XBARA_Type *base,
     regVal._u16 &= (uint16_t)(~(XBARA_CTRL0_STS0_MASK | XBARA_CTRL0_STS1_MASK));
 
     regVal._u8[byteInReg] = (uint8_t)(XBARA_CTRL0_EDGE0(controlConfig->activeEdge) |
-                                      (uint16_t)(((uint32_t)controlConfig->requestType) << XBARA_CTRL0_DEN0_SHIFT));
+                                      (uint16_t)(((uint32_t)
+    controlConfig->requestType) << XBARA_CTRL0_DEN0_SHIFT));
 
     XBARA_CTRLx(base, regIndex) = regVal._u16;
 }

@@ -56,13 +56,11 @@ ocotp_timing_t s_timingConfig;
  * Code
  *******************************************************************************/
 /* Reload the shadow register. */
-void OCOTP_ReloadShadowRegister(OCOTP_Type *base)
-{
+void OCOTP_ReloadShadowRegister(OCOTP_Type *base) {
     assert(NULL != base);
 
     /* Make sure the OCOTP is ready, Overlapped accesses are not supported by the controller. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
 
     /* Clear access error status bit. */
@@ -72,25 +70,21 @@ void OCOTP_ReloadShadowRegister(OCOTP_Type *base)
     OCOTP_SetReadTiming(base, s_timingConfig);
 
     /* Wait for the OCOTP controller not busy. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
 
     /* Set reload bit. */
     base->CTRL_SET = OCOTP_CTRL_RELOAD_SHADOWS(1);
 
     /* Wait for the OCOTP controller not busy. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
     /* Wait for shadow register reload complete. this bit will be auto clear by OCOTP once operation is complete. */
-    while (OCOTP_CTRL_RELOAD_SHADOWS_MASK == (base->CTRL & OCOTP_CTRL_RELOAD_SHADOWS_MASK))
-    {
+    while (OCOTP_CTRL_RELOAD_SHADOWS_MASK == (base->CTRL & OCOTP_CTRL_RELOAD_SHADOWS_MASK)) {
     }
 }
 
-static void OCOTP_SetReadTiming(OCOTP_Type *base, ocotp_timing_t timingConfig)
-{
+static void OCOTP_SetReadTiming(OCOTP_Type *base, ocotp_timing_t timingConfig) {
     uint32_t timingValue = base->TIMING;
 
     timingValue &= ~(OCOTP_TIMING_RELAX_MASK | OCOTP_TIMING_STROBE_READ_MASK | OCOTP_TIMING_WAIT_MASK);
@@ -99,8 +93,7 @@ static void OCOTP_SetReadTiming(OCOTP_Type *base, ocotp_timing_t timingConfig)
     base->TIMING = timingValue;
 }
 
-static void OCOTP_SetWriteTiming(OCOTP_Type *base, ocotp_timing_t timingConfig)
-{
+static void OCOTP_SetWriteTiming(OCOTP_Type *base, ocotp_timing_t timingConfig) {
     uint32_t timingValue = base->TIMING;
 
     timingValue &= ~(OCOTP_TIMING_RELAX_MASK | OCOTP_TIMING_STROBE_PROG_MASK | OCOTP_TIMING_WAIT_MASK);
@@ -111,8 +104,7 @@ static void OCOTP_SetWriteTiming(OCOTP_Type *base, ocotp_timing_t timingConfig)
 }
 
 /* Initializes OCOTP controller. */
-void OCOTP_Init(OCOTP_Type *base, uint32_t srcClock_Hz)
-{
+void OCOTP_Init(OCOTP_Type *base, uint32_t srcClock_Hz) {
     assert(NULL != base);
     assert(0UL != srcClock_Hz);
 
@@ -129,20 +121,19 @@ void OCOTP_Init(OCOTP_Type *base, uint32_t srcClock_Hz)
 
     /* tStrobe_prog time should be close to OCOTP_TIMING_PROGRAM_NS, only add half of 1000000000. */
     s_timingConfig.strobe_prog =
-        (OCOTP_TIMING_PROGRAM_NS * srcClock_Hz + 500000000) / 1000000000 + 2 * (s_timingConfig.relax + 1) - 1;
+            (OCOTP_TIMING_PROGRAM_NS * srcClock_Hz + 500000000) / 1000000000 + 2 * (s_timingConfig.relax + 1) - 1;
 
     /* tStrobe_read time should be higher than OCOTP_TIMING_READ_NS. */
     s_timingConfig.strobe_read =
-        (OCOTP_TIMING_READ_NS * srcClock_Hz + 1000000000) / 1000000000 + 2 * (s_timingConfig.relax + 1) - 1;
+            (OCOTP_TIMING_READ_NS * srcClock_Hz + 1000000000) / 1000000000 + 2 * (s_timingConfig.relax + 1) - 1;
 }
 
 /* De-init OCOTP controller. */
-void OCOTP_Deinit(OCOTP_Type *base)
-{
+void OCOTP_Deinit(OCOTP_Type *base) {
     assert(NULL != base);
 
-    s_timingConfig.wait        = 0UL;
-    s_timingConfig.relax       = 0UL;
+    s_timingConfig.wait = 0UL;
+    s_timingConfig.relax = 0UL;
     s_timingConfig.strobe_prog = 0UL;
     s_timingConfig.strobe_read = 0UL;
 
@@ -153,18 +144,15 @@ void OCOTP_Deinit(OCOTP_Type *base)
 }
 
 /* Read the fuse shadow register. */
-uint32_t OCOTP_ReadFuseShadowRegister(OCOTP_Type *base, uint32_t address)
-{
+uint32_t OCOTP_ReadFuseShadowRegister(OCOTP_Type *base, uint32_t address) {
     assert(NULL != base);
 
     /* Make sure the OCOTP is ready, Overlapped accesses are not supported by the controller. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
 
     /* If ERROR bit was set, clear access error status bit. */
-    if (OCOTP_CheckErrorStatus(base))
-    {
+    if (OCOTP_CheckErrorStatus(base)) {
         OCOTP_ClearErrorStatus(base);
     }
 
@@ -172,13 +160,11 @@ uint32_t OCOTP_ReadFuseShadowRegister(OCOTP_Type *base, uint32_t address)
     OCOTP_SetReadTiming(base, s_timingConfig);
 
     /* Wait for busy bit is cleared. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
 
     /* Clear access error status bit. */
-    if (OCOTP_CheckErrorStatus(base))
-    {
+    if (OCOTP_CheckErrorStatus(base)) {
         OCOTP_ClearErrorStatus(base);
     }
 
@@ -190,13 +176,11 @@ uint32_t OCOTP_ReadFuseShadowRegister(OCOTP_Type *base, uint32_t address)
     base->READ_CTRL = OCOTP_READ_CTRL_READ_FUSE_MASK;
 
     /* Wait for busy bit is cleared, and no error occurred on controller. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
 
     /* If ERROR bit was set, this may be mean that the accsee to the register was wrong. */
-    if (OCOTP_CheckErrorStatus(base))
-    {
+    if (OCOTP_CheckErrorStatus(base)) {
         /* Clear access error status bit. */
         OCOTP_ClearErrorStatus(base);
     }
@@ -206,18 +190,15 @@ uint32_t OCOTP_ReadFuseShadowRegister(OCOTP_Type *base, uint32_t address)
 }
 
 /* Write the fuse shadow register. */
-status_t OCOTP_WriteFuseShadowRegister(OCOTP_Type *base, uint32_t address, uint32_t data)
-{
+status_t OCOTP_WriteFuseShadowRegister(OCOTP_Type *base, uint32_t address, uint32_t data) {
     assert(NULL != base);
 
     /* Make sure the OCOTP is ready, Overlapped accesses are not supported by the controller. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
 
     /* Clear access error status bit. */
-    if (OCOTP_CheckErrorStatus(base))
-    {
+    if (OCOTP_CheckErrorStatus(base)) {
         OCOTP_ClearErrorStatus(base);
     }
 
@@ -225,13 +206,11 @@ status_t OCOTP_WriteFuseShadowRegister(OCOTP_Type *base, uint32_t address, uint3
     OCOTP_SetWriteTiming(base, s_timingConfig);
 
     /* Wait for busy bit is cleared. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
 
     /* Clear access error status bit. */
-    if (OCOTP_CheckErrorStatus(base))
-    {
+    if (OCOTP_CheckErrorStatus(base)) {
         OCOTP_ClearErrorStatus(base);
     }
 
@@ -243,13 +222,11 @@ status_t OCOTP_WriteFuseShadowRegister(OCOTP_Type *base, uint32_t address, uint3
     base->DATA = data;
 
     /* Wait for busy bit is cleared, and no error occurred on controller. */
-    while (OCOTP_CheckBusyStatus(base))
-    {
+    while (OCOTP_CheckBusyStatus(base)) {
     }
 
     /* If ERROR bit was set, this may be mean that the accsee to the register was wrong. */
-    if (OCOTP_CheckErrorStatus(base))
-    {
+    if (OCOTP_CheckErrorStatus(base)) {
         /* Clear access error status bit. */
         OCOTP_ClearErrorStatus(base);
 

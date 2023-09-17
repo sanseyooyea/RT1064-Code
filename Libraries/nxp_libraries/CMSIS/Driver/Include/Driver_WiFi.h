@@ -100,34 +100,34 @@ extern "C"
 \brief WiFi Configuration
 */
 typedef struct {
-  char    ssid[32+1];                                   ///< Service Set Identifier (SSID) null-terminated string
-  char    pass[64+1];                                   ///< Password null-terminated string
-  uint8_t security;                                     ///< Security type (ARM_WIFI_SECURITY_xxx)
-  uint8_t ch;                                           ///< WiFi Channel (0 = auto, otherwise = exact channel)
-  uint8_t wps_method;                                   ///< WiFi Protected Setup (WPS) method (ARM_WIFI_WPS_METHOD_xxx)
-  char    wps_pin[8+1];                                 ///< WiFi Protected Setup (WPS) PIN null-terminated string
+    char ssid[32 + 1];                                   ///< Service Set Identifier (SSID) null-terminated string
+    char pass[64 + 1];                                   ///< Password null-terminated string
+    uint8_t security;                                     ///< Security type (ARM_WIFI_SECURITY_xxx)
+    uint8_t ch;                                           ///< WiFi Channel (0 = auto, otherwise = exact channel)
+    uint8_t wps_method;                                   ///< WiFi Protected Setup (WPS) method (ARM_WIFI_WPS_METHOD_xxx)
+    char wps_pin[8 + 1];                                 ///< WiFi Protected Setup (WPS) PIN null-terminated string
 } ARM_WIFI_CONFIG_t;
 
 /**
 \brief WiFi Scan Information
 */
 typedef struct {
-  char    ssid[32+1];                                   ///< Service Set Identifier (SSID) null-terminated string
-  uint8_t bssid[6];                                     ///< Basic Service Set Identifier (BSSID)
-  uint8_t security;                                     ///< Security type (ARM_WIFI_SECURITY_xxx)
-  uint8_t ch;                                           ///< WiFi Channel
-  uint8_t rssi;                                         ///< Received Signal Strength Indicator
+    char ssid[32 + 1];                                   ///< Service Set Identifier (SSID) null-terminated string
+    uint8_t bssid[6];                                     ///< Basic Service Set Identifier (BSSID)
+    uint8_t security;                                     ///< Security type (ARM_WIFI_SECURITY_xxx)
+    uint8_t ch;                                           ///< WiFi Channel
+    uint8_t rssi;                                         ///< Received Signal Strength Indicator
 } ARM_WIFI_SCAN_INFO_t;
 
 /**
 \brief WiFi Network Information
 */
 typedef struct {
-  char    ssid[32+1];                                   ///< Service Set Identifier (SSID) null-terminated string
-  char    pass[64+1];                                   ///< Password null-terminated string
-  uint8_t security;                                     ///< Security type (ARM_WIFI_SECURITY_xxx)
-  uint8_t ch;                                           ///< WiFi Channel
-  uint8_t rssi;                                         ///< Received Signal Strength Indicator
+    char ssid[32 + 1];                                   ///< Service Set Identifier (SSID) null-terminated string
+    char pass[64 + 1];                                   ///< Password null-terminated string
+    uint8_t security;                                     ///< Security type (ARM_WIFI_SECURITY_xxx)
+    uint8_t ch;                                           ///< WiFi Channel
+    uint8_t rssi;                                         ///< Received Signal Strength Indicator
 } ARM_WIFI_NET_INFO_t;
 
 /****** Socket Address Family definitions *****/
@@ -609,67 +609,102 @@ typedef struct {
   \return        none
 */
 
-typedef void (*ARM_WIFI_SignalEvent_t) (uint32_t event, void *arg); ///< Pointer to \ref ARM_WIFI_SignalEvent : Signal WiFi Event.
+typedef void (*ARM_WIFI_SignalEvent_t)(uint32_t event,
+                                       void *arg); ///< Pointer to \ref ARM_WIFI_SignalEvent : Signal WiFi Event.
 
 
 /**
 \brief WiFi Driver Capabilities.
 */
 typedef struct {
-  uint32_t mode_station          : 1;   ///< Mode: Station
-  uint32_t mode_ap               : 1;   ///< Mode: Access Point
-  uint32_t mode_station_ap       : 1;   ///< Mode: Station and Access Point
-  uint32_t mode_ad_hoc           : 1;   ///< Mode: Ad-hoc
-  uint32_t wps_station           : 1;   ///< WiFi Protected Setup (WPS) for Station
-  uint32_t wps_ap                : 1;   ///< WiFi Protected Setup (WPS) for Access Point
-  uint32_t event_ap_connect      : 1;   ///< Access Point: event generated on Station connect
-  uint32_t event_ap_disconnect   : 1;   ///< Access Point: event generated on Station disconnect
-  uint32_t bypass_mode           : 1;   ///< Bypass or pass-through mode (Ethernet interface)
-  uint32_t event_eth_rx_frame    : 1;   ///< Event generated on Ethernet frame reception in bypass mode
-  uint32_t ip                    : 1;   ///< IP (UDP/TCP) (Socket interface)
-  uint32_t ip6                   : 1;   ///< IPv6 (Socket interface)
-  uint32_t ping                  : 1;   ///< Ping (ICMP)
-  uint32_t reserved              : 19;  ///< Reserved (must be zero)
+    uint32_t mode_station: 1;   ///< Mode: Station
+    uint32_t mode_ap: 1;   ///< Mode: Access Point
+    uint32_t mode_station_ap: 1;   ///< Mode: Station and Access Point
+    uint32_t mode_ad_hoc: 1;   ///< Mode: Ad-hoc
+    uint32_t wps_station: 1;   ///< WiFi Protected Setup (WPS) for Station
+    uint32_t wps_ap: 1;   ///< WiFi Protected Setup (WPS) for Access Point
+    uint32_t event_ap_connect: 1;   ///< Access Point: event generated on Station connect
+    uint32_t event_ap_disconnect: 1;   ///< Access Point: event generated on Station disconnect
+    uint32_t bypass_mode: 1;   ///< Bypass or pass-through mode (Ethernet interface)
+    uint32_t event_eth_rx_frame: 1;   ///< Event generated on Ethernet frame reception in bypass mode
+    uint32_t ip: 1;   ///< IP (UDP/TCP) (Socket interface)
+    uint32_t ip6: 1;   ///< IPv6 (Socket interface)
+    uint32_t ping: 1;   ///< Ping (ICMP)
+    uint32_t reserved: 19;  ///< Reserved (must be zero)
 } ARM_WIFI_CAPABILITIES;
 
 /**
 \brief Access structure of the WiFi Driver.
 */
 typedef struct {
-  ARM_DRIVER_VERSION    (*GetVersion)                  (void);
-  ARM_WIFI_CAPABILITIES (*GetCapabilities)             (void);
-  int32_t               (*Initialize)                  (ARM_WIFI_SignalEvent_t cb_event);
-  int32_t               (*Uninitialize)                (void);
-  int32_t               (*PowerControl)                (ARM_POWER_STATE state);
-  int32_t               (*GetModuleInfo)               (char *module_info, uint32_t max_len);
-  int32_t               (*SetOption)                   (uint32_t interface, uint32_t option, const void *data, uint32_t  len);
-  int32_t               (*GetOption)                   (uint32_t interface, uint32_t option,       void *data, uint32_t *len);
-  int32_t               (*Scan)                        (ARM_WIFI_SCAN_INFO_t scan_info[], uint32_t max_num);
-  int32_t               (*Configure)                   (uint32_t interface, ARM_WIFI_CONFIG_t *config);
-  int32_t               (*Activate)                    (uint32_t mode);
-  int32_t               (*Deactivate)                  (void);
-  uint32_t              (*IsConnected)                 (void);
-  int32_t               (*GetNetInfo)                  (ARM_WIFI_NET_INFO_t *net_info);
-  int32_t               (*BypassControl)               (uint32_t interface, uint32_t mode);
-  int32_t               (*EthSendFrame)                (uint32_t interface, const uint8_t *frame, uint32_t len);
-  int32_t               (*EthReadFrame)                (uint32_t interface,       uint8_t *frame, uint32_t len);
-  uint32_t              (*EthGetRxFrameSize)           (uint32_t interface);
-  int32_t               (*SocketCreate)                (int32_t af, int32_t type, int32_t protocol);
-  int32_t               (*SocketBind)                  (int32_t socket, const uint8_t *ip, uint32_t  ip_len, uint16_t  port);
-  int32_t               (*SocketListen)                (int32_t socket, int32_t backlog);
-  int32_t               (*SocketAccept)                (int32_t socket,       uint8_t *ip, uint32_t *ip_len, uint16_t *port);
-  int32_t               (*SocketConnect)               (int32_t socket, const uint8_t *ip, uint32_t  ip_len, uint16_t  port);
-  int32_t               (*SocketRecv)                  (int32_t socket, void *buf, uint32_t len);
-  int32_t               (*SocketRecvFrom)              (int32_t socket, void *buf, uint32_t len, uint8_t *ip, uint32_t *ip_len, uint16_t *port);
-  int32_t               (*SocketSend)                  (int32_t socket, const void *buf, uint32_t len);
-  int32_t               (*SocketSendTo)                (int32_t socket, const void *buf, uint32_t len, const uint8_t *ip, uint32_t ip_len, uint16_t port);
-  int32_t               (*SocketGetSockName)           (int32_t socket, uint8_t *ip, uint32_t *ip_len, uint16_t *port);
-  int32_t               (*SocketGetPeerName)           (int32_t socket, uint8_t *ip, uint32_t *ip_len, uint16_t *port);
-  int32_t               (*SocketGetOpt)                (int32_t socket, int32_t opt_id,       void *opt_val, uint32_t *opt_len);
-  int32_t               (*SocketSetOpt)                (int32_t socket, int32_t opt_id, const void *opt_val, uint32_t  opt_len);
-  int32_t               (*SocketClose)                 (int32_t socket);
-  int32_t               (*SocketGetHostByName)         (const char *name, int32_t af, uint8_t *ip, uint32_t *ip_len);
-  int32_t               (*Ping)                        (const uint8_t *ip, uint32_t ip_len);
+    ARM_DRIVER_VERSION (*GetVersion)(void);
+
+    ARM_WIFI_CAPABILITIES (*GetCapabilities)(void);
+
+    int32_t (*Initialize)(ARM_WIFI_SignalEvent_t cb_event);
+
+    int32_t (*Uninitialize)(void);
+
+    int32_t (*PowerControl)(ARM_POWER_STATE state);
+
+    int32_t (*GetModuleInfo)(char *module_info, uint32_t max_len);
+
+    int32_t (*SetOption)(uint32_t interface, uint32_t option, const void *data, uint32_t len);
+
+    int32_t (*GetOption)(uint32_t interface, uint32_t option, void *data, uint32_t *len);
+
+    int32_t (*Scan)(ARM_WIFI_SCAN_INFO_t scan_info[], uint32_t max_num);
+
+    int32_t (*Configure)(uint32_t interface, ARM_WIFI_CONFIG_t *config);
+
+    int32_t (*Activate)(uint32_t mode);
+
+    int32_t (*Deactivate)(void);
+
+    uint32_t (*IsConnected)(void);
+
+    int32_t (*GetNetInfo)(ARM_WIFI_NET_INFO_t *net_info);
+
+    int32_t (*BypassControl)(uint32_t interface, uint32_t mode);
+
+    int32_t (*EthSendFrame)(uint32_t interface, const uint8_t *frame, uint32_t len);
+
+    int32_t (*EthReadFrame)(uint32_t interface, uint8_t *frame, uint32_t len);
+
+    uint32_t (*EthGetRxFrameSize)(uint32_t interface);
+
+    int32_t (*SocketCreate)(int32_t af, int32_t type, int32_t protocol);
+
+    int32_t (*SocketBind)(int32_t socket, const uint8_t *ip, uint32_t ip_len, uint16_t port);
+
+    int32_t (*SocketListen)(int32_t socket, int32_t backlog);
+
+    int32_t (*SocketAccept)(int32_t socket, uint8_t *ip, uint32_t *ip_len, uint16_t *port);
+
+    int32_t (*SocketConnect)(int32_t socket, const uint8_t *ip, uint32_t ip_len, uint16_t port);
+
+    int32_t (*SocketRecv)(int32_t socket, void *buf, uint32_t len);
+
+    int32_t (*SocketRecvFrom)(int32_t socket, void *buf, uint32_t len, uint8_t *ip, uint32_t *ip_len, uint16_t *port);
+
+    int32_t (*SocketSend)(int32_t socket, const void *buf, uint32_t len);
+
+    int32_t
+    (*SocketSendTo)(int32_t socket, const void *buf, uint32_t len, const uint8_t *ip, uint32_t ip_len, uint16_t port);
+
+    int32_t (*SocketGetSockName)(int32_t socket, uint8_t *ip, uint32_t *ip_len, uint16_t *port);
+
+    int32_t (*SocketGetPeerName)(int32_t socket, uint8_t *ip, uint32_t *ip_len, uint16_t *port);
+
+    int32_t (*SocketGetOpt)(int32_t socket, int32_t opt_id, void *opt_val, uint32_t *opt_len);
+
+    int32_t (*SocketSetOpt)(int32_t socket, int32_t opt_id, const void *opt_val, uint32_t opt_len);
+
+    int32_t (*SocketClose)(int32_t socket);
+
+    int32_t (*SocketGetHostByName)(const char *name, int32_t af, uint8_t *ip, uint32_t *ip_len);
+
+    int32_t (*Ping)(const uint8_t *ip, uint32_t ip_len);
 } const ARM_DRIVER_WIFI;
 
 #ifdef  __cplusplus

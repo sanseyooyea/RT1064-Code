@@ -39,15 +39,12 @@ static const clock_ip_name_t s_pitClocks[] = PIT_CLOCKS;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static uint32_t PIT_GetInstance(PIT_Type *base)
-{
+static uint32_t PIT_GetInstance(PIT_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_pitBases); instance++)
-    {
-        if (s_pitBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_pitBases); instance++) {
+        if (s_pitBases[instance] == base) {
             break;
         }
     }
@@ -65,8 +62,7 @@ static uint32_t PIT_GetInstance(PIT_Type *base)
  * param base   PIT peripheral base address
  * param config Pointer to the user's PIT config structure
  */
-void PIT_Init(PIT_Type *base, const pit_config_t *config)
-{
+void PIT_Init(PIT_Type *base, const pit_config_t *config) {
     assert(NULL != config);
 
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
@@ -88,12 +84,9 @@ void PIT_Init(PIT_Type *base, const pit_config_t *config)
 #endif /* FSL_FEATURE_PIT_TIMER_COUNT */
 
     /* Config timer operation when in debug mode */
-    if (true == config->enableRunInDebug)
-    {
+    if (true == config->enableRunInDebug) {
         base->MCR &= ~PIT_MCR_FRZ_MASK;
-    }
-    else
-    {
+    } else {
         base->MCR |= PIT_MCR_FRZ_MASK;
     }
 }
@@ -103,8 +96,7 @@ void PIT_Init(PIT_Type *base, const pit_config_t *config)
  *
  * param base PIT peripheral base address
  */
-void PIT_Deinit(PIT_Type *base)
-{
+void PIT_Deinit(PIT_Type *base) {
 #if defined(FSL_FEATURE_PIT_HAS_MDIS) && FSL_FEATURE_PIT_HAS_MDIS
     /* Disable PIT timers */
     base->MCR |= PIT_MCR_MDIS_MASK;

@@ -35,18 +35,16 @@ static KPP_Type *const s_kppBases[] = KPP_BASE_PTRS;
 
 /*! @brief Pointers to KPP IRQ number for each instance. */
 static const IRQn_Type s_kppIrqs[] = KPP_IRQS;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static uint32_t KPP_GetInstance(KPP_Type *base)
-{
+static uint32_t KPP_GetInstance(KPP_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_kppBases); instance++)
-    {
-        if (s_kppBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_kppBases); instance++) {
+        if (s_kppBases[instance] == base) {
             break;
         }
     }
@@ -55,10 +53,9 @@ static uint32_t KPP_GetInstance(KPP_Type *base)
 
     return instance;
 }
-static void KPP_Mdelay(uint64_t tickets)
-{
-    while ((tickets--) != 0UL)
-    {
+
+static void KPP_Mdelay(uint64_t tickets) {
+    while ((tickets--) != 0UL) {
         __NOP();
     }
 }
@@ -71,8 +68,7 @@ static void KPP_Mdelay(uint64_t tickets)
  * param base KPP peripheral base address.
  * param configure The KPP configuration structure pointer.
  */
-void KPP_Init(KPP_Type *base, kpp_config_t *configure)
-{
+void KPP_Init(KPP_Type *base, kpp_config_t *configure) {
     assert(configure);
 
     uint32_t instance = KPP_GetInstance(base);
@@ -87,19 +83,20 @@ void KPP_Init(KPP_Type *base, kpp_config_t *configure)
 
     /* Enable the keypad row and set the column strobe output to open drain. */
     base->KPCR = KPP_KPCR_KRE(configure->activeRow);
-    base->KPDR = KPP_KPDR_KCD((uint8_t) ~(configure->activeColumn));
+    base->KPDR = KPP_KPDR_KCD((uint8_t)
+    ~(configure->activeColumn));
     base->KPCR |= KPP_KPCR_KCO(configure->activeColumn);
 
     /* Set the input direction for row and output direction for column. */
-    base->KDDR = KPP_KDDR_KCDD(configure->activeColumn) | KPP_KDDR_KRDD((uint8_t) ~(configure->activeRow));
+    base->KDDR = KPP_KDDR_KCDD(configure->activeColumn) | KPP_KDDR_KRDD((uint8_t)
+    ~(configure->activeRow));
 
     /* Clear the status flag and enable the interrupt. */
     base->KPSR = KPP_KPSR_KPKR_MASK | KPP_KPSR_KPKD_MASK | KPP_KPSR_KDSC_MASK | configure->interrupt;
 
-    if ((configure->interrupt) != 0U)
-    {
+    if ((configure->interrupt) != 0U) {
         /* Enable at the Interrupt */
-        (void)EnableIRQ(s_kppIrqs[instance]);
+        (void) EnableIRQ(s_kppIrqs[instance]);
     }
 }
 
@@ -110,8 +107,7 @@ void KPP_Init(KPP_Type *base, kpp_config_t *configure)
  *
  * param base KPP peripheral base address.
  */
-void KPP_Deinit(KPP_Type *base)
-{
+void KPP_Deinit(KPP_Type *base) {
     /* Disable interrupts and disable all rows. */
     base->KPSR &= (uint16_t)(~(KPP_KPSR_KRIE_MASK | KPP_KPSR_KDIE_MASK));
     base->KPCR = 0;
@@ -134,12 +130,11 @@ void KPP_Deinit(KPP_Type *base)
  * the data pointer is recommended to be a array like uint8_t data[KPP_KEYPAD_COLUMNNUM_MAX].
  * for example the data[2] = 4, that means in column 1 row 2 has a key press event.
  */
-void KPP_keyPressScanning(KPP_Type *base, uint8_t *data, uint32_t clockSrc_Hz)
-{
+void KPP_keyPressScanning(KPP_Type *base, uint8_t *data, uint32_t clockSrc_Hz) {
     assert(data);
 
-    uint16_t kppKCO      = base->KPCR & KPP_KPCR_KCO_MASK;
-    uint8_t columIndex   = 0;
+    uint16_t kppKCO = base->KPCR & KPP_KPCR_KCO_MASK;
+    uint8_t columIndex = 0;
     uint8_t activeColumn = (uint8_t)((base->KPCR & KPP_KPCR_KCO_MASK) >> KPP_KPCR_KCO_SHIFT);
     uint8_t times;
     uint8_t rowData[KPP_KEYPAD_SCAN_TIMES][KPP_KEYPAD_COLUMNNUM_MAX];
@@ -147,32 +142,29 @@ void KPP_keyPressScanning(KPP_Type *base, uint8_t *data, uint32_t clockSrc_Hz)
     uint8_t column;
 
     /* Initialize row data to zero. */
-    (void)memset(&rowData[0][0], 0, sizeof(rowData));
+    (void) memset(&rowData[0][0], 0, sizeof(rowData));
 
     /* Scanning. */
     /* Configure the column data to 1 according to column numbers. */
     base->KPDR = KPP_KPDR_KCD_MASK;
     /* Configure column to totem pole for quick discharge of keypad capacitance. */
-    base->KPCR &= (uint16_t)(((uint16_t)~kppKCO) | KPP_KPCR_KRE_MASK);
+    base->KPCR &= (uint16_t)(((uint16_t)
+    ~kppKCO) | KPP_KPCR_KRE_MASK);
     /* Recover. */
     base->KPCR |= kppKCO;
     /* Three times scanning. */
-    for (times = 0; times < KPP_KEYPAD_SCAN_TIMES; times++)
-    {
-        for (columIndex = 0; columIndex < KPP_KEYPAD_COLUMNNUM_MAX; columIndex++)
-        {
+    for (times = 0; times < KPP_KEYPAD_SCAN_TIMES; times++) {
+        for (columIndex = 0; columIndex < KPP_KEYPAD_COLUMNNUM_MAX; columIndex++) {
             column = activeColumn & (1U << columIndex);
-            if (column != 0U)
-            {
+            if (column != 0U) {
                 /* Set the single column line to 0. */
-                base->KPDR = KPP_KPDR_KCD(~(uint16_t)column);
+                base->KPDR = KPP_KPDR_KCD(~(uint16_t)
+                column);
                 /* Take 100us delays. */
-                KPP_Mdelay(((uint64_t)clockSrc_Hz / 10000000UL));
+                KPP_Mdelay(((uint64_t) clockSrc_Hz / 10000000UL));
                 /* Read row data. */
                 rowData[times][columIndex] = (uint8_t)(~(base->KPDR & KPP_KPDR_KRD_MASK));
-            }
-            else
-            {
+            } else {
                 /* Read row data. */
                 rowData[times][columIndex] = 0;
             }
@@ -183,20 +175,15 @@ void KPP_keyPressScanning(KPP_Type *base, uint8_t *data, uint32_t clockSrc_Hz)
     base->KPDR &= (uint16_t)(~KPP_KPDR_KCD_MASK);
 
     /* Check if three time scan data is the same. */
-    for (columIndex = 0; columIndex < KPP_KEYPAD_COLUMNNUM_MAX; columIndex++)
-    {
-        if (((uint8_t)(rowData[0][columIndex] & rowData[1][columIndex]) & rowData[2][columIndex]) != 0U)
-        {
+    for (columIndex = 0; columIndex < KPP_KEYPAD_COLUMNNUM_MAX; columIndex++) {
+        if (((uint8_t)(rowData[0][columIndex] & rowData[1][columIndex]) & rowData[2][columIndex]) != 0U) {
             press = true;
         }
     }
 
-    if (press)
-    {
-        (void)memcpy(data, &rowData[0][0], sizeof(rowData[0]));
-    }
-    else
-    {
-        (void)memset(data, 0, sizeof(rowData[0]));
+    if (press) {
+        (void) memcpy(data, &rowData[0][0], sizeof(rowData[0]));
+    } else {
+        (void) memset(data, 0, sizeof(rowData[0]));
     }
 }

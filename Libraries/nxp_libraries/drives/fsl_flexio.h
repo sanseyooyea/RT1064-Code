@@ -31,58 +31,51 @@
 #define FLEXIO_TIMER_TRIGGER_SEL_TIMn(x) (((uint32_t)(x) << 2U) | 0x3U)
 
 /*! @brief Define time of timer trigger polarity.*/
-typedef enum _flexio_timer_trigger_polarity
-{
+typedef enum _flexio_timer_trigger_polarity {
     kFLEXIO_TimerTriggerPolarityActiveHigh = 0x0U, /*!< Active high. */
-    kFLEXIO_TimerTriggerPolarityActiveLow  = 0x1U, /*!< Active low. */
+    kFLEXIO_TimerTriggerPolarityActiveLow = 0x1U, /*!< Active low. */
 } flexio_timer_trigger_polarity_t;
 
 /*! @brief Define type of timer trigger source.*/
-typedef enum _flexio_timer_trigger_source
-{
+typedef enum _flexio_timer_trigger_source {
     kFLEXIO_TimerTriggerSourceExternal = 0x0U, /*!< External trigger selected. */
     kFLEXIO_TimerTriggerSourceInternal = 0x1U, /*!< Internal trigger selected. */
 } flexio_timer_trigger_source_t;
 
 /*! @brief Define type of timer/shifter pin configuration.*/
-typedef enum _flexio_pin_config
-{
-    kFLEXIO_PinConfigOutputDisabled         = 0x0U, /*!< Pin output disabled. */
+typedef enum _flexio_pin_config {
+    kFLEXIO_PinConfigOutputDisabled = 0x0U, /*!< Pin output disabled. */
     kFLEXIO_PinConfigOpenDrainOrBidirection = 0x1U, /*!< Pin open drain or bidirectional output enable. */
-    kFLEXIO_PinConfigBidirectionOutputData  = 0x2U, /*!< Pin bidirectional output data. */
-    kFLEXIO_PinConfigOutput                 = 0x3U, /*!< Pin output. */
+    kFLEXIO_PinConfigBidirectionOutputData = 0x2U, /*!< Pin bidirectional output data. */
+    kFLEXIO_PinConfigOutput = 0x3U, /*!< Pin output. */
 } flexio_pin_config_t;
 
 /*! @brief Definition of pin polarity.*/
-typedef enum _flexio_pin_polarity
-{
+typedef enum _flexio_pin_polarity {
     kFLEXIO_PinActiveHigh = 0x0U, /*!< Active high. */
-    kFLEXIO_PinActiveLow  = 0x1U, /*!< Active low. */
+    kFLEXIO_PinActiveLow = 0x1U, /*!< Active low. */
 } flexio_pin_polarity_t;
 
 /*! @brief Define type of timer work mode.*/
-typedef enum _flexio_timer_mode
-{
-    kFLEXIO_TimerModeDisabled        = 0x0U, /*!< Timer Disabled. */
+typedef enum _flexio_timer_mode {
+    kFLEXIO_TimerModeDisabled = 0x0U, /*!< Timer Disabled. */
     kFLEXIO_TimerModeDual8BitBaudBit = 0x1U, /*!< Dual 8-bit counters baud/bit mode. */
-    kFLEXIO_TimerModeDual8BitPWM     = 0x2U, /*!< Dual 8-bit counters PWM mode. */
-    kFLEXIO_TimerModeSingle16Bit     = 0x3U, /*!< Single 16-bit counter mode. */
+    kFLEXIO_TimerModeDual8BitPWM = 0x2U, /*!< Dual 8-bit counters PWM mode. */
+    kFLEXIO_TimerModeSingle16Bit = 0x3U, /*!< Single 16-bit counter mode. */
 } flexio_timer_mode_t;
 
 /*! @brief Define type of timer initial output or timer reset condition.*/
-typedef enum _flexio_timer_output
-{
+typedef enum _flexio_timer_output {
     kFLEXIO_TimerOutputOneNotAffectedByReset = 0x0U,  /*!< Logic one when enabled and is not affected by timer
                                                        reset. */
     kFLEXIO_TimerOutputZeroNotAffectedByReset = 0x1U, /*!< Logic zero when enabled and is not affected by timer
                                                        reset. */
-    kFLEXIO_TimerOutputOneAffectedByReset  = 0x2U,    /*!< Logic one when enabled and on timer reset. */
+    kFLEXIO_TimerOutputOneAffectedByReset = 0x2U,    /*!< Logic one when enabled and on timer reset. */
     kFLEXIO_TimerOutputZeroAffectedByReset = 0x3U,    /*!< Logic zero when enabled and on timer reset. */
 } flexio_timer_output_t;
 
 /*! @brief Define type of timer decrement.*/
-typedef enum _flexio_timer_decrement_source
-{
+typedef enum _flexio_timer_decrement_source {
     kFLEXIO_TimerDecSrcOnFlexIOClockShiftTimerOutput = 0x0U,   /*!< Decrement counter on FlexIO clock, Shift clock
                                                                 equals Timer output. */
     kFLEXIO_TimerDecSrcOnTriggerInputShiftTimerOutput = 0x1U,  /*!< Decrement counter on Trigger input (both edges),
@@ -94,74 +87,67 @@ typedef enum _flexio_timer_decrement_source
 } flexio_timer_decrement_source_t;
 
 /*! @brief Define type of timer reset condition.*/
-typedef enum _flexio_timer_reset_condition
-{
-    kFLEXIO_TimerResetNever                            = 0x0U, /*!< Timer never reset. */
-    kFLEXIO_TimerResetOnTimerPinEqualToTimerOutput     = 0x2U, /*!< Timer reset on Timer Pin equal to Timer Output. */
+typedef enum _flexio_timer_reset_condition {
+    kFLEXIO_TimerResetNever = 0x0U, /*!< Timer never reset. */
+    kFLEXIO_TimerResetOnTimerPinEqualToTimerOutput = 0x2U, /*!< Timer reset on Timer Pin equal to Timer Output. */
     kFLEXIO_TimerResetOnTimerTriggerEqualToTimerOutput = 0x3U, /*!< Timer reset on Timer Trigger equal to
                                                                 Timer Output. */
-    kFLEXIO_TimerResetOnTimerPinRisingEdge     = 0x4U,         /*!< Timer reset on Timer Pin rising edge. */
+    kFLEXIO_TimerResetOnTimerPinRisingEdge = 0x4U,         /*!< Timer reset on Timer Pin rising edge. */
     kFLEXIO_TimerResetOnTimerTriggerRisingEdge = 0x6U,         /*!< Timer reset on Trigger rising edge. */
-    kFLEXIO_TimerResetOnTimerTriggerBothEdge   = 0x7U,         /*!< Timer reset on Trigger rising or falling edge. */
+    kFLEXIO_TimerResetOnTimerTriggerBothEdge = 0x7U,         /*!< Timer reset on Trigger rising or falling edge. */
 } flexio_timer_reset_condition_t;
 
 /*! @brief Define type of timer disable condition.*/
-typedef enum _flexio_timer_disable_condition
-{
-    kFLEXIO_TimerDisableNever                    = 0x0U, /*!< Timer never disabled. */
-    kFLEXIO_TimerDisableOnPreTimerDisable        = 0x1U, /*!< Timer disabled on Timer N-1 disable. */
-    kFLEXIO_TimerDisableOnTimerCompare           = 0x2U, /*!< Timer disabled on Timer compare. */
+typedef enum _flexio_timer_disable_condition {
+    kFLEXIO_TimerDisableNever = 0x0U, /*!< Timer never disabled. */
+    kFLEXIO_TimerDisableOnPreTimerDisable = 0x1U, /*!< Timer disabled on Timer N-1 disable. */
+    kFLEXIO_TimerDisableOnTimerCompare = 0x2U, /*!< Timer disabled on Timer compare. */
     kFLEXIO_TimerDisableOnTimerCompareTriggerLow = 0x3U, /*!< Timer disabled on Timer compare and Trigger Low. */
-    kFLEXIO_TimerDisableOnPinBothEdge            = 0x4U, /*!< Timer disabled on Pin rising or falling edge. */
+    kFLEXIO_TimerDisableOnPinBothEdge = 0x4U, /*!< Timer disabled on Pin rising or falling edge. */
     kFLEXIO_TimerDisableOnPinBothEdgeTriggerHigh = 0x5U, /*!< Timer disabled on Pin rising or falling edge provided
                                                           Trigger is high. */
     kFLEXIO_TimerDisableOnTriggerFallingEdge = 0x6U,     /*!< Timer disabled on Trigger falling edge. */
 } flexio_timer_disable_condition_t;
 
 /*! @brief Define type of timer enable condition.*/
-typedef enum _flexio_timer_enable_condition
-{
-    kFLEXIO_TimerEnabledAlways                    = 0x0U, /*!< Timer always enabled. */
-    kFLEXIO_TimerEnableOnPrevTimerEnable          = 0x1U, /*!< Timer enabled on Timer N-1 enable. */
-    kFLEXIO_TimerEnableOnTriggerHigh              = 0x2U, /*!< Timer enabled on Trigger high. */
-    kFLEXIO_TimerEnableOnTriggerHighPinHigh       = 0x3U, /*!< Timer enabled on Trigger high and Pin high. */
-    kFLEXIO_TimerEnableOnPinRisingEdge            = 0x4U, /*!< Timer enabled on Pin rising edge. */
+typedef enum _flexio_timer_enable_condition {
+    kFLEXIO_TimerEnabledAlways = 0x0U, /*!< Timer always enabled. */
+    kFLEXIO_TimerEnableOnPrevTimerEnable = 0x1U, /*!< Timer enabled on Timer N-1 enable. */
+    kFLEXIO_TimerEnableOnTriggerHigh = 0x2U, /*!< Timer enabled on Trigger high. */
+    kFLEXIO_TimerEnableOnTriggerHighPinHigh = 0x3U, /*!< Timer enabled on Trigger high and Pin high. */
+    kFLEXIO_TimerEnableOnPinRisingEdge = 0x4U, /*!< Timer enabled on Pin rising edge. */
     kFLEXIO_TimerEnableOnPinRisingEdgeTriggerHigh = 0x5U, /*!< Timer enabled on Pin rising edge and Trigger high. */
-    kFLEXIO_TimerEnableOnTriggerRisingEdge        = 0x6U, /*!< Timer enabled on Trigger rising edge. */
-    kFLEXIO_TimerEnableOnTriggerBothEdge          = 0x7U, /*!< Timer enabled on Trigger rising or falling edge. */
+    kFLEXIO_TimerEnableOnTriggerRisingEdge = 0x6U, /*!< Timer enabled on Trigger rising edge. */
+    kFLEXIO_TimerEnableOnTriggerBothEdge = 0x7U, /*!< Timer enabled on Trigger rising or falling edge. */
 } flexio_timer_enable_condition_t;
 
 /*! @brief Define type of timer stop bit generate condition.*/
-typedef enum _flexio_timer_stop_bit_condition
-{
-    kFLEXIO_TimerStopBitDisabled                    = 0x0U, /*!< Stop bit disabled. */
-    kFLEXIO_TimerStopBitEnableOnTimerCompare        = 0x1U, /*!< Stop bit is enabled on timer compare. */
-    kFLEXIO_TimerStopBitEnableOnTimerDisable        = 0x2U, /*!< Stop bit is enabled on timer disable. */
+typedef enum _flexio_timer_stop_bit_condition {
+    kFLEXIO_TimerStopBitDisabled = 0x0U, /*!< Stop bit disabled. */
+    kFLEXIO_TimerStopBitEnableOnTimerCompare = 0x1U, /*!< Stop bit is enabled on timer compare. */
+    kFLEXIO_TimerStopBitEnableOnTimerDisable = 0x2U, /*!< Stop bit is enabled on timer disable. */
     kFLEXIO_TimerStopBitEnableOnTimerCompareDisable = 0x3U, /*!< Stop bit is enabled on timer compare and timer
                                                              disable. */
 } flexio_timer_stop_bit_condition_t;
 
 /*! @brief Define type of timer start bit generate condition.*/
-typedef enum _flexio_timer_start_bit_condition
-{
+typedef enum _flexio_timer_start_bit_condition {
     kFLEXIO_TimerStartBitDisabled = 0x0U, /*!< Start bit disabled. */
-    kFLEXIO_TimerStartBitEnabled  = 0x1U, /*!< Start bit enabled. */
+    kFLEXIO_TimerStartBitEnabled = 0x1U, /*!< Start bit enabled. */
 } flexio_timer_start_bit_condition_t;
 
 /*! @brief Define type of timer polarity for shifter control. */
-typedef enum _flexio_shifter_timer_polarity
-{
+typedef enum _flexio_shifter_timer_polarity {
     kFLEXIO_ShifterTimerPolarityOnPositive = 0x0U, /*!< Shift on positive edge of shift clock. */
     kFLEXIO_ShifterTimerPolarityOnNegitive = 0x1U, /*!< Shift on negative edge of shift clock. */
 } flexio_shifter_timer_polarity_t;
 
 /*! @brief Define type of shifter working mode.*/
-typedef enum _flexio_shifter_mode
-{
-    kFLEXIO_ShifterDisabled            = 0x0U, /*!< Shifter is disabled. */
-    kFLEXIO_ShifterModeReceive         = 0x1U, /*!< Receive mode. */
-    kFLEXIO_ShifterModeTransmit        = 0x2U, /*!< Transmit mode. */
-    kFLEXIO_ShifterModeMatchStore      = 0x4U, /*!< Match store mode. */
+typedef enum _flexio_shifter_mode {
+    kFLEXIO_ShifterDisabled = 0x0U, /*!< Shifter is disabled. */
+    kFLEXIO_ShifterModeReceive = 0x1U, /*!< Receive mode. */
+    kFLEXIO_ShifterModeTransmit = 0x2U, /*!< Transmit mode. */
+    kFLEXIO_ShifterModeMatchStore = 0x4U, /*!< Match store mode. */
     kFLEXIO_ShifterModeMatchContinuous = 0x5U, /*!< Match continuous mode. */
 #if FSL_FEATURE_FLEXIO_HAS_STATE_MODE
     kFLEXIO_ShifterModeState = 0x6U, /*!< SHIFTBUF contents are used for storing
@@ -174,37 +160,33 @@ typedef enum _flexio_shifter_mode
 } flexio_shifter_mode_t;
 
 /*! @brief Define type of shifter input source.*/
-typedef enum _flexio_shifter_input_source
-{
-    kFLEXIO_ShifterInputFromPin               = 0x0U, /*!< Shifter input from pin. */
+typedef enum _flexio_shifter_input_source {
+    kFLEXIO_ShifterInputFromPin = 0x0U, /*!< Shifter input from pin. */
     kFLEXIO_ShifterInputFromNextShifterOutput = 0x1U, /*!< Shifter input from Shifter N+1. */
 } flexio_shifter_input_source_t;
 
 /*! @brief Define of STOP bit configuration.*/
-typedef enum _flexio_shifter_stop_bit
-{
+typedef enum _flexio_shifter_stop_bit {
     kFLEXIO_ShifterStopBitDisable = 0x0U, /*!< Disable shifter stop bit. */
-    kFLEXIO_ShifterStopBitLow     = 0x2U, /*!< Set shifter stop bit to logic low level. */
-    kFLEXIO_ShifterStopBitHigh    = 0x3U, /*!< Set shifter stop bit to logic high level. */
+    kFLEXIO_ShifterStopBitLow = 0x2U, /*!< Set shifter stop bit to logic low level. */
+    kFLEXIO_ShifterStopBitHigh = 0x3U, /*!< Set shifter stop bit to logic high level. */
 } flexio_shifter_stop_bit_t;
 
 /*! @brief Define type of START bit configuration.*/
-typedef enum _flexio_shifter_start_bit
-{
+typedef enum _flexio_shifter_start_bit {
     kFLEXIO_ShifterStartBitDisabledLoadDataOnEnable = 0x0U, /*!< Disable shifter start bit, transmitter loads
                                                              data on enable. */
     kFLEXIO_ShifterStartBitDisabledLoadDataOnShift = 0x1U,  /*!< Disable shifter start bit, transmitter loads
                                                              data on first shift. */
-    kFLEXIO_ShifterStartBitLow  = 0x2U,                     /*!< Set shifter start bit to logic low level. */
+    kFLEXIO_ShifterStartBitLow = 0x2U,                     /*!< Set shifter start bit to logic low level. */
     kFLEXIO_ShifterStartBitHigh = 0x3U,                     /*!< Set shifter start bit to logic high level. */
 } flexio_shifter_start_bit_t;
 
 /*! @brief Define FlexIO shifter buffer type*/
-typedef enum _flexio_shifter_buffer_type
-{
-    kFLEXIO_ShifterBuffer               = 0x0U, /*!< Shifter Buffer N Register. */
-    kFLEXIO_ShifterBufferBitSwapped     = 0x1U, /*!< Shifter Buffer N Bit Byte Swapped Register. */
-    kFLEXIO_ShifterBufferByteSwapped    = 0x2U, /*!< Shifter Buffer N Byte Swapped Register. */
+typedef enum _flexio_shifter_buffer_type {
+    kFLEXIO_ShifterBuffer = 0x0U, /*!< Shifter Buffer N Register. */
+    kFLEXIO_ShifterBufferBitSwapped = 0x1U, /*!< Shifter Buffer N Bit Byte Swapped Register. */
+    kFLEXIO_ShifterBufferByteSwapped = 0x2U, /*!< Shifter Buffer N Byte Swapped Register. */
     kFLEXIO_ShifterBufferBitByteSwapped = 0x3U, /*!< Shifter Buffer N Bit Swapped Register. */
 #if defined(FSL_FEATURE_FLEXIO_HAS_SHFT_BUFFER_NIBBLE_BYTE_SWAP) && FSL_FEATURE_FLEXIO_HAS_SHFT_BUFFER_NIBBLE_BYTE_SWAP
     kFLEXIO_ShifterBufferNibbleByteSwapped = 0x4U, /*!< Shifter Buffer N Nibble Byte Swapped Register. */
@@ -218,8 +200,7 @@ typedef enum _flexio_shifter_buffer_type
 } flexio_shifter_buffer_type_t;
 
 /*! @brief Define FlexIO user configuration structure. */
-typedef struct _flexio_config_
-{
+typedef struct _flexio_config_ {
     bool enableFlexio;     /*!< Enable/disable FlexIO module */
     bool enableInDoze;     /*!< Enable/disable FlexIO operation in doze mode */
     bool enableInDebug;    /*!< Enable/disable FlexIO operation in debug mode */
@@ -228,8 +209,7 @@ typedef struct _flexio_config_
 } flexio_config_t;
 
 /*! @brief Define FlexIO timer configuration structure. */
-typedef struct _flexio_timer_config
-{
+typedef struct _flexio_timer_config {
     /* Trigger. */
     uint32_t triggerSelect;                          /*!< The internal trigger selection number using MACROs. */
     flexio_timer_trigger_polarity_t triggerPolarity; /*!< Trigger Polarity. */
@@ -256,8 +236,7 @@ typedef struct _flexio_timer_config
 } flexio_timer_config_t;
 
 /*! @brief Define FlexIO shifter configuration structure. */
-typedef struct _flexio_shifter_config
-{
+typedef struct _flexio_shifter_config {
     /* Timer. */
     uint32_t timerSelect;                          /*!< Selects which Timer is used for controlling the
                                                     logic/shift register and generating the Shift clock. */
@@ -372,14 +351,10 @@ void FLEXIO_Reset(FLEXIO_Type *base);
  * @param base FlexIO peripheral base address
  * @param enable true to enable, false to disable.
  */
-static inline void FLEXIO_Enable(FLEXIO_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void FLEXIO_Enable(FLEXIO_Type *base, bool enable) {
+    if (enable) {
         base->CTRL |= FLEXIO_CTRL_FLEXEN_MASK;
-    }
-    else
-    {
+    } else {
         base->CTRL &= ~FLEXIO_CTRL_FLEXEN_MASK;
     }
 }
@@ -436,6 +411,7 @@ static inline uint8_t FLEXIO_GetShifterState(FLEXIO_Type *base)
  * @param shifterConfig Pointer to flexio_shifter_config_t structure
 */
 void FLEXIO_SetShifterConfig(FLEXIO_Type *base, uint8_t index, const flexio_shifter_config_t *shifterConfig);
+
 /*!
  * @brief Configures the timer with the timer configuration. The configuration structure
  * covers both the TIMCTL and TIMCFG registers. To configure the timer to the proper
@@ -483,8 +459,7 @@ void FLEXIO_SetTimerConfig(FLEXIO_Type *base, uint8_t index, const flexio_timer_
  * @note For multiple shifter status interrupt enable, for example, two shifter status enable, can calculate
  * the mask by using ((1 << shifter index0) | (1 << shifter index1))
  */
-static inline void FLEXIO_EnableShifterStatusInterrupts(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_EnableShifterStatusInterrupts(FLEXIO_Type *base, uint32_t mask) {
     base->SHIFTSIEN |= mask;
 }
 
@@ -496,8 +471,7 @@ static inline void FLEXIO_EnableShifterStatusInterrupts(FLEXIO_Type *base, uint3
  * @note For multiple shifter status interrupt enable, for example, two shifter status enable, can calculate
  * the mask by using ((1 << shifter index0) | (1 << shifter index1))
  */
-static inline void FLEXIO_DisableShifterStatusInterrupts(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_DisableShifterStatusInterrupts(FLEXIO_Type *base, uint32_t mask) {
     base->SHIFTSIEN &= ~mask;
 }
 
@@ -509,8 +483,7 @@ static inline void FLEXIO_DisableShifterStatusInterrupts(FLEXIO_Type *base, uint
  * @note For multiple shifter error interrupt enable, for example, two shifter error enable, can calculate
  * the mask by using ((1 << shifter index0) | (1 << shifter index1))
  */
-static inline void FLEXIO_EnableShifterErrorInterrupts(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_EnableShifterErrorInterrupts(FLEXIO_Type *base, uint32_t mask) {
     base->SHIFTEIEN |= mask;
 }
 
@@ -522,8 +495,7 @@ static inline void FLEXIO_EnableShifterErrorInterrupts(FLEXIO_Type *base, uint32
  * @note For multiple shifter error interrupt enable, for example, two shifter error enable, can calculate
  * the mask by using ((1 << shifter index0) | (1 << shifter index1))
  */
-static inline void FLEXIO_DisableShifterErrorInterrupts(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_DisableShifterErrorInterrupts(FLEXIO_Type *base, uint32_t mask) {
     base->SHIFTEIEN &= ~mask;
 }
 
@@ -535,8 +507,7 @@ static inline void FLEXIO_DisableShifterErrorInterrupts(FLEXIO_Type *base, uint3
  * @note For multiple timer status interrupt enable, for example, two timer status enable, can calculate
  * the mask by using ((1 << timer index0) | (1 << timer index1))
  */
-static inline void FLEXIO_EnableTimerStatusInterrupts(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_EnableTimerStatusInterrupts(FLEXIO_Type *base, uint32_t mask) {
     base->TIMIEN |= mask;
 }
 
@@ -548,8 +519,7 @@ static inline void FLEXIO_EnableTimerStatusInterrupts(FLEXIO_Type *base, uint32_
  * @note For multiple timer status interrupt enable, for example, two timer status enable, can calculate
  * the mask by using ((1 << timer index0) | (1 << timer index1))
  */
-static inline void FLEXIO_DisableTimerStatusInterrupts(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_DisableTimerStatusInterrupts(FLEXIO_Type *base, uint32_t mask) {
     base->TIMIEN &= ~mask;
 }
 
@@ -566,8 +536,7 @@ static inline void FLEXIO_DisableTimerStatusInterrupts(FLEXIO_Type *base, uint32
  * @param base FlexIO peripheral base address
  * @return Shifter status flags
  */
-static inline uint32_t FLEXIO_GetShifterStatusFlags(FLEXIO_Type *base)
-{
+static inline uint32_t FLEXIO_GetShifterStatusFlags(FLEXIO_Type *base) {
     return ((base->SHIFTSTAT) & FLEXIO_SHIFTSTAT_SSF_MASK);
 }
 
@@ -579,8 +548,7 @@ static inline uint32_t FLEXIO_GetShifterStatusFlags(FLEXIO_Type *base)
  * @note For clearing multiple shifter status flags, for example, two shifter status flags, can calculate
  * the mask by using ((1 << shifter index0) | (1 << shifter index1))
  */
-static inline void FLEXIO_ClearShifterStatusFlags(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_ClearShifterStatusFlags(FLEXIO_Type *base, uint32_t mask) {
     base->SHIFTSTAT = mask;
 }
 
@@ -590,8 +558,7 @@ static inline void FLEXIO_ClearShifterStatusFlags(FLEXIO_Type *base, uint32_t ma
  * @param base FlexIO peripheral base address
  * @return Shifter error flags
  */
-static inline uint32_t FLEXIO_GetShifterErrorFlags(FLEXIO_Type *base)
-{
+static inline uint32_t FLEXIO_GetShifterErrorFlags(FLEXIO_Type *base) {
     return ((base->SHIFTERR) & FLEXIO_SHIFTERR_SEF_MASK);
 }
 
@@ -603,8 +570,7 @@ static inline uint32_t FLEXIO_GetShifterErrorFlags(FLEXIO_Type *base)
  * @note For clearing multiple shifter error flags, for example, two shifter error flags, can calculate
  * the mask by using ((1 << shifter index0) | (1 << shifter index1))
  */
-static inline void FLEXIO_ClearShifterErrorFlags(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_ClearShifterErrorFlags(FLEXIO_Type *base, uint32_t mask) {
     base->SHIFTERR = mask;
 }
 
@@ -614,8 +580,7 @@ static inline void FLEXIO_ClearShifterErrorFlags(FLEXIO_Type *base, uint32_t mas
  * @param base FlexIO peripheral base address
  * @return Timer status flags
  */
-static inline uint32_t FLEXIO_GetTimerStatusFlags(FLEXIO_Type *base)
-{
+static inline uint32_t FLEXIO_GetTimerStatusFlags(FLEXIO_Type *base) {
     return ((base->TIMSTAT) & FLEXIO_TIMSTAT_TSF_MASK);
 }
 
@@ -627,8 +592,7 @@ static inline uint32_t FLEXIO_GetTimerStatusFlags(FLEXIO_Type *base)
  * @note For clearing multiple timer status flags, for example, two timer status flags, can calculate
  * the mask by using ((1 << timer index0) | (1 << timer index1))
  */
-static inline void FLEXIO_ClearTimerStatusFlags(FLEXIO_Type *base, uint32_t mask)
-{
+static inline void FLEXIO_ClearTimerStatusFlags(FLEXIO_Type *base, uint32_t mask) {
     base->TIMSTAT = mask;
 }
 
@@ -649,14 +613,10 @@ static inline void FLEXIO_ClearTimerStatusFlags(FLEXIO_Type *base, uint32_t mask
  * @param mask The shifter status mask which can be calculated by (1 << shifter index)
  * @param enable True to enable, false to disable.
  */
-static inline void FLEXIO_EnableShifterStatusDMA(FLEXIO_Type *base, uint32_t mask, bool enable)
-{
-    if (enable)
-    {
+static inline void FLEXIO_EnableShifterStatusDMA(FLEXIO_Type *base, uint32_t mask, bool enable) {
+    if (enable) {
         base->SHIFTSDEN |= mask;
-    }
-    else
-    {
+    } else {
         base->SHIFTSDEN &= ~mask;
     }
 }

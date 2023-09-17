@@ -51,9 +51,9 @@
 #define CSI_CSICR3_INT_EN_MASK 0x000000FFU
 #define CSI_CSICR18_INT_EN_MASK 0x0000FF00U
 
-#if ((~CSI_CSICR1_INT_EN_MASK) &                                                                             \
-     (CSI_CSICR1_EOF_INT_EN_MASK | CSI_CSICR1_COF_INT_EN_MASK | CSI_CSICR1_SF_OR_INTEN_MASK |                \
-      CSI_CSICR1_RF_OR_INTEN_MASK | CSI_CSICR1_SFF_DMA_DONE_INTEN_MASK | CSI_CSICR1_STATFF_INTEN_MASK |      \
+#if ((~CSI_CSICR1_INT_EN_MASK) & \
+     (CSI_CSICR1_EOF_INT_EN_MASK | CSI_CSICR1_COF_INT_EN_MASK | CSI_CSICR1_SF_OR_INTEN_MASK | \
+      CSI_CSICR1_RF_OR_INTEN_MASK | CSI_CSICR1_SFF_DMA_DONE_INTEN_MASK | CSI_CSICR1_STATFF_INTEN_MASK | \
       CSI_CSICR1_FB2_DMA_DONE_INTEN_MASK | CSI_CSICR1_FB1_DMA_DONE_INTEN_MASK | CSI_CSICR1_RXFF_INTEN_MASK | \
       CSI_CSICR1_SOF_INTEN_MASK))
 #error CSI_CSICR1_INT_EN_MASK could not cover all interrupt bits in CSICR1.
@@ -68,8 +68,7 @@
 #endif
 
 /*! @brief Error codes for the CSI driver. */
-enum _csi_status
-{
+enum _csi_status {
     kStatus_CSI_NoEmptyBuffer = MAKE_STATUS(kStatusGroup_CSI, 0), /*!< No empty frame buffer in queue to load to CSI. */
     kStatus_CSI_NoFullBuffer = MAKE_STATUS(kStatusGroup_CSI, 1),  /*!< No full frame buffer in queue to read out. */
     kStatus_CSI_QueueFull = MAKE_STATUS(kStatusGroup_CSI, 2), /*!< Queue is full, no room to save new empty buffer. */
@@ -81,8 +80,7 @@ enum _csi_status
  *
  * The CCIR656 interlace mode is not supported currently.
  */
-typedef enum _csi_work_mode
-{
+typedef enum _csi_work_mode {
     kCSI_GatedClockMode = CSI_CSICR1_GCLK_MODE(1U),       /*!< HSYNC, VSYNC, and PIXCLK signals are used. */
     kCSI_NonGatedClockMode = 0U,                          /*!< VSYNC, and PIXCLK signals are used. */
     kCSI_CCIR656ProgressiveMode = CSI_CSICR1_CCIR_EN(1U), /*!< CCIR656 progressive mode. */
@@ -93,14 +91,12 @@ typedef enum _csi_work_mode
  *
  * Currently only support 8-bit width.
  */
-typedef enum _csi_data_bus
-{
+typedef enum _csi_data_bus {
     kCSI_DataBus8Bit, /*!< 8-bit data bus. */
 } csi_data_bus_t;
 
 /*! @brief CSI signal polarity. */
-enum _csi_polarity_flags
-{
+enum _csi_polarity_flags {
     kCSI_HsyncActiveLow = 0U,                           /*!< HSYNC is active low. */
     kCSI_HsyncActiveHigh = CSI_CSICR1_HSYNC_POL_MASK,   /*!< HSYNC is active high. */
     kCSI_DataLatchOnRisingEdge = CSI_CSICR1_REDGE_MASK, /*!< Pixel data latched at rising edge of pixel clock. */
@@ -110,8 +106,7 @@ enum _csi_polarity_flags
 };
 
 /*! @brief Configuration to initialize the CSI module. */
-typedef struct _csi_config
-{
+typedef struct _csi_config {
     uint16_t width;           /*!< Pixels of the input frame. */
     uint16_t height;          /*!< Lines of the input frame.  */
     uint32_t polarityFlags;   /*!< Timing signal polarity flags, OR'ed value of @ref _csi_polarity_flags. */
@@ -128,27 +123,25 @@ typedef struct _csi_config
 } csi_config_t;
 
 /*! @brief The CSI FIFO, used for FIFO operation. */
-typedef enum _csi_fifo
-{
+typedef enum _csi_fifo {
     kCSI_RxFifo = (1U << 0U),   /*!< RXFIFO. */
     kCSI_StatFifo = (1U << 1U), /*!< STAT FIFO. */
     kCSI_AllFifo = 0x01 | 0x02, /*!< Both RXFIFO and STAT FIFO. */
 } csi_fifo_t;
 
 /*! @brief CSI feature interrupt source. */
-enum _csi_interrupt_enable
-{
+enum _csi_interrupt_enable {
     kCSI_EndOfFrameInterruptEnable = CSI_CSICR1_EOF_INT_EN_MASK,       /*!< End of frame interrupt enable. */
     kCSI_ChangeOfFieldInterruptEnable = CSI_CSICR1_COF_INT_EN_MASK,    /*!< Change of field interrupt enable. */
     kCSI_StatFifoOverrunInterruptEnable = CSI_CSICR1_SF_OR_INTEN_MASK, /*!< STAT FIFO overrun interrupt enable. */
     kCSI_RxFifoOverrunInterruptEnable = CSI_CSICR1_RF_OR_INTEN_MASK,   /*!< RXFIFO overrun interrupt enable. */
     kCSI_StatFifoDmaDoneInterruptEnable =
-        CSI_CSICR1_SFF_DMA_DONE_INTEN_MASK,                          /*!< STAT FIFO DMA done interrupt enable. */
+    CSI_CSICR1_SFF_DMA_DONE_INTEN_MASK,                          /*!< STAT FIFO DMA done interrupt enable. */
     kCSI_StatFifoFullInterruptEnable = CSI_CSICR1_STATFF_INTEN_MASK, /*!< STAT FIFO full interrupt enable. */
     kCSI_RxBuffer1DmaDoneInterruptEnable =
-        CSI_CSICR1_FB2_DMA_DONE_INTEN_MASK, /*!< RX frame buffer 1 DMA transfer done. */
+    CSI_CSICR1_FB2_DMA_DONE_INTEN_MASK, /*!< RX frame buffer 1 DMA transfer done. */
     kCSI_RxBuffer0DmaDoneInterruptEnable =
-        CSI_CSICR1_FB1_DMA_DONE_INTEN_MASK,                       /*!< RX frame buffer 0 DMA transfer done. */
+    CSI_CSICR1_FB1_DMA_DONE_INTEN_MASK,                       /*!< RX frame buffer 0 DMA transfer done. */
     kCSI_RxFifoFullInterruptEnable = CSI_CSICR1_RXFF_INTEN_MASK,  /*!< RXFIFO full interrupt enable. */
     kCSI_StartOfFrameInterruptEnable = CSI_CSICR1_SOF_INTEN_MASK, /*!< Start of frame (SOF) interrupt enable. */
 
@@ -179,8 +172,7 @@ enum _csi_interrupt_enable
  * - kCSI_Field1DoneFlag
  * - kCSI_BaseAddrChangeErrorFlag
  */
-enum _csi_flags
-{
+enum _csi_flags {
     kCSI_RxFifoDataReadyFlag = CSI_CSISR_DRDY_MASK,      /*!< RXFIFO data ready. */
     kCSI_EccErrorFlag = CSI_CSISR_ECC_INT_MASK,          /*!< ECC error detected. */
     kCSI_AhbResErrorFlag = CSI_CSISR_HRESP_ERR_INT_MASK, /*!< Hresponse (AHB bus response) Error. */
@@ -218,8 +210,7 @@ typedef void (*csi_transfer_callback_t)(CSI_Type *base, csi_handle_t *handle, st
  *
  * Please see the user guide for the details of the CSI driver queue mechanism.
  */
-struct _csi_handle
-{
+struct _csi_handle {
     uint32_t frameBufferQueue[CSI_DRIVER_ACTUAL_QUEUE_SIZE]; /*!< Frame buffer queue. */
 
     volatile uint8_t queueUserReadIdx;  /*!< Application gets full-filled frame buffer from this index. */
@@ -440,8 +431,7 @@ void CSI_EnableFifoDmaRequest(CSI_Type *base, csi_fifo_t fifo, bool enable);
  *
  * @param base CSI peripheral base address.
  */
-static inline void CSI_Start(CSI_Type *base)
-{
+static inline void CSI_Start(CSI_Type *base) {
     CSI_EnableFifoDmaRequest(base, kCSI_RxFifo, true);
     base->CSICR18 |= CSI_CSICR18_CSI_ENABLE_MASK;
 }
@@ -451,8 +441,7 @@ static inline void CSI_Start(CSI_Type *base)
  *
  * @param base CSI peripheral base address.
  */
-static inline void CSI_Stop(CSI_Type *base)
-{
+static inline void CSI_Stop(CSI_Type *base) {
     base->CSICR18 &= ~CSI_CSICR18_CSI_ENABLE_MASK;
     CSI_EnableFifoDmaRequest(base, kCSI_RxFifo, false);
 }
@@ -501,8 +490,7 @@ void CSI_DisableInterrupts(CSI_Type *base, uint32_t mask);
  * @param base CSI peripheral base address.
  * @return status flag, it is OR'ed value of @ref _csi_flags.
  */
-static inline uint32_t CSI_GetStatusFlags(CSI_Type *base)
-{
+static inline uint32_t CSI_GetStatusFlags(CSI_Type *base) {
     return base->CSISR;
 }
 
@@ -521,8 +509,7 @@ static inline uint32_t CSI_GetStatusFlags(CSI_Type *base)
  * @param base CSI peripheral base address.
  * @param statusMask The status flags mask, OR'ed value of @ref _csi_flags.
  */
-static inline void CSI_ClearStatusFlags(CSI_Type *base, uint32_t statusMask)
-{
+static inline void CSI_ClearStatusFlags(CSI_Type *base, uint32_t statusMask) {
     base->CSISR = statusMask;
 }
 /* @} */
@@ -624,9 +611,11 @@ status_t CSI_TransferGetFullBuffer(CSI_Type *base, csi_handle_t *handle, uint32_
  * @param handle CSI handle pointer.
  */
 void CSI_TransferHandleIRQ(CSI_Type *base, csi_handle_t *handle);
+
 /* @} */
 
 void CSI_DriverIRQHandler(void);
+
 #else
 
 /*!

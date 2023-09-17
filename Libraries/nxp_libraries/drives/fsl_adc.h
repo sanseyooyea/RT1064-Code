@@ -25,27 +25,24 @@
 /*!
  * @brief Converter's status flags.
  */
-typedef enum _adc_status_flags
-{
-    kADC_ConversionActiveFlag  = ADC_GS_ADACT_MASK, /*!< Conversion is active,not support w1c. */
+typedef enum _adc_status_flags {
+    kADC_ConversionActiveFlag = ADC_GS_ADACT_MASK, /*!< Conversion is active,not support w1c. */
     kADC_CalibrationFailedFlag = ADC_GS_CALF_MASK,  /*!< Calibration is failed,support w1c. */
     kADC_AsynchronousWakeupInterruptFlag =
-        ADC_GS_AWKST_MASK, /*!< Asynchronous wakeup interrupt occurred, support w1c. */
+    ADC_GS_AWKST_MASK, /*!< Asynchronous wakeup interrupt occurred, support w1c. */
 } adc_status_flags_t;
 
 /*!
  * @brief Reference voltage source.
  */
-typedef enum _adc_reference_voltage_source
-{
+typedef enum _adc_reference_voltage_source {
     kADC_ReferenceVoltageSourceAlt0 = 0U, /*!< For external pins pair of VrefH and VrefL. */
 } adc_reference_voltage_source_t;
 
 /*!
  * @brief Sample time duration.
  */
-typedef enum _adc_sample_period_mode
-{
+typedef enum _adc_sample_period_mode {
     /* This group of enumeration is for internal use which is related to register setting. */
     kADC_SamplePeriod2or12Clocks = 0U, /*!< Long sample 12 clocks or short sample 2 clocks. */
     kADC_SamplePeriod4or16Clocks = 1U, /*!< Long sample 16 clocks or short sample 4 clocks. */
@@ -67,9 +64,8 @@ typedef enum _adc_sample_period_mode
 /*!
  * @brief Clock source.
  */
-typedef enum _adc_clock_source
-{
-    kADC_ClockSourceIPG     = 0U, /*!< Select IPG clock to generate ADCK. */
+typedef enum _adc_clock_source {
+    kADC_ClockSourceIPG = 0U, /*!< Select IPG clock to generate ADCK. */
     kADC_ClockSourceIPGDiv2 = 1U, /*!< Select IPG clock divided by 2 to generate ADCK. */
 #if !(defined(FSL_FEATURE_ADC_SUPPORT_ALTCLK_REMOVE) && FSL_FEATURE_ADC_SUPPORT_ALTCLK_REMOVE)
     kADC_ClockSourceALT = 2U, /*!< Select alternate clock to generate ADCK. */
@@ -80,8 +76,7 @@ typedef enum _adc_clock_source
 /*!
  * @brief Clock divider for the converter.
  */
-typedef enum _adc_clock_drvier
-{
+typedef enum _adc_clock_drvier {
     kADC_ClockDriver1 = 0U, /*!< For divider 1 from the input clock to the module. */
     kADC_ClockDriver2 = 1U, /*!< For divider 2 from the input clock to the module. */
     kADC_ClockDriver4 = 2U, /*!< For divider 4 from the input clock to the module. */
@@ -91,9 +86,8 @@ typedef enum _adc_clock_drvier
 /*!
  * @brief Converter's resolution.
  */
-typedef enum _adc_resolution
-{
-    kADC_Resolution8Bit  = 0U, /*!< Single End 8-bit resolution. */
+typedef enum _adc_resolution {
+    kADC_Resolution8Bit = 0U, /*!< Single End 8-bit resolution. */
     kADC_Resolution10Bit = 1U, /*!< Single End 10-bit resolution. */
     kADC_Resolution12Bit = 2U, /*!< Single End 12-bit resolution. */
 } adc_resolution_t;
@@ -101,8 +95,7 @@ typedef enum _adc_resolution
 /*!
  * @brief Converter hardware compare mode.
  */
-typedef enum _adc_hardware_compare_mode
-{
+typedef enum _adc_hardware_compare_mode {
     kADC_HardwareCompareMode0 = 0U, /*!< Compare true if the result is less than the value1. */
     kADC_HardwareCompareMode1 = 1U, /*!< Compare true if the result is greater than or equal to value1. */
     kADC_HardwareCompareMode2 = 2U, /*!< Value1 <= Value2, compare true if the result is less than value1 Or
@@ -118,20 +111,18 @@ typedef enum _adc_hardware_compare_mode
 /*!
  * @brief Converter hardware average mode.
  */
-typedef enum _adc_hardware_average_mode
-{
-    kADC_HardwareAverageCount4   = 0U, /*!< For hardware average with 4 samples. */
-    kADC_HardwareAverageCount8   = 1U, /*!< For hardware average with 8 samples. */
-    kADC_HardwareAverageCount16  = 2U, /*!< For hardware average with 16 samples. */
-    kADC_HardwareAverageCount32  = 3U, /*!< For hardware average with 32 samples. */
+typedef enum _adc_hardware_average_mode {
+    kADC_HardwareAverageCount4 = 0U, /*!< For hardware average with 4 samples. */
+    kADC_HardwareAverageCount8 = 1U, /*!< For hardware average with 8 samples. */
+    kADC_HardwareAverageCount16 = 2U, /*!< For hardware average with 16 samples. */
+    kADC_HardwareAverageCount32 = 3U, /*!< For hardware average with 32 samples. */
     kADC_HardwareAverageDiasable = 4U, /*!< Disable the hardware average function. */
 } adc_hardware_average_mode_t;
 
 /*!
  * @brief Converter configuration.
  */
-typedef struct _adc_config
-{
+typedef struct _adc_config {
     bool enableOverWrite;                                  /*!< Enable the overwriting. */
     bool enableContinuousConversion;                       /*!< Enable the continuous conversion mode. */
     bool enableHighSpeed;                                  /*!< Enable the high-speed mode. */
@@ -148,8 +139,7 @@ typedef struct _adc_config
 /*!
  * @brief Converter Offset configuration.
  */
-typedef struct _adc_offest_config
-{
+typedef struct _adc_offest_config {
     bool enableSigned;    /*!< if false,The offset value is added with the raw result.
                                if true,The offset value is subtracted from the raw converted value. */
     uint32_t offsetValue; /*!< User configurable offset value(0-4095). */
@@ -169,8 +159,7 @@ typedef struct _adc_offest_config
  *                               Value1 >  Value2, compare true if the result is greater than or equal to value1 Or the
  * result is less than or equal to value2.
  */
-typedef struct _adc_hardware_compare_config
-{
+typedef struct _adc_hardware_compare_config {
     adc_hardware_compare_mode_t hardwareCompareMode; /*!< Select the hardware compare mode.
                                                             See "adc_hardware_compare_mode_t". */
     uint16_t value1;                                 /*!< Setting value1(0-4095) for hardware compare mode. */
@@ -180,8 +169,7 @@ typedef struct _adc_hardware_compare_config
 /*!
  * @brief ADC channel conversion configuration.
  */
-typedef struct _adc_channel_config
-{
+typedef struct _adc_channel_config {
     uint32_t channelNumber;                    /*!< Setting the conversion channel number. The available range is 0-31.
                                                     See channel connection information for each chip in Reference
                                                     Manual document. */
@@ -273,8 +261,7 @@ void ADC_SetChannelConfig(ADC_Type *base, uint32_t channelGroup, const adc_chann
  *
  * @return              Conversion value.
  */
-static inline uint32_t ADC_GetChannelConversionValue(ADC_Type *base, uint32_t channelGroup)
-{
+static inline uint32_t ADC_GetChannelConversionValue(ADC_Type *base, uint32_t channelGroup) {
     assert(channelGroup < FSL_FEATURE_ADC_CONVERSION_CONTROL_COUNT);
 
     return base->R[channelGroup];
@@ -297,8 +284,7 @@ static inline uint32_t ADC_GetChannelConversionValue(ADC_Type *base, uint32_t ch
  *
  * @return             Status flags of channel.return 0 means COCO flag is 0,return 1 means COCOflag is 1.
  */
-static inline uint32_t ADC_GetChannelStatusFlags(ADC_Type *base, uint32_t channelGroup)
-{
+static inline uint32_t ADC_GetChannelStatusFlags(ADC_Type *base, uint32_t channelGroup) {
     assert(channelGroup < FSL_FEATURE_ADC_CONVERSION_CONTROL_COUNT);
 
     /* If flag is set,return 1,otherwise, return 0. */
@@ -334,14 +320,10 @@ void ADC_SetOffsetConfig(ADC_Type *base, const adc_offest_config_t *config);
  * @param base   ADC peripheral base address.
  * @param enable Switcher of the DMA feature. "true" means enabled, "false" means not enabled.
  */
-static inline void ADC_EnableDMA(ADC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void ADC_EnableDMA(ADC_Type *base, bool enable) {
+    if (enable) {
         base->GC |= ADC_GC_DMAEN_MASK;
-    }
-    else
-    {
+    } else {
         base->GC &= ~ADC_GC_DMAEN_MASK;
     }
 }
@@ -353,17 +335,15 @@ static inline void ADC_EnableDMA(ADC_Type *base, bool enable)
  * @param enable Switcher of the trigger mode. "true" means hardware tirgger mode,"false" means software mode.
  */
 #if !(defined(FSL_FEATURE_ADC_SUPPORT_HARDWARE_TRIGGER_REMOVE) && FSL_FEATURE_ADC_SUPPORT_HARDWARE_TRIGGER_REMOVE)
-static inline void ADC_EnableHardwareTrigger(ADC_Type *base, bool enable)
-{
-    if (enable)
-    {
+
+static inline void ADC_EnableHardwareTrigger(ADC_Type *base, bool enable) {
+    if (enable) {
         base->CFG |= ADC_CFG_ADTRG_MASK;
-    }
-    else
-    {
+    } else {
         base->CFG &= ~ADC_CFG_ADTRG_MASK;
     }
 }
+
 #endif
 
 /*!
@@ -400,8 +380,7 @@ void ADC_SetHardwareAverageConfig(ADC_Type *base, adc_hardware_average_mode_t mo
  *
  * @return Flags' mask if indicated flags are asserted. See "adc_status_flags_t".
  */
-static inline uint32_t ADC_GetStatusFlags(ADC_Type *base)
-{
+static inline uint32_t ADC_GetStatusFlags(ADC_Type *base) {
     return base->GS;
 }
 

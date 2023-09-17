@@ -128,8 +128,7 @@ extern "C" {
  * @brief Enables cortex-m7 L1 instruction cache.
  *
  */
-static inline void L1CACHE_EnableICache(void)
-{
+static inline void L1CACHE_EnableICache(void) {
     SCB_EnableICache();
 }
 
@@ -137,8 +136,7 @@ static inline void L1CACHE_EnableICache(void)
  * @brief Disables cortex-m7 L1 instruction cache.
  *
  */
-static inline void L1CACHE_DisableICache(void)
-{
+static inline void L1CACHE_DisableICache(void) {
     SCB_DisableICache();
 }
 
@@ -146,8 +144,7 @@ static inline void L1CACHE_DisableICache(void)
  * @brief Invalidate cortex-m7 L1 instruction cache.
  *
  */
-static inline void L1CACHE_InvalidateICache(void)
-{
+static inline void L1CACHE_InvalidateICache(void) {
     SCB_InvalidateICache();
 }
 
@@ -167,8 +164,7 @@ void L1CACHE_InvalidateICacheByRange(uint32_t address, uint32_t size_byte);
  * @brief Enables cortex-m7 L1 data cache.
  *
  */
-static inline void L1CACHE_EnableDCache(void)
-{
+static inline void L1CACHE_EnableDCache(void) {
     SCB_EnableDCache();
 }
 
@@ -176,8 +172,7 @@ static inline void L1CACHE_EnableDCache(void)
  * @brief Disables cortex-m7 L1 data cache.
  *
  */
-static inline void L1CACHE_DisableDCache(void)
-{
+static inline void L1CACHE_DisableDCache(void) {
     SCB_DisableDCache();
 }
 
@@ -185,8 +180,7 @@ static inline void L1CACHE_DisableDCache(void)
  * @brief Invalidates cortex-m7 L1 data cache.
  *
  */
-static inline void L1CACHE_InvalidateDCache(void)
-{
+static inline void L1CACHE_InvalidateDCache(void) {
     SCB_InvalidateDCache();
 }
 
@@ -194,8 +188,7 @@ static inline void L1CACHE_InvalidateDCache(void)
  * @brief Cleans cortex-m7 L1 data cache.
  *
  */
-static inline void L1CACHE_CleanDCache(void)
-{
+static inline void L1CACHE_CleanDCache(void) {
     SCB_CleanDCache();
 }
 
@@ -203,8 +196,7 @@ static inline void L1CACHE_CleanDCache(void)
  * @brief Cleans and Invalidates cortex-m7 L1 data cache.
  *
  */
-static inline void L1CACHE_CleanInvalidateDCache(void)
-{
+static inline void L1CACHE_CleanInvalidateDCache(void) {
     SCB_CleanInvalidateDCache();
 }
 
@@ -218,12 +210,11 @@ static inline void L1CACHE_CleanInvalidateDCache(void)
  * startAddr is not aligned. For the size_byte, application should make sure the
  * alignment or make sure the right operation order if the size_byte is not aligned.
  */
-static inline void L1CACHE_InvalidateDCacheByRange(uint32_t address, uint32_t size_byte)
-{
-    uint32_t startAddr = address & ~((uint32_t)FSL_FEATURE_L1DCACHE_LINESIZE_BYTE - 1U);
-    uint32_t size      = size_byte + address - startAddr;
+static inline void L1CACHE_InvalidateDCacheByRange(uint32_t address, uint32_t size_byte) {
+    uint32_t startAddr = address & ~((uint32_t) FSL_FEATURE_L1DCACHE_LINESIZE_BYTE - 1U);
+    uint32_t size = size_byte + address - startAddr;
 
-    SCB_InvalidateDCache_by_Addr((uint32_t *)startAddr, (int32_t)size);
+    SCB_InvalidateDCache_by_Addr((uint32_t *) startAddr, (int32_t) size);
 }
 
 /*!
@@ -236,12 +227,11 @@ static inline void L1CACHE_InvalidateDCacheByRange(uint32_t address, uint32_t si
  * startAddr is not aligned. For the size_byte, application should make sure the
  * alignment or make sure the right operation order if the size_byte is not aligned.
  */
-static inline void L1CACHE_CleanDCacheByRange(uint32_t address, uint32_t size_byte)
-{
-    uint32_t startAddr = address & ~((uint32_t)FSL_FEATURE_L1DCACHE_LINESIZE_BYTE - 1U);
-    uint32_t size      = size_byte + address - startAddr;
+static inline void L1CACHE_CleanDCacheByRange(uint32_t address, uint32_t size_byte) {
+    uint32_t startAddr = address & ~((uint32_t) FSL_FEATURE_L1DCACHE_LINESIZE_BYTE - 1U);
+    uint32_t size = size_byte + address - startAddr;
 
-    SCB_CleanDCache_by_Addr((uint32_t *)startAddr, (int32_t)size);
+    SCB_CleanDCache_by_Addr((uint32_t *) startAddr, (int32_t) size);
 }
 
 /*!
@@ -254,12 +244,11 @@ static inline void L1CACHE_CleanDCacheByRange(uint32_t address, uint32_t size_by
  * startAddr is not aligned. For the size_byte, application should make sure the
  * alignment or make sure the right operation order if the size_byte is not aligned.
  */
-static inline void L1CACHE_CleanInvalidateDCacheByRange(uint32_t address, uint32_t size_byte)
-{
-    uint32_t startAddr = address & ~((uint32_t)FSL_FEATURE_L1DCACHE_LINESIZE_BYTE - 1U);
-    uint32_t size      = size_byte + address - startAddr;
+static inline void L1CACHE_CleanInvalidateDCacheByRange(uint32_t address, uint32_t size_byte) {
+    uint32_t startAddr = address & ~((uint32_t) FSL_FEATURE_L1DCACHE_LINESIZE_BYTE - 1U);
+    uint32_t size = size_byte + address - startAddr;
 
-    SCB_CleanInvalidateDCache_by_Addr((uint32_t *)startAddr, (int32_t)size);
+    SCB_CleanInvalidateDCache_by_Addr((uint32_t *) startAddr, (int32_t) size);
 }
 /*@}*/
 

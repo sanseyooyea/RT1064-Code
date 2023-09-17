@@ -24,14 +24,18 @@
 //motor_param_t motor_r = MOTOR_CREATE(12, 18, 1, 15, 2500, 250, 10,MOTOR_PWM_DUTY_MAX/3 ,MOTOR_PWM_DUTY_MAX/3 ,MOTOR_PWM_DUTY_MAX/3);
 
 //常规增量PID
-motor_param_t motor_l = MOTOR_CREATE(12, 1000, 25, 100, 5000, 500, 600, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX);
-motor_param_t motor_r = MOTOR_CREATE(12, 1000, 25, 100, 5000, 500, 600, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX);
+motor_param_t motor_l = MOTOR_CREATE(12, 1000, 25, 100, 5000, 500, 600, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX,
+                                     MOTOR_PWM_DUTY_MAX);
+motor_param_t motor_r = MOTOR_CREATE(12, 1000, 25, 100, 5000, 500, 600, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX,
+                                     MOTOR_PWM_DUTY_MAX);
 
 
 // Matlab位置PID
 // 0.5s
-pid_param_t motor_pid_l = PID_CREATE(7021, 10000 / 1e3, 0, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX);
-pid_param_t motor_pid_r = PID_CREATE(7021, 10000 / 1e3, 0, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX);
+pid_param_t motor_pid_l = PID_CREATE(7021, 10000 / 1e3, 0, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX,
+                                     MOTOR_PWM_DUTY_MAX);
+pid_param_t motor_pid_r = PID_CREATE(7021, 10000 / 1e3, 0, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX,
+                                     MOTOR_PWM_DUTY_MAX);
 // 0.4s
 //pid_param_t motor_pid_l = PID_CREATE(8830, 14117/1e3, 0, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX);
 //pid_param_t motor_pid_r = PID_CREATE(8830, 14117/1e3, 0, 1, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX, MOTOR_PWM_DUTY_MAX);
@@ -195,7 +199,8 @@ void speed_control(void) {
         target_speed = NORMAL_SPEED + NORMAL_MIN_SPEED;
     }
     // 急停(车库停车，或电感值太小即冲出赛道)
-    if (garage_type == GARAGE_STOP || (garage_type != GARAGE_OUT_LEFT && garage_type != GARAGE_OUT_RIGHT && elec_data[0] + elec_data[1] < 60)) {
+    if (garage_type == GARAGE_STOP ||
+        (garage_type != GARAGE_OUT_LEFT && garage_type != GARAGE_OUT_RIGHT && elec_data[0] + elec_data[1] < 60)) {
         motor_l.motor_mode = MODE_NORMAL;
         motor_r.motor_mode = MODE_NORMAL;
         target_speed = 0;
@@ -287,5 +292,5 @@ void motor_control(void) {
 }
 
 int64_t get_total_encoder() {
-    return (int64_t) ((motor_l.total_encoder + motor_r.total_encoder) / 2);
+    return (int64_t)((motor_l.total_encoder + motor_r.total_encoder) / 2);
 }

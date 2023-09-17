@@ -24,8 +24,7 @@
 /*@}*/
 
 /*! @brief Quad Timer primary clock source selection*/
-typedef enum _qtmr_primary_count_source
-{
+typedef enum _qtmr_primary_count_source {
     kQTMR_ClockCounter0InputPin = 0, /*!< Use counter 0 input pin */
     kQTMR_ClockCounter1InputPin,     /*!< Use counter 1 input pin */
     kQTMR_ClockCounter2InputPin,     /*!< Use counter 2 input pin */
@@ -45,8 +44,7 @@ typedef enum _qtmr_primary_count_source
 } qtmr_primary_count_source_t;
 
 /*! @brief Quad Timer input sources selection*/
-typedef enum _qtmr_input_source
-{
+typedef enum _qtmr_input_source {
     kQTMR_Counter0InputPin = 0, /*!< Use counter 0 input pin */
     kQTMR_Counter1InputPin,     /*!< Use counter 1 input pin */
     kQTMR_Counter2InputPin,     /*!< Use counter 2 input pin */
@@ -54,8 +52,7 @@ typedef enum _qtmr_input_source
 } qtmr_input_source_t;
 
 /*! @brief Quad Timer counting mode selection */
-typedef enum _qtmr_counting_mode
-{
+typedef enum _qtmr_counting_mode {
     kQTMR_NoOperation = 0,          /*!< No operation */
     kQTMR_PriSrcRiseEdge,           /*!< Count rising edges or primary source */
     kQTMR_PriSrcRiseAndFallEdge,    /*!< Count rising and falling edges of primary source */
@@ -67,8 +64,7 @@ typedef enum _qtmr_counting_mode
 } qtmr_counting_mode_t;
 
 /*! @brief Quad Timer output mode selection*/
-typedef enum _qtmr_output_mode
-{
+typedef enum _qtmr_output_mode {
     kQTMR_AssertWhenCountActive = 0,    /*!< Assert OFLAG while counter is active*/
     kQTMR_ClearOnCompare,               /*!< Clear OFLAG on successful compare */
     kQTMR_SetOnCompare,                 /*!< Set OFLAG on successful compare */
@@ -80,8 +76,7 @@ typedef enum _qtmr_output_mode
 } qtmr_output_mode_t;
 
 /*! @brief Quad Timer input capture edge mode, rising edge, or falling edge */
-typedef enum _qtmr_input_capture_edge
-{
+typedef enum _qtmr_input_capture_edge {
     kQTMR_NoCapture = 0,       /*!< Capture is disabled */
     kQTMR_RisingEdge,          /*!< Capture on rising edge (IPS=0) or falling edge (IPS=1)*/
     kQTMR_FallingEdge,         /*!< Capture on falling edge (IPS=0) or rising edge (IPS=1)*/
@@ -89,16 +84,14 @@ typedef enum _qtmr_input_capture_edge
 } qtmr_input_capture_edge_t;
 
 /*! @brief Quad Timer input capture edge mode, rising edge, or falling edge */
-typedef enum _qtmr_preload_control
-{
+typedef enum _qtmr_preload_control {
     kQTMR_NoPreload = 0, /*!< Never preload */
     kQTMR_LoadOnComp1,   /*!< Load upon successful compare with value in COMP1 */
     kQTMR_LoadOnComp2    /*!< Load upon successful compare with value in COMP2*/
 } qtmr_preload_control_t;
 
 /*! @brief List of Quad Timer run options when in Debug mode */
-typedef enum _qtmr_debug_action
-{
+typedef enum _qtmr_debug_action {
     kQTMR_RunNormalInDebug = 0U, /*!< Continue with normal operation */
     kQTMR_HaltCounter,           /*!< Halt counter */
     kQTMR_ForceOutToZero,        /*!< Force output to logic 0 */
@@ -107,28 +100,25 @@ typedef enum _qtmr_debug_action
 
 /*! @brief List of Quad Timer interrupts */
 // typedef enum _qtmr_interrupt_enable
-typedef enum _qtmr_interrupt_enable
-{
-    kQTMR_CompareInterruptEnable  = (1U << 0), /*!< Compare interrupt.*/
+typedef enum _qtmr_interrupt_enable {
+    kQTMR_CompareInterruptEnable = (1U << 0), /*!< Compare interrupt.*/
     kQTMR_Compare1InterruptEnable = (1U << 1), /*!< Compare 1 interrupt.*/
     kQTMR_Compare2InterruptEnable = (1U << 2), /*!< Compare 2 interrupt.*/
     kQTMR_OverflowInterruptEnable = (1U << 3), /*!< Timer overflow interrupt.*/
-    kQTMR_EdgeInterruptEnable     = (1U << 4)  /*!< Input edge interrupt.*/
+    kQTMR_EdgeInterruptEnable = (1U << 4)  /*!< Input edge interrupt.*/
 } qtmr_interrupt_enable_t;
 
 /*! @brief List of Quad Timer flags */
-typedef enum _qtmr_status_flags
-{
-    kQTMR_CompareFlag  = (1U << 0), /*!< Compare flag */
+typedef enum _qtmr_status_flags {
+    kQTMR_CompareFlag = (1U << 0), /*!< Compare flag */
     kQTMR_Compare1Flag = (1U << 1), /*!< Compare 1 flag */
     kQTMR_Compare2Flag = (1U << 2), /*!< Compare 2 flag */
     kQTMR_OverflowFlag = (1U << 3), /*!< Timer overflow flag */
-    kQTMR_EdgeFlag     = (1U << 4)  /*!< Input edge flag */
+    kQTMR_EdgeFlag = (1U << 4)  /*!< Input edge flag */
 } qtmr_status_flags_t;
 
 /*! @brief List of channel selection */
-typedef enum _qtmr_channel_selection
-{
+typedef enum _qtmr_channel_selection {
     kQTMR_Channel_0 = 0U, /*!< TMR Channel 0 */
     kQTMR_Channel_1,      /*!< TMR Channel 1 */
     kQTMR_Channel_2,      /*!< TMR Channel 2 */
@@ -136,9 +126,8 @@ typedef enum _qtmr_channel_selection
 } qtmr_channel_selection_t;
 
 /*! @brief List of Quad Timer DMA enable */
-typedef enum _qtmr_dma_enable
-{
-    kQTMR_InputEdgeFlagDmaEnable      = (1U << 0), /*!< Input Edge Flag DMA Enable.*/
+typedef enum _qtmr_dma_enable {
+    kQTMR_InputEdgeFlagDmaEnable = (1U << 0), /*!< Input Edge Flag DMA Enable.*/
     kQTMR_ComparatorPreload1DmaEnable = (1U << 1), /*!< Comparator Preload Register 1 DMA Enable.*/
     kQTMR_ComparatorPreload2DmaEnable = (1U << 2), /*!< Comparator Preload Register 2 DMA Enable.*/
 } qtmr_dma_enable_t;
@@ -152,8 +141,7 @@ typedef enum _qtmr_dma_enable
  *
  * The config struct can be made const so it resides in flash
  */
-typedef struct _qtmr_config
-{
+typedef struct _qtmr_config {
     qtmr_primary_count_source_t primarySource; /*!< Specify the primary count source */
     qtmr_input_source_t secondarySource;       /*!< Specify the secondary count source */
     bool enableMasterMode;                     /*!< true: Broadcast compare function output to other counters;
@@ -361,8 +349,7 @@ void QTMR_SetTimerPeriod(TMR_Type *base, qtmr_channel_selection_t channel, uint1
  *
  * @return Current counter value in ticks
  */
-static inline uint16_t QTMR_GetCurrentTimerCount(TMR_Type *base, qtmr_channel_selection_t channel)
-{
+static inline uint16_t QTMR_GetCurrentTimerCount(TMR_Type *base, qtmr_channel_selection_t channel) {
     return base->CHANNEL[channel].CNTR;
 }
 
@@ -381,8 +368,7 @@ static inline uint16_t QTMR_GetCurrentTimerCount(TMR_Type *base, qtmr_channel_se
  * @param channel     Quad Timer channel number
  * @param clockSource Quad Timer clock source
  */
-static inline void QTMR_StartTimer(TMR_Type *base, qtmr_channel_selection_t channel, qtmr_counting_mode_t clockSource)
-{
+static inline void QTMR_StartTimer(TMR_Type *base, qtmr_channel_selection_t channel, qtmr_counting_mode_t clockSource) {
     uint16_t reg = base->CHANNEL[channel].CTRL;
 
     reg &= (uint16_t)(~(TMR_CTRL_CM_MASK));
@@ -396,8 +382,7 @@ static inline void QTMR_StartTimer(TMR_Type *base, qtmr_channel_selection_t chan
  * @param base     Quad Timer peripheral base address
  * @param channel  Quad Timer channel number
  */
-static inline void QTMR_StopTimer(TMR_Type *base, qtmr_channel_selection_t channel)
-{
+static inline void QTMR_StopTimer(TMR_Type *base, qtmr_channel_selection_t channel) {
     base->CHANNEL[channel].CTRL &= (uint16_t)(~TMR_CTRL_CM_MASK);
 }
 

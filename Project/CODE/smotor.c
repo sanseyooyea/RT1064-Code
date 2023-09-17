@@ -26,12 +26,12 @@ void smotor1_control(int16 duty) {
 
 //+左转, -右转
 void smotor2_control(int16 duty) {
-    pwm_duty(SMOTOR2_PIN, (int16) MINMAX(duty, 1250, 6250));
+    pwm_duty(SMOTOR2_PIN, (int16)MINMAX(duty, 1250, 6250));
 }
 
 //+低头, -抬头
 void smotor3_control(int16 duty) {
-    pwm_duty(SMOTOR3_PIN, (int16) MINMAX(duty, 3750, 4850));
+    pwm_duty(SMOTOR3_PIN, (int16)MINMAX(duty, 3750, 4850));
 }
 
 // 角度转对应占空比

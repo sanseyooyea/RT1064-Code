@@ -49,52 +49,45 @@
 #define FSL_BEE_DRIVER_VERSION (MAKE_VERSION(2, 0, 2))
 /*@}*/
 
-typedef enum _bee_aes_mode
-{
+typedef enum _bee_aes_mode {
     kBEE_AesEcbMode = 0U, /*!< AES ECB Mode */
     kBEE_AesCtrMode = 1U  /*!< AES CTR Mode */
 } bee_aes_mode_t;
 
-typedef enum _bee_region
-{
+typedef enum _bee_region {
     kBEE_Region0 = 0U, /*!< BEE region 0 */
     kBEE_Region1 = 1U  /*!< BEE region 1 */
 } bee_region_t;
 
-typedef enum _bee_ac_prot_enable
-{
+typedef enum _bee_ac_prot_enable {
     kBEE_AccessProtDisabled = 0U, /*!< BEE access permission control disabled */
-    kBEE_AccessProtEnabled  = 1U  /*!< BEE access permission control enabled */
+    kBEE_AccessProtEnabled = 1U  /*!< BEE access permission control enabled */
 } bee_ac_prot_enable;
 
-typedef enum _bee_endian_swap_enable
-{
+typedef enum _bee_endian_swap_enable {
     kBEE_EndianSwapDisabled = 1U, /*!< BEE endian swap disabled */
-    kBEE_EndianSwapEnabled  = 0U  /*!< BEE endian swap enabled */
+    kBEE_EndianSwapEnabled = 0U  /*!< BEE endian swap enabled */
 } bee_endian_swap_enable;
 
-typedef enum _bee_security_level
-{
+typedef enum _bee_security_level {
     kBEE_SecurityLevel0 = 0U, /*!< BEE security level 0 */
     kBEE_SecurityLevel1 = 1U, /*!< BEE security level 1 */
     kBEE_SecurityLevel2 = 2U, /*!< BEE security level 2 */
     kBEE_SecurityLevel3 = 3U  /*!< BEE security level 3 */
 } bee_security_level;
 
-typedef enum _bee_status_flags
-{
-    kBEE_DisableAbortFlag     = 1U,                      /*!< Disable abort flag. */
+typedef enum _bee_status_flags {
+    kBEE_DisableAbortFlag = 1U,                      /*!< Disable abort flag. */
     kBEE_Reg0ReadSecViolation = 2U,                      /*!< Region-0 read channel security violation */
-    kBEE_ReadIllegalAccess    = 4U,                      /*!< Read channel illegal access detected */
+    kBEE_ReadIllegalAccess = 4U,                      /*!< Read channel illegal access detected */
     kBEE_Reg1ReadSecViolation = 8U,                      /*!< Region-1 read channel security violation */
-    kBEE_Reg0AccessViolation  = 16U,                     /*!< Protected region-0 access violation */
-    kBEE_Reg1AccessViolation  = 32U,                     /*!< Protected region-1 access violation */
-    kBEE_IdleFlag             = BEE_STATUS_BEE_IDLE_MASK /*!< Idle flag */
+    kBEE_Reg0AccessViolation = 16U,                     /*!< Protected region-0 access violation */
+    kBEE_Reg1AccessViolation = 32U,                     /*!< Protected region-1 access violation */
+    kBEE_IdleFlag = BEE_STATUS_BEE_IDLE_MASK /*!< Idle flag */
 } bee_status_flags_t;
 
 /*! @brief BEE region configuration structure. */
-typedef struct _bee_region_config
-{
+typedef struct _bee_region_config {
     bee_aes_mode_t region0Mode;          /*!< AES mode used for encryption/decryption for region 0 */
     bee_aes_mode_t region1Mode;          /*!< AES mode used for encryption/decryption for region 1 */
     uint32_t region0AddrOffset;          /*!< Region 0 address offset */
@@ -140,8 +133,7 @@ void BEE_Deinit(BEE_Type *base);
  *
  * @param base BEE peripheral address.
  */
-static inline void BEE_Enable(BEE_Type *base)
-{
+static inline void BEE_Enable(BEE_Type *base) {
     base->CTRL |= BEE_CTRL_BEE_ENABLE_MASK;
 }
 
@@ -152,8 +144,7 @@ static inline void BEE_Enable(BEE_Type *base)
  *
  * @param base BEE peripheral address.
  */
-static inline void BEE_Disable(BEE_Type *base)
-{
+static inline void BEE_Disable(BEE_Type *base) {
     base->CTRL &= ~BEE_CTRL_BEE_ENABLE_MASK;
 }
 

@@ -49,15 +49,16 @@ void run_circle() {
             }
         }
     }
-    //入环，寻内圆左线
+        //入环，寻内圆左线
     else if (circle_type == CIRCLE_LEFT_IN) {
         track_type = TRACK_LEFT;
 
         //编码器打表过1/4圆   应修正为右线为转弯无拐点
         if (rpts0s_num < 0.1 / sample_dist ||
-            current_encoder - circle_encoder >= ENCODER_PER_METER * (3.14 * 1 / 2)) { circle_type = CIRCLE_LEFT_RUNNING; }
+            current_encoder - circle_encoder >=
+            ENCODER_PER_METER * (3.14 * 1 / 2)) { circle_type = CIRCLE_LEFT_RUNNING; }
     }
-    //正常巡线，寻外圆右线
+        //正常巡线，寻外圆右线
     else if (circle_type == CIRCLE_LEFT_RUNNING) {
         track_type = TRACK_RIGHT;
 
@@ -67,7 +68,7 @@ void run_circle() {
             circle_type = CIRCLE_LEFT_OUT;
         }
     }
-    //出环，寻内圆
+        //出环，寻内圆
     else if (circle_type == CIRCLE_LEFT_OUT) {
         track_type = TRACK_LEFT;
 
@@ -76,7 +77,7 @@ void run_circle() {
             circle_type = CIRCLE_LEFT_END;
         }
     }
-    //走过圆环，寻右线
+        //走过圆环，寻右线
     else if (circle_type == CIRCLE_LEFT_END) {
         track_type = TRACK_RIGHT;
 
@@ -87,7 +88,7 @@ void run_circle() {
             none_left_line = 0;
         }
     }
-    //右环控制，前期寻左直道
+        //右环控制，前期寻左直道
     else if (circle_type == CIRCLE_RIGHT_BEGIN) {
         track_type = TRACK_LEFT;
 
@@ -103,16 +104,17 @@ void run_circle() {
             }
         }
     }
-    //入右环，寻右内圆环
+        //入右环，寻右内圆环
     else if (circle_type == CIRCLE_RIGHT_IN) {
         track_type = TRACK_RIGHT;
 
         //编码器打表过1/4圆   应修正为左线为转弯无拐点
         if (rpts1s_num < 0.1 / sample_dist ||
-            current_encoder - circle_encoder >= ENCODER_PER_METER * (3.14 * 1 / 2)) { circle_type = CIRCLE_RIGHT_RUNNING; }
+            current_encoder - circle_encoder >=
+            ENCODER_PER_METER * (3.14 * 1 / 2)) { circle_type = CIRCLE_RIGHT_RUNNING; }
 
     }
-    //正常巡线，寻外圆左线
+        //正常巡线，寻外圆左线
     else if (circle_type == CIRCLE_RIGHT_RUNNING) {
         track_type = TRACK_LEFT;
 
@@ -122,7 +124,7 @@ void run_circle() {
             circle_type = CIRCLE_RIGHT_OUT;
         }
     }
-    //出环，寻内圆
+        //出环，寻内圆
     else if (circle_type == CIRCLE_RIGHT_OUT) {
         track_type = TRACK_RIGHT;
 

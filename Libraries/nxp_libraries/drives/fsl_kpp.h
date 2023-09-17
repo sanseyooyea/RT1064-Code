@@ -32,22 +32,19 @@
  * members. Members usually map to interrupt enable bits in one or more
  * peripheral registers.
  */
-typedef enum _kpp_interrupt_enable
-{
+typedef enum _kpp_interrupt_enable {
     kKPP_keyDepressInterrupt = KPP_KPSR_KDIE_MASK, /*!< Keypad depress interrupt source */
     kKPP_keyReleaseInterrupt = KPP_KPSR_KRIE_MASK  /*!< Keypad release interrupt source */
 } kpp_interrupt_enable_t;
 
 /*! @brief Lists of KPP synchronize chain operation. */
-typedef enum _kpp_sync_operation
-{
+typedef enum _kpp_sync_operation {
     kKPP_ClearKeyDepressSyncChain = KPP_KPSR_KDSC_MASK, /*!< Keypad depress interrupt status. */
-    kKPP_SetKeyReleasesSyncChain  = KPP_KPSR_KRSS_MASK, /*!< Keypad release interrupt status. */
+    kKPP_SetKeyReleasesSyncChain = KPP_KPSR_KRSS_MASK, /*!< Keypad release interrupt status. */
 } kpp_sync_operation_t;
 
 /*! @brief Lists of KPP status. */
-typedef struct _kpp_config
-{
+typedef struct _kpp_config {
     uint8_t activeRow;    /*!< The row number: bit 7 ~ 0 represents the row 7 ~ 0. */
     uint8_t activeColumn; /*!< The column number: bit 7 ~ 0 represents the column 7 ~ 0. */
     uint16_t interrupt;   /*!< KPP interrupt source. A logical OR of "kpp_interrupt_enable_t". */
@@ -99,10 +96,9 @@ void KPP_Deinit(KPP_Type *base);
  * @param mask  KPP interrupts to enable. This is a logical OR of the
  *             enumeration :: kpp_interrupt_enable_t.
  */
-static inline void KPP_EnableInterrupts(KPP_Type *base, uint16_t mask)
-{
+static inline void KPP_EnableInterrupts(KPP_Type *base, uint16_t mask) {
     uint16_t data = (uint16_t)(base->KPSR & ~(KPP_KPSR_KPKR_MASK | KPP_KPSR_KPKD_MASK));
-    base->KPSR    = data | mask;
+    base->KPSR = data | mask;
 }
 
 /*!
@@ -112,8 +108,7 @@ static inline void KPP_EnableInterrupts(KPP_Type *base, uint16_t mask)
  * @param mask  KPP interrupts to disable. This is a logical OR of the
  *             enumeration :: kpp_interrupt_enable_t.
  */
-static inline void KPP_DisableInterrupts(KPP_Type *base, uint16_t mask)
-{
+static inline void KPP_DisableInterrupts(KPP_Type *base, uint16_t mask) {
     base->KPSR &= ~(mask | KPP_KPSR_KPKR_MASK | KPP_KPSR_KPKD_MASK);
 }
 
@@ -124,8 +119,7 @@ static inline void KPP_DisableInterrupts(KPP_Type *base, uint16_t mask)
  * @return The status of the KPP. Application can use the enum type in the "kpp_interrupt_enable_t"
  * to get the right status of the related event.
  */
-static inline uint16_t KPP_GetStatusFlag(KPP_Type *base)
-{
+static inline uint16_t KPP_GetStatusFlag(KPP_Type *base) {
     return (base->KPSR & (KPP_KPSR_KPKR_MASK | KPP_KPSR_KPKD_MASK)) << KPP_KPSR_KDIE_SHIFT;
 }
 
@@ -136,8 +130,7 @@ static inline uint16_t KPP_GetStatusFlag(KPP_Type *base)
  * @param mask KPP mask to be cleared. This is a logical OR of the
  *             enumeration :: kpp_interrupt_enable_t.
  */
-static inline void KPP_ClearStatusFlag(KPP_Type *base, uint16_t mask)
-{
+static inline void KPP_ClearStatusFlag(KPP_Type *base, uint16_t mask) {
     base->KPSR |= (uint16_t)((mask) >> KPP_KPSR_KDIE_SHIFT);
 }
 
@@ -148,10 +141,9 @@ static inline void KPP_ClearStatusFlag(KPP_Type *base, uint16_t mask)
  * @param mask KPP mask to be cleared. This is a logical OR of the
  *             enumeration :: kpp_sync_operation_t.
  */
-static inline void KPP_SetSynchronizeChain(KPP_Type *base, uint16_t mask)
-{
+static inline void KPP_SetSynchronizeChain(KPP_Type *base, uint16_t mask) {
     uint16_t data = base->KPSR & (KPP_KPSR_KRSS_MASK | KPP_KPSR_KDSC_MASK | KPP_KPSR_KRIE_MASK | KPP_KPSR_KDIE_MASK);
-    base->KPSR    = data | mask;
+    base->KPSR = data | mask;
 }
 
 /*!

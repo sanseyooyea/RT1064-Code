@@ -28,8 +28,7 @@
 #define PWM_SUBMODULE_SWCONTROL_WIDTH 2
 
 /*! @brief List of PWM submodules */
-typedef enum _pwm_submodule
-{
+typedef enum _pwm_submodule {
     kPWM_Module_0 = 0U, /*!< Submodule 0 */
     kPWM_Module_1,      /*!< Submodule 1 */
     kPWM_Module_2,      /*!< Submodule 2 */
@@ -37,16 +36,14 @@ typedef enum _pwm_submodule
 } pwm_submodule_t;
 
 /*! @brief List of PWM channels in each module */
-typedef enum _pwm_channels
-{
+typedef enum _pwm_channels {
     kPWM_PwmB = 0U,
     kPWM_PwmA,
     kPWM_PwmX
 } pwm_channels_t;
 
 /*! @brief List of PWM value registers */
-typedef enum _pwm_value_register
-{
+typedef enum _pwm_value_register {
     kPWM_ValueRegister_0 = 0U, /*!< PWM Value0 register */
     kPWM_ValueRegister_1,      /*!< PWM Value1 register */
     kPWM_ValueRegister_2,      /*!< PWM Value2 register */
@@ -56,16 +53,14 @@ typedef enum _pwm_value_register
 } pwm_value_register_t;
 
 /*! @brief PWM clock source selection.*/
-typedef enum _pwm_clock_source
-{
+typedef enum _pwm_clock_source {
     kPWM_BusClock = 0U,  /*!< The IPBus clock is used as the clock */
     kPWM_ExternalClock,  /*!< EXT_CLK is used as the clock */
     kPWM_Submodule0Clock /*!< Clock of the submodule 0 (AUX_CLK) is used as the source clock */
 } pwm_clock_source_t;
 
 /*! @brief PWM prescaler factor selection for clock source*/
-typedef enum _pwm_clock_prescale
-{
+typedef enum _pwm_clock_prescale {
     kPWM_Prescale_Divide_1 = 0U, /*!< PWM clock frequency = fclk/1 */
     kPWM_Prescale_Divide_2,      /*!< PWM clock frequency = fclk/2 */
     kPWM_Prescale_Divide_4,      /*!< PWM clock frequency = fclk/4 */
@@ -77,8 +72,7 @@ typedef enum _pwm_clock_prescale
 } pwm_clock_prescale_t;
 
 /*! @brief Options that can trigger a PWM FORCE_OUT */
-typedef enum _pwm_force_output_trigger
-{
+typedef enum _pwm_force_output_trigger {
     kPWM_Force_Local = 0U,   /*!< The local force signal, CTRL2[FORCE], from the submodule is used to force updates */
     kPWM_Force_Master,       /*!< The master force signal from submodule 0 is used to force updates */
     kPWM_Force_LocalReload,  /*!< The local reload signal from this submodule is used to force updates without regard to
@@ -91,8 +85,7 @@ typedef enum _pwm_force_output_trigger
 } pwm_force_output_trigger_t;
 
 /*! @brief PWM counter initialization options */
-typedef enum _pwm_init_source
-{
+typedef enum _pwm_init_source {
     kPWM_Initialize_LocalSync = 0U, /*!< Local sync causes initialization */
     kPWM_Initialize_MasterReload,   /*!< Master reload from submodule 0 causes initialization */
     kPWM_Initialize_MasterSync,     /*!< Master sync from submodule 0 causes initialization */
@@ -100,8 +93,7 @@ typedef enum _pwm_init_source
 } pwm_init_source_t;
 
 /*! @brief PWM load frequency selection */
-typedef enum _pwm_load_frequency
-{
+typedef enum _pwm_load_frequency {
     kPWM_LoadEveryOportunity = 0U, /*!< Every PWM opportunity */
     kPWM_LoadEvery2Oportunity,     /*!< Every 2 PWM opportunities */
     kPWM_LoadEvery3Oportunity,     /*!< Every 3 PWM opportunities */
@@ -121,8 +113,7 @@ typedef enum _pwm_load_frequency
 } pwm_load_frequency_t;
 
 /*! @brief List of PWM fault selections */
-typedef enum _pwm_fault_input
-{
+typedef enum _pwm_fault_input {
     kPWM_Fault_0 = 0U, /*!< Fault 0 input pin */
     kPWM_Fault_1,      /*!< Fault 1 input pin */
     kPWM_Fault_2,      /*!< Fault 2 input pin */
@@ -130,8 +121,7 @@ typedef enum _pwm_fault_input
 } pwm_fault_input_t;
 
 /*! @brief PWM capture edge select */
-typedef enum _pwm_input_capture_edge
-{
+typedef enum _pwm_input_capture_edge {
     kPWM_Disable = 0U,   /*!< Disabled */
     kPWM_FallingEdge,    /*!< Capture on falling edge only */
     kPWM_RisingEdge,     /*!< Capture on rising edge only */
@@ -139,8 +129,7 @@ typedef enum _pwm_input_capture_edge
 } pwm_input_capture_edge_t;
 
 /*! @brief PWM output options when a FORCE_OUT signal is asserted */
-typedef enum _pwm_force_signal
-{
+typedef enum _pwm_force_signal {
     kPWM_UsePwm = 0U,     /*!< Generated PWM signal is used by the deadtime logic.*/
     kPWM_InvertedPwm,     /*!< Inverted PWM signal is used by the deadtime logic.*/
     kPWM_SoftwareControl, /*!< Software controlled value is used by the deadtime logic. */
@@ -148,16 +137,14 @@ typedef enum _pwm_force_signal
 } pwm_force_signal_t;
 
 /*! @brief Options available for the PWM A & B pair operation */
-typedef enum _pwm_chnl_pair_operation
-{
+typedef enum _pwm_chnl_pair_operation {
     kPWM_Independent = 0U,  /*!< PWM A & PWM B operate as 2 independent channels */
     kPWM_ComplementaryPwmA, /*!< PWM A & PWM B are complementary channels, PWM A generates the signal */
     kPWM_ComplementaryPwmB  /*!< PWM A & PWM B are complementary channels, PWM B generates the signal */
 } pwm_chnl_pair_operation_t;
 
 /*! @brief Options available on how to load the buffered-registers with new values */
-typedef enum _pwm_register_reload
-{
+typedef enum _pwm_register_reload {
     kPWM_ReloadImmediate = 0U,     /*!< Buffered-registers get loaded with new values as soon as LDOK bit is set */
     kPWM_ReloadPwmHalfCycle,       /*!< Registers loaded on a PWM half cycle */
     kPWM_ReloadPwmFullCycle,       /*!< Registers loaded on a PWM full cycle */
@@ -165,8 +152,7 @@ typedef enum _pwm_register_reload
 } pwm_register_reload_t;
 
 /*! @brief Options available on how to re-enable the PWM output when recovering from a fault */
-typedef enum _pwm_fault_recovery_mode
-{
+typedef enum _pwm_fault_recovery_mode {
     kPWM_NoRecovery = 0U,        /*!< PWM output will stay inactive */
     kPWM_RecoverHalfCycle,       /*!< PWM output re-enabled at the first half cycle */
     kPWM_RecoverFullCycle,       /*!< PWM output re-enabled at the first full cycle */
@@ -174,55 +160,52 @@ typedef enum _pwm_fault_recovery_mode
 } pwm_fault_recovery_mode_t;
 
 /*! @brief List of PWM interrupt options */
-typedef enum _pwm_interrupt_enable
-{
+typedef enum _pwm_interrupt_enable {
     kPWM_CompareVal0InterruptEnable = (1U << 0),  /*!< PWM VAL0 compare interrupt */
     kPWM_CompareVal1InterruptEnable = (1U << 1),  /*!< PWM VAL1 compare interrupt */
     kPWM_CompareVal2InterruptEnable = (1U << 2),  /*!< PWM VAL2 compare interrupt */
     kPWM_CompareVal3InterruptEnable = (1U << 3),  /*!< PWM VAL3 compare interrupt */
     kPWM_CompareVal4InterruptEnable = (1U << 4),  /*!< PWM VAL4 compare interrupt */
     kPWM_CompareVal5InterruptEnable = (1U << 5),  /*!< PWM VAL5 compare interrupt */
-    kPWM_CaptureX0InterruptEnable   = (1U << 6),  /*!< PWM capture X0 interrupt */
-    kPWM_CaptureX1InterruptEnable   = (1U << 7),  /*!< PWM capture X1 interrupt */
-    kPWM_CaptureB0InterruptEnable   = (1U << 8),  /*!< PWM capture B0 interrupt */
-    kPWM_CaptureB1InterruptEnable   = (1U << 9),  /*!< PWM capture B1 interrupt */
-    kPWM_CaptureA0InterruptEnable   = (1U << 10), /*!< PWM capture A0 interrupt */
-    kPWM_CaptureA1InterruptEnable   = (1U << 11), /*!< PWM capture A1 interrupt */
-    kPWM_ReloadInterruptEnable      = (1U << 12), /*!< PWM reload interrupt */
+    kPWM_CaptureX0InterruptEnable = (1U << 6),  /*!< PWM capture X0 interrupt */
+    kPWM_CaptureX1InterruptEnable = (1U << 7),  /*!< PWM capture X1 interrupt */
+    kPWM_CaptureB0InterruptEnable = (1U << 8),  /*!< PWM capture B0 interrupt */
+    kPWM_CaptureB1InterruptEnable = (1U << 9),  /*!< PWM capture B1 interrupt */
+    kPWM_CaptureA0InterruptEnable = (1U << 10), /*!< PWM capture A0 interrupt */
+    kPWM_CaptureA1InterruptEnable = (1U << 11), /*!< PWM capture A1 interrupt */
+    kPWM_ReloadInterruptEnable = (1U << 12), /*!< PWM reload interrupt */
     kPWM_ReloadErrorInterruptEnable = (1U << 13), /*!< PWM reload error interrupt */
-    kPWM_Fault0InterruptEnable      = (1U << 16), /*!< PWM fault 0 interrupt */
-    kPWM_Fault1InterruptEnable      = (1U << 17), /*!< PWM fault 1 interrupt */
-    kPWM_Fault2InterruptEnable      = (1U << 18), /*!< PWM fault 2 interrupt */
-    kPWM_Fault3InterruptEnable      = (1U << 19)  /*!< PWM fault 3 interrupt */
+    kPWM_Fault0InterruptEnable = (1U << 16), /*!< PWM fault 0 interrupt */
+    kPWM_Fault1InterruptEnable = (1U << 17), /*!< PWM fault 1 interrupt */
+    kPWM_Fault2InterruptEnable = (1U << 18), /*!< PWM fault 2 interrupt */
+    kPWM_Fault3InterruptEnable = (1U << 19)  /*!< PWM fault 3 interrupt */
 } pwm_interrupt_enable_t;
 
 /*! @brief List of PWM status flags */
-typedef enum _pwm_status_flags
-{
+typedef enum _pwm_status_flags {
     kPWM_CompareVal0Flag = (1U << 0),  /*!< PWM VAL0 compare flag */
     kPWM_CompareVal1Flag = (1U << 1),  /*!< PWM VAL1 compare flag */
     kPWM_CompareVal2Flag = (1U << 2),  /*!< PWM VAL2 compare flag */
     kPWM_CompareVal3Flag = (1U << 3),  /*!< PWM VAL3 compare flag */
     kPWM_CompareVal4Flag = (1U << 4),  /*!< PWM VAL4 compare flag */
     kPWM_CompareVal5Flag = (1U << 5),  /*!< PWM VAL5 compare flag */
-    kPWM_CaptureX0Flag   = (1U << 6),  /*!< PWM capture X0 flag */
-    kPWM_CaptureX1Flag   = (1U << 7),  /*!< PWM capture X1 flag */
-    kPWM_CaptureB0Flag   = (1U << 8),  /*!< PWM capture B0 flag */
-    kPWM_CaptureB1Flag   = (1U << 9),  /*!< PWM capture B1 flag */
-    kPWM_CaptureA0Flag   = (1U << 10), /*!< PWM capture A0 flag */
-    kPWM_CaptureA1Flag   = (1U << 11), /*!< PWM capture A1 flag */
-    kPWM_ReloadFlag      = (1U << 12), /*!< PWM reload flag */
+    kPWM_CaptureX0Flag = (1U << 6),  /*!< PWM capture X0 flag */
+    kPWM_CaptureX1Flag = (1U << 7),  /*!< PWM capture X1 flag */
+    kPWM_CaptureB0Flag = (1U << 8),  /*!< PWM capture B0 flag */
+    kPWM_CaptureB1Flag = (1U << 9),  /*!< PWM capture B1 flag */
+    kPWM_CaptureA0Flag = (1U << 10), /*!< PWM capture A0 flag */
+    kPWM_CaptureA1Flag = (1U << 11), /*!< PWM capture A1 flag */
+    kPWM_ReloadFlag = (1U << 12), /*!< PWM reload flag */
     kPWM_ReloadErrorFlag = (1U << 13), /*!< PWM reload error flag */
-    kPWM_RegUpdatedFlag  = (1U << 14), /*!< PWM registers updated flag */
-    kPWM_Fault0Flag      = (1U << 16), /*!< PWM fault 0 flag */
-    kPWM_Fault1Flag      = (1U << 17), /*!< PWM fault 1 flag */
-    kPWM_Fault2Flag      = (1U << 18), /*!< PWM fault 2 flag */
-    kPWM_Fault3Flag      = (1U << 19)  /*!< PWM fault 3 flag */
+    kPWM_RegUpdatedFlag = (1U << 14), /*!< PWM registers updated flag */
+    kPWM_Fault0Flag = (1U << 16), /*!< PWM fault 0 flag */
+    kPWM_Fault1Flag = (1U << 17), /*!< PWM fault 1 flag */
+    kPWM_Fault2Flag = (1U << 18), /*!< PWM fault 2 flag */
+    kPWM_Fault3Flag = (1U << 19)  /*!< PWM fault 3 flag */
 } pwm_status_flags_t;
 
 /*! @brief PWM operation mode */
-typedef enum _pwm_mode
-{
+typedef enum _pwm_mode {
     kPWM_SignedCenterAligned = 0U, /*!< Signed center-aligned */
     kPWM_CenterAligned,            /*!< Unsigned cente-aligned */
     kPWM_SignedEdgeAligned,        /*!< Signed edge-aligned */
@@ -230,30 +213,26 @@ typedef enum _pwm_mode
 } pwm_mode_t;
 
 /*! @brief PWM output pulse mode, high-true or low-true */
-typedef enum _pwm_level_select
-{
+typedef enum _pwm_level_select {
     kPWM_HighTrue = 0U, /*!< High level represents "on" or "active" state */
     kPWM_LowTrue        /*!< Low level represents "on" or "active" state */
 } pwm_level_select_t;
 
 /*! @brief PWM reload source select */
-typedef enum _pwm_reload_source_select
-{
+typedef enum _pwm_reload_source_select {
     kPWM_LocalReload = 0U, /*!< The local reload signal is used to reload registers */
     kPWM_MasterReload      /*!< The master reload signal (from submodule 0) is used to reload */
 } pwm_reload_source_select_t;
 
 /*! @brief PWM fault clearing options */
-typedef enum _pwm_fault_clear
-{
+typedef enum _pwm_fault_clear {
     kPWM_Automatic = 0U, /*!< Automatic fault clearing  */
     kPWM_ManualNormal,   /*!< Manual fault clearing with no fault safety mode */
     kPWM_ManualSafety    /*!< Manual fault clearing with fault safety mode */
 } pwm_fault_clear_t;
 
 /*! @brief Options for submodule master control operation */
-typedef enum _pwm_module_control
-{
+typedef enum _pwm_module_control {
     kPWM_Control_Module_0 = (1U << 0), /*!< Control submodule 0's start/stop,buffer reload operation */
     kPWM_Control_Module_1 = (1U << 1), /*!< Control submodule 1's start/stop,buffer reload operation */
     kPWM_Control_Module_2 = (1U << 2), /*!< Control submodule 2's start/stop,buffer reload operation */
@@ -263,8 +242,7 @@ typedef enum _pwm_module_control
 #define PWM_DUTY_MAX    50000
 
 /*! @brief Structure for the user to define the PWM signal characteristics */
-typedef struct _pwm_signal_param
-{
+typedef struct _pwm_signal_param {
     pwm_channels_t pwmChannel; /*!< PWM channel being configured; PWM A or PWM B */
     uint32_t dutyCyclePercent;  /*!< PWM pulse width, value should be between 0 to 100
                                     0=inactive signal(0% duty cycle)...
@@ -282,8 +260,7 @@ typedef struct _pwm_signal_param
  *
  * The config struct can be made const so it resides in flash
  */
-typedef struct _pwm_config
-{
+typedef struct _pwm_config {
     bool enableDebugMode;                    /*!< true: PWM continues to run in debug mode;
                                                   false: PWM is paused in debug mode */
     bool enableWait;                         /*!< true: PWM continues to run in WAIT mode;
@@ -300,8 +277,7 @@ typedef struct _pwm_config
 } pwm_config_t;
 
 /*! @brief Structure for the user to configure the fault input filter. */
-typedef struct _pwm_fault_input_filter_param
-{
+typedef struct _pwm_fault_input_filter_param {
     uint8_t faultFilterCount;  /*!< Fault filter count */
     uint8_t faultFilterPeriod; /*!< Fault filter period;value of 0 will bypass the filter */
     bool faultGlitchStretch;   /*!< Fault Glitch Stretch Enable: A logic 1 means that input
@@ -309,8 +285,7 @@ typedef struct _pwm_fault_input_filter_param
 } pwm_fault_input_filter_param_t;
 
 /*! @brief Structure is used to hold the parameters to configure a PWM fault */
-typedef struct _pwm_fault_param
-{
+typedef struct _pwm_fault_param {
     pwm_fault_clear_t faultClearingMode;   /*!< Fault clearing mode to use */
     bool faultLevel;                       /*!< true: Logic 1 indicates fault;
                                                 false: Logic 0 indicates fault */
@@ -322,8 +297,7 @@ typedef struct _pwm_fault_param
 /*!
  * @brief Structure is used to hold parameters to configure the capture capability of a signal pin
  */
-typedef struct _pwm_input_capture_param
-{
+typedef struct _pwm_input_capture_param {
     bool captureInputSel;           /*!< true: Use the edge counter signal as source
                                          false: Use the raw input signal from the pin as source */
     uint8_t edgeCompareValue;       /*!< Compare value, used only if edge counter is used as source */
@@ -578,8 +552,7 @@ void PWM_ClearStatusFlags(PWM_Type *base, pwm_submodule_t subModule, uint32_t ma
  * @param subModulesToStart PWM submodules to start. This is a logical OR of members of the
  *                          enumeration ::pwm_module_control_t
  */
-static inline void PWM_StartTimer(PWM_Type *base, uint8_t subModulesToStart)
-{
+static inline void PWM_StartTimer(PWM_Type *base, uint8_t subModulesToStart) {
     base->MCTRL |= PWM_MCTRL_RUN(subModulesToStart);
 }
 
@@ -593,8 +566,7 @@ static inline void PWM_StartTimer(PWM_Type *base, uint8_t subModulesToStart)
  * @param subModulesToStop PWM submodules to stop. This is a logical OR of members of the
  *                         enumeration ::pwm_module_control_t
  */
-static inline void PWM_StopTimer(PWM_Type *base, uint8_t subModulesToStop)
-{
+static inline void PWM_StopTimer(PWM_Type *base, uint8_t subModulesToStop) {
     base->MCTRL &= ~(PWM_MCTRL_RUN(subModulesToStop));
 }
 
@@ -615,15 +587,11 @@ static inline void PWM_StopTimer(PWM_Type *base, uint8_t subModulesToStop)
 static inline void PWM_OutputTriggerEnable(PWM_Type *base,
                                            pwm_submodule_t subModule,
                                            pwm_value_register_t valueRegister,
-                                           bool activate)
-{
-    if (activate)
-    {
-        base->SM[subModule].TCTRL |= ((uint16_t)1U << (uint16_t)valueRegister);
-    }
-    else
-    {
-        base->SM[subModule].TCTRL &= ~((uint16_t)1U << (uint16_t)valueRegister);
+                                           bool activate) {
+    if (activate) {
+        base->SM[subModule].TCTRL |= ((uint16_t) 1U << (uint16_t) valueRegister);
+    } else {
+        base->SM[subModule].TCTRL &= ~((uint16_t) 1U << (uint16_t) valueRegister);
     }
 }
 
@@ -638,17 +606,16 @@ static inline void PWM_OutputTriggerEnable(PWM_Type *base,
  * @param pwmChannel Channel to configure
  * @param value      true: Supply a logic 1, false: Supply a logic 0.
  */
-static inline void PWM_SetupSwCtrlOut(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwmChannel, bool value)
-{
-    if (value)
-    {
+static inline void
+PWM_SetupSwCtrlOut(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwmChannel, bool value) {
+    if (value) {
         base->SWCOUT |=
-            ((uint16_t)1U << (((uint16_t)subModule * (uint16_t)PWM_SUBMODULE_SWCONTROL_WIDTH) + (uint16_t)pwmChannel));
-    }
-    else
-    {
+                ((uint16_t) 1U
+                        << (((uint16_t) subModule * (uint16_t) PWM_SUBMODULE_SWCONTROL_WIDTH) + (uint16_t) pwmChannel));
+    } else {
         base->SWCOUT &=
-            ~((uint16_t)1U << (((uint16_t)subModule * (uint16_t)PWM_SUBMODULE_SWCONTROL_WIDTH) + (uint16_t)pwmChannel));
+                ~((uint16_t) 1U
+                        << (((uint16_t) subModule * (uint16_t) PWM_SUBMODULE_SWCONTROL_WIDTH) + (uint16_t) pwmChannel));
     }
 }
 
@@ -665,14 +632,10 @@ static inline void PWM_SetupSwCtrlOut(PWM_Type *base, pwm_submodule_t subModule,
  *                           members of the enumeration ::pwm_module_control_t
  * @param value              true: Set LDOK bit for the submodule list; false: Clear LDOK bit
  */
-static inline void PWM_SetPwmLdok(PWM_Type *base, uint8_t subModulesToUpdate, bool value)
-{
-    if (value)
-    {
+static inline void PWM_SetPwmLdok(PWM_Type *base, uint8_t subModulesToUpdate, bool value) {
+    if (value) {
         base->MCTRL |= PWM_MCTRL_LDOK(subModulesToUpdate);
-    }
-    else
-    {
+    } else {
         base->MCTRL |= PWM_MCTRL_CLDOK(subModulesToUpdate);
     }
 }

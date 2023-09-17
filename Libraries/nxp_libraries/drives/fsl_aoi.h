@@ -32,20 +32,18 @@
  *
  * The selection item represents the Boolean evaluations.
  */
-typedef enum _aoi_input_config
-{
-    kAOI_LogicZero      = 0x0U, /*!< Forces the input to logical zero. */
-    kAOI_InputSignal    = 0x1U, /*!< Passes the input signal. */
+typedef enum _aoi_input_config {
+    kAOI_LogicZero = 0x0U, /*!< Forces the input to logical zero. */
+    kAOI_InputSignal = 0x1U, /*!< Passes the input signal. */
     kAOI_InvInputSignal = 0x2U, /*!< Inverts the input signal. */
-    kAOI_LogicOne       = 0x3U  /*!< Forces the input to logical one. */
+    kAOI_LogicOne = 0x3U  /*!< Forces the input to logical one. */
 } aoi_input_config_t;
 
 /*!
  * @brief AOI event indexes, where an event is the collection of the four product
  *        terms (0, 1, 2, and 3) and the four signal inputs (A, B, C, and D).
  */
-typedef enum _aoi_event
-{
+typedef enum _aoi_event {
     kAOI_Event0 = 0x0U, /*!< Event 0 index */
     kAOI_Event1 = 0x1U, /*!< Event 1 index */
     kAOI_Event2 = 0x2U, /*!< Event 2 index */
@@ -58,8 +56,7 @@ typedef enum _aoi_event
  * Defines structure _aoi_event_config and use the AOI_SetEventLogicConfig() function to make
  * whole event configuration.
  */
-typedef struct _aoi_event_config
-{
+typedef struct _aoi_event_config {
     aoi_input_config_t PT0AC; /*!< Product term 0 input A */
     aoi_input_config_t PT0BC; /*!< Product term 0 input B */
     aoi_input_config_t PT0CC; /*!< Product term 0 input C */

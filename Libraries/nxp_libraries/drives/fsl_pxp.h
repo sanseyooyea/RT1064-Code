@@ -59,8 +59,7 @@
 #endif
 
 /*! @brief PXP interrupts to enable. */
-enum _pxp_interrupt_enable
-{
+enum _pxp_interrupt_enable {
     kPXP_CommandLoadInterruptEnable = PXP_CTRL_NEXT_IRQ_ENABLE_MASK, /*!< Interrupt to show that the command set
                                                                          by @ref PXP_SetNextCommand has been loaded. */
     kPXP_CompleteInterruptEnable = PXP_CTRL_IRQ_ENABLE_MASK,         /*!< PXP process completed. */
@@ -74,8 +73,7 @@ enum _pxp_interrupt_enable
  *
  * @note These enumerations are meant to be OR'd together to form a bit mask.
  */
-enum _pxp_flags
-{
+enum _pxp_flags {
     kPXP_CommandLoadFlag = PXP_STAT_NEXT_IRQ_MASK, /*!< The command set by @ref PXP_SetNextCommand
                                                      has been loaded, could set new command. */
     kPXP_CompleteFlag = PXP_STAT_IRQ0_MASK,        /*!< PXP process completed. */
@@ -95,24 +93,21 @@ enum _pxp_flags
 };
 
 /*! @brief PXP output flip mode. */
-typedef enum _pxp_flip_mode
-{
-    kPXP_FlipDisable    = 0U,    /*!< Flip disable. */
+typedef enum _pxp_flip_mode {
+    kPXP_FlipDisable = 0U,    /*!< Flip disable. */
     kPXP_FlipHorizontal = 0x01U, /*!< Horizontal flip. */
-    kPXP_FlipVertical   = 0x02U, /*!< Vertical flip. */
-    kPXP_FlipBoth       = 0x03U, /*!< Flip both directions. */
+    kPXP_FlipVertical = 0x02U, /*!< Vertical flip. */
+    kPXP_FlipBoth = 0x03U, /*!< Flip both directions. */
 } pxp_flip_mode_t;
 
 /*! @brief PXP rotate mode. */
-typedef enum _pxp_rotate_position
-{
+typedef enum _pxp_rotate_position {
     kPXP_RotateOutputBuffer = 0U, /*!< Rotate the output buffer. */
     kPXP_RotateProcessSurface,    /*!< Rotate the process surface. */
 } pxp_rotate_position_t;
 
 /*! @brief PXP rotate degree. */
-typedef enum _pxp_rotate_degree
-{
+typedef enum _pxp_rotate_degree {
     kPXP_Rotate0 = 0U, /*!< Clock wise rotate 0 deg. */
     kPXP_Rotate90,     /*!< Clock wise rotate 90 deg. */
     kPXP_Rotate180,    /*!< Clock wise rotate 180 deg. */
@@ -120,8 +115,7 @@ typedef enum _pxp_rotate_degree
 } pxp_rotate_degree_t;
 
 /*! @brief PXP interlaced output mode. */
-typedef enum _pxp_interlaced_output_mode
-{
+typedef enum _pxp_interlaced_output_mode {
     kPXP_OutputProgressive = 0U, /*!< All data written in progressive format to output buffer 0. */
     kPXP_OutputField0,           /*!< Only write field 0 data to output buffer 0. */
     kPXP_OutputField1,           /*!< Only write field 1 data to output buffer 0. */
@@ -129,30 +123,28 @@ typedef enum _pxp_interlaced_output_mode
 } pxp_interlaced_output_mode_t;
 
 /*! @brief PXP output buffer format. */
-typedef enum _pxp_output_pixel_format
-{
-    kPXP_OutputPixelFormatARGB8888  = 0x0,  /*!< 32-bit pixels with alpha. */
-    kPXP_OutputPixelFormatRGB888    = 0x4,  /*!< 32-bit pixels without alpha (unpacked 24-bit format) */
-    kPXP_OutputPixelFormatRGB888P   = 0x5,  /*!< 24-bit pixels without alpha (packed 24-bit format) */
-    kPXP_OutputPixelFormatARGB1555  = 0x8,  /*!< 16-bit pixels with alpha. */
-    kPXP_OutputPixelFormatARGB4444  = 0x9,  /*!< 16-bit pixels with alpha. */
-    kPXP_OutputPixelFormatRGB555    = 0xC,  /*!< 16-bit pixels without alpha. */
-    kPXP_OutputPixelFormatRGB444    = 0xD,  /*!< 16-bit pixels without alpha. */
-    kPXP_OutputPixelFormatRGB565    = 0xE,  /*!< 16-bit pixels without alpha. */
-    kPXP_OutputPixelFormatYUV1P444  = 0x10, /*!< 32-bit pixels (1-plane XYUV unpacked). */
+typedef enum _pxp_output_pixel_format {
+    kPXP_OutputPixelFormatARGB8888 = 0x0,  /*!< 32-bit pixels with alpha. */
+    kPXP_OutputPixelFormatRGB888 = 0x4,  /*!< 32-bit pixels without alpha (unpacked 24-bit format) */
+    kPXP_OutputPixelFormatRGB888P = 0x5,  /*!< 24-bit pixels without alpha (packed 24-bit format) */
+    kPXP_OutputPixelFormatARGB1555 = 0x8,  /*!< 16-bit pixels with alpha. */
+    kPXP_OutputPixelFormatARGB4444 = 0x9,  /*!< 16-bit pixels with alpha. */
+    kPXP_OutputPixelFormatRGB555 = 0xC,  /*!< 16-bit pixels without alpha. */
+    kPXP_OutputPixelFormatRGB444 = 0xD,  /*!< 16-bit pixels without alpha. */
+    kPXP_OutputPixelFormatRGB565 = 0xE,  /*!< 16-bit pixels without alpha. */
+    kPXP_OutputPixelFormatYUV1P444 = 0x10, /*!< 32-bit pixels (1-plane XYUV unpacked). */
     kPXP_OutputPixelFormatUYVY1P422 = 0x12, /*!< 16-bit pixels (1-plane U0,Y0,V0,Y1 interleaved bytes) */
     kPXP_OutputPixelFormatVYUY1P422 = 0x13, /*!< 16-bit pixels (1-plane V0,Y0,U0,Y1 interleaved bytes) */
-    kPXP_OutputPixelFormatY8        = 0x14, /*!< 8-bit monochrome pixels (1-plane Y luma output) */
-    kPXP_OutputPixelFormatY4        = 0x15, /*!< 4-bit monochrome pixels (1-plane Y luma, 4 bit truncation) */
-    kPXP_OutputPixelFormatYUV2P422  = 0x18, /*!< 16-bit pixels (2-plane UV interleaved bytes) */
-    kPXP_OutputPixelFormatYUV2P420  = 0x19, /*!< 16-bit pixels (2-plane UV) */
-    kPXP_OutputPixelFormatYVU2P422  = 0x1A, /*!< 16-bit pixels (2-plane VU interleaved bytes) */
-    kPXP_OutputPixelFormatYVU2P420  = 0x1B, /*!< 16-bit pixels (2-plane VU) */
+    kPXP_OutputPixelFormatY8 = 0x14, /*!< 8-bit monochrome pixels (1-plane Y luma output) */
+    kPXP_OutputPixelFormatY4 = 0x15, /*!< 4-bit monochrome pixels (1-plane Y luma, 4 bit truncation) */
+    kPXP_OutputPixelFormatYUV2P422 = 0x18, /*!< 16-bit pixels (2-plane UV interleaved bytes) */
+    kPXP_OutputPixelFormatYUV2P420 = 0x19, /*!< 16-bit pixels (2-plane UV) */
+    kPXP_OutputPixelFormatYVU2P422 = 0x1A, /*!< 16-bit pixels (2-plane VU interleaved bytes) */
+    kPXP_OutputPixelFormatYVU2P420 = 0x1B, /*!< 16-bit pixels (2-plane VU) */
 } pxp_output_pixel_format_t;
 
 /*! @brief PXP output buffer configuration. */
-typedef struct _pxp_output_buffer_config
-{
+typedef struct _pxp_output_buffer_config {
     pxp_output_pixel_format_t pixelFormat;       /*!< Output buffer pixel format. */
     pxp_interlaced_output_mode_t interlacedMode; /*!< Interlaced output mode. */
     uint32_t buffer0Addr;                        /*!< Output buffer 0 address. */
@@ -164,28 +156,26 @@ typedef struct _pxp_output_buffer_config
 } pxp_output_buffer_config_t;
 
 /*! @brief PXP process surface buffer pixel format. */
-typedef enum _pxp_ps_pixel_format
-{
-    kPXP_PsPixelFormatRGB888    = 0x4,  /*!< 32-bit pixels without alpha (unpacked 24-bit format) */
-    kPXP_PsPixelFormatRGB555    = 0xC,  /*!< 16-bit pixels without alpha. */
-    kPXP_PsPixelFormatRGB444    = 0xD,  /*!< 16-bit pixels without alpha. */
-    kPXP_PsPixelFormatRGB565    = 0xE,  /*!< 16-bit pixels without alpha. */
-    kPXP_PsPixelFormatYUV1P444  = 0x10, /*!< 32-bit pixels (1-plane XYUV unpacked). */
+typedef enum _pxp_ps_pixel_format {
+    kPXP_PsPixelFormatRGB888 = 0x4,  /*!< 32-bit pixels without alpha (unpacked 24-bit format) */
+    kPXP_PsPixelFormatRGB555 = 0xC,  /*!< 16-bit pixels without alpha. */
+    kPXP_PsPixelFormatRGB444 = 0xD,  /*!< 16-bit pixels without alpha. */
+    kPXP_PsPixelFormatRGB565 = 0xE,  /*!< 16-bit pixels without alpha. */
+    kPXP_PsPixelFormatYUV1P444 = 0x10, /*!< 32-bit pixels (1-plane XYUV unpacked). */
     kPXP_PsPixelFormatUYVY1P422 = 0x12, /*!< 16-bit pixels (1-plane U0,Y0,V0,Y1 interleaved bytes) */
     kPXP_PsPixelFormatVYUY1P422 = 0x13, /*!< 16-bit pixels (1-plane V0,Y0,U0,Y1 interleaved bytes) */
-    kPXP_PsPixelFormatY8        = 0x14, /*!< 8-bit monochrome pixels (1-plane Y luma output) */
-    kPXP_PsPixelFormatY4        = 0x15, /*!< 4-bit monochrome pixels (1-plane Y luma, 4 bit truncation) */
-    kPXP_PsPixelFormatYUV2P422  = 0x18, /*!< 16-bit pixels (2-plane UV interleaved bytes) */
-    kPXP_PsPixelFormatYUV2P420  = 0x19, /*!< 16-bit pixels (2-plane UV) */
-    kPXP_PsPixelFormatYVU2P422  = 0x1A, /*!< 16-bit pixels (2-plane VU interleaved bytes) */
-    kPXP_PsPixelFormatYVU2P420  = 0x1B, /*!< 16-bit pixels (2-plane VU) */
-    kPXP_PsPixelFormatYVU422    = 0x1E, /*!< 16-bit pixels (3-plane) */
-    kPXP_PsPixelFormatYVU420    = 0x1F, /*!< 16-bit pixels (3-plane) */
+    kPXP_PsPixelFormatY8 = 0x14, /*!< 8-bit monochrome pixels (1-plane Y luma output) */
+    kPXP_PsPixelFormatY4 = 0x15, /*!< 4-bit monochrome pixels (1-plane Y luma, 4 bit truncation) */
+    kPXP_PsPixelFormatYUV2P422 = 0x18, /*!< 16-bit pixels (2-plane UV interleaved bytes) */
+    kPXP_PsPixelFormatYUV2P420 = 0x19, /*!< 16-bit pixels (2-plane UV) */
+    kPXP_PsPixelFormatYVU2P422 = 0x1A, /*!< 16-bit pixels (2-plane VU interleaved bytes) */
+    kPXP_PsPixelFormatYVU2P420 = 0x1B, /*!< 16-bit pixels (2-plane VU) */
+    kPXP_PsPixelFormatYVU422 = 0x1E, /*!< 16-bit pixels (3-plane) */
+    kPXP_PsPixelFormatYVU420 = 0x1F, /*!< 16-bit pixels (3-plane) */
 } pxp_ps_pixel_format_t;
 
 /*! @brief PXP process surface buffer configuration. */
-typedef struct _pxp_ps_buffer_config
-{
+typedef struct _pxp_ps_buffer_config {
     pxp_ps_pixel_format_t pixelFormat; /*!< PS buffer pixel format. */
     bool swapByte;                     /*!< For each 16 bit word, set true to swap the two bytes. */
     uint32_t bufferAddr;               /*!< Input buffer address for the first panel. */
@@ -195,20 +185,18 @@ typedef struct _pxp_ps_buffer_config
 } pxp_ps_buffer_config_t;
 
 /*! @brief PXP alpha surface buffer pixel format. */
-typedef enum _pxp_as_pixel_format
-{
+typedef enum _pxp_as_pixel_format {
     kPXP_AsPixelFormatARGB8888 = 0x0, /*!< 32-bit pixels with alpha. */
-    kPXP_AsPixelFormatRGB888   = 0x4, /*!< 32-bit pixels without alpha (unpacked 24-bit format) */
+    kPXP_AsPixelFormatRGB888 = 0x4, /*!< 32-bit pixels without alpha (unpacked 24-bit format) */
     kPXP_AsPixelFormatARGB1555 = 0x8, /*!< 16-bit pixels with alpha. */
     kPXP_AsPixelFormatARGB4444 = 0x9, /*!< 16-bit pixels with alpha. */
-    kPXP_AsPixelFormatRGB555   = 0xC, /*!< 16-bit pixels without alpha. */
-    kPXP_AsPixelFormatRGB444   = 0xD, /*!< 16-bit pixels without alpha. */
-    kPXP_AsPixelFormatRGB565   = 0xE, /*!< 16-bit pixels without alpha. */
+    kPXP_AsPixelFormatRGB555 = 0xC, /*!< 16-bit pixels without alpha. */
+    kPXP_AsPixelFormatRGB444 = 0xD, /*!< 16-bit pixels without alpha. */
+    kPXP_AsPixelFormatRGB565 = 0xE, /*!< 16-bit pixels without alpha. */
 } pxp_as_pixel_format_t;
 
 /*! @brief PXP alphs surface buffer configuration. */
-typedef struct _pxp_as_buffer_config
-{
+typedef struct _pxp_as_buffer_config {
     pxp_as_pixel_format_t pixelFormat; /*!< AS buffer pixel format. */
     uint32_t bufferAddr;               /*!< Input buffer address. */
     uint16_t pitchBytes;               /*!< Number of bytes between two vertically adjacent pixels. */
@@ -217,8 +205,7 @@ typedef struct _pxp_as_buffer_config
 /*!
  * @brief PXP alpha mode during blending.
  */
-typedef enum _pxp_alpha_mode
-{
+typedef enum _pxp_alpha_mode {
     kPXP_AlphaEmbedded, /*!< The alpha surface pixel alpha value will be used for blend. */
     kPXP_AlphaOverride, /*!< The user defined alpha value will be used for blend directly. */
     kPXP_AlphaMultiply, /*!< The alpha surface pixel alpha value scaled the user defined
@@ -237,27 +224,25 @@ typedef enum _pxp_alpha_mode
  * - nAS: Alpha surface NOT value
  * - nPS: Process surface NOT value
  */
-typedef enum _pxp_rop_mode
-{
-    kPXP_RopMaskAs     = 0x0, /*!< AS AND PS. */
-    kPXP_RopMaskNotAs  = 0x1, /*!< nAS AND PS. */
-    kPXP_RopMaskAsNot  = 0x2, /*!< AS AND nPS. */
-    kPXP_RopMergeAs    = 0x3, /*!< AS OR PS. */
+typedef enum _pxp_rop_mode {
+    kPXP_RopMaskAs = 0x0, /*!< AS AND PS. */
+    kPXP_RopMaskNotAs = 0x1, /*!< nAS AND PS. */
+    kPXP_RopMaskAsNot = 0x2, /*!< AS AND nPS. */
+    kPXP_RopMergeAs = 0x3, /*!< AS OR PS. */
     kPXP_RopMergeNotAs = 0x4, /*!< nAS OR PS. */
     kPXP_RopMergeAsNot = 0x5, /*!< AS OR nPS. */
-    kPXP_RopNotCopyAs  = 0x6, /*!< nAS. */
-    kPXP_RopNot        = 0x7, /*!< nPS. */
-    kPXP_RopNotMaskAs  = 0x8, /*!< AS NAND PS. */
+    kPXP_RopNotCopyAs = 0x6, /*!< nAS. */
+    kPXP_RopNot = 0x7, /*!< nPS. */
+    kPXP_RopNotMaskAs = 0x8, /*!< AS NAND PS. */
     kPXP_RopNotMergeAs = 0x9, /*!< AS NOR PS. */
-    kPXP_RopXorAs      = 0xA, /*!< AS XOR PS. */
-    kPXP_RopNotXorAs   = 0xB  /*!< AS XNOR PS. */
+    kPXP_RopXorAs = 0xA, /*!< AS XOR PS. */
+    kPXP_RopNotXorAs = 0xB  /*!< AS XNOR PS. */
 } pxp_rop_mode_t;
 
 /*!
  * @brief PXP alpha surface blending configuration.
  */
-typedef struct _pxp_as_blend_config
-{
+typedef struct _pxp_as_blend_config {
     uint8_t alpha;    /*!< User defined alpha value, only used when @ref alphaMode is @ref kPXP_AlphaOverride or @ref
                          kPXP_AlphaRop. */
     bool invertAlpha; /*!< Set true to invert the alpha. */
@@ -266,22 +251,19 @@ typedef struct _pxp_as_blend_config
 } pxp_as_blend_config_t;
 
 /*! @brief PXP process block size. */
-typedef enum _pxp_block_size
-{
+typedef enum _pxp_block_size {
     kPXP_BlockSize8 = 0U, /*!< Process 8x8 pixel blocks. */
     kPXP_BlockSize16,     /*!< Process 16x16 pixel blocks. */
 } pxp_block_size_t;
 
 /*! @brief PXP CSC1 mode. */
-typedef enum _pxp_csc1_mode
-{
+typedef enum _pxp_csc1_mode {
     kPXP_Csc1YUV2RGB = 0U, /*!< YUV to RGB. */
     kPXP_Csc1YCbCr2RGB,    /*!< YCbCr to RGB. */
 } pxp_csc1_mode_t;
 
 /*! @brief PXP CSC2 mode. */
-typedef enum _pxp_csc2_mode
-{
+typedef enum _pxp_csc2_mode {
     kPXP_Csc2YUV2RGB = 0U, /*!< YUV to RGB. */
     kPXP_Csc2YCbCr2RGB,    /*!< YCbCr to RGB. */
     kPXP_Csc2RGB2YUV,      /*!< RGB to YUV. */
@@ -305,8 +287,7 @@ typedef enum _pxp_csc2_mode
  * U = B1*R + B2*G + B3*B + D2
  * V = C1*R + C2*G + C3*B + D3
  */
-typedef struct _pxp_csc2_config
-{
+typedef struct _pxp_csc2_config {
     pxp_csc2_mode_t mode; /*!< Convertion mode. */
     float A1;             /*!< A1. */
     float A2;             /*!< A2. */
@@ -324,8 +305,7 @@ typedef struct _pxp_csc2_config
 
 #if !(defined(FSL_FEATURE_PXP_HAS_NO_LUT) && FSL_FEATURE_PXP_HAS_NO_LUT)
 /*! @brief PXP LUT lookup mode. */
-typedef enum _pxp_lut_lookup_mode
-{
+typedef enum _pxp_lut_lookup_mode {
     kPXP_LutCacheRGB565 = 0U, /*!< LUT ADDR = R[7:3],G[7:2],B[7:3]. Use all 16KB of LUT
                                    for indirect cached 128KB lookup. */
     kPXP_LutDirectY8,         /*!< LUT ADDR = 16'b0,Y[7:0]. Use the first 256 bytes of LUT.
@@ -336,23 +316,20 @@ typedef enum _pxp_lut_lookup_mode
 } pxp_lut_lookup_mode_t;
 
 /*! @brief PXP LUT output mode. */
-typedef enum _pxp_lut_out_mode
-{
+typedef enum _pxp_lut_out_mode {
     kPXP_LutOutY8 = 1U,     /*!< R/Y byte lane 2 lookup, bytes 1,0 bypassed. */
     kPXP_LutOutRGBW4444CFA, /*!< Byte lane 2 = CFA_Y8, byte lane 1,0 = RGBW4444. */
     kPXP_LutOutRGB888,      /*!< RGB565->RGB888 conversion for Gamma correction. */
 } pxp_lut_out_mode_t;
 
 /*! @brief PXP LUT 8K bank index used when lookup mode is @ref kPXP_LutDirectRGB444. */
-typedef enum _pxp_lut_8k_bank
-{
+typedef enum _pxp_lut_8k_bank {
     kPXP_Lut8kBank0 = 0U, /*!< The first 8K bank used. */
     kPXP_Lut8kBank1,      /*!< The second 8K bank used. */
 } pxp_lut_8k_bank_t;
 
 /*! @brief PXP LUT configuration. */
-typedef struct _pxp_lut_config
-{
+typedef struct _pxp_lut_config {
     pxp_lut_lookup_mode_t lookupMode; /*!< Look up mode. */
     pxp_lut_out_mode_t outMode;       /*!< Out mode. */
     uint32_t cfaValue;                /*!< The CFA value used when look up mode is @ref kPXP_LutOutRGBW4444CFA. */
@@ -360,24 +337,21 @@ typedef struct _pxp_lut_config
 #endif /* FSL_FEATURE_PXP_HAS_NO_LUT */
 
 /*! @brief PXP internal memory. */
-typedef enum _pxp_ram
-{
+typedef enum _pxp_ram {
     kPXP_RamDither0Lut = 0U, /*!< Dither 0 LUT memory. */
     kPXP_RamDither1Lut = 3U, /*!< Dither 1 LUT memory. */
     kPXP_RamDither2Lut = 4U, /*!< Dither 2 LUT memory. */
 } pxp_ram_t;
 
 /*! @brief PXP dither mode. */
-enum _pxp_dither_mode
-{
+enum _pxp_dither_mode {
     kPXP_DitherPassThrough = 0U, /*!< Pass through, no dither. */
-    kPXP_DitherOrdered     = 3U, /*!< Ordered dither. */
-    kPXP_DitherQuantOnly   = 4U, /*!< No dithering, only quantization. */
+    kPXP_DitherOrdered = 3U, /*!< Ordered dither. */
+    kPXP_DitherQuantOnly = 4U, /*!< No dithering, only quantization. */
 };
 
 /*! @brief PXP dither LUT mode. */
-enum _pxp_dither_lut_mode
-{
+enum _pxp_dither_lut_mode {
     kPXP_DitherLutOff = 0U,   /*!< The LUT memory is not used for LUT, could be used as ordered dither index matrix. */
     kPXP_DitherLutPreDither,  /*!< Use LUT at the pre-dither stage, The pre-dither LUT could only be used in Floyd mode
                                    or Atkinson mode, which are not supported by current PXP module. */
@@ -385,15 +359,13 @@ enum _pxp_dither_lut_mode
 };
 
 /*! @brief PXP dither matrix size. */
-enum _pxp_dither_matrix_size
-{
+enum _pxp_dither_matrix_size {
     kPXP_DitherMatrix8 = 1, /*!< The dither index matrix is 8x8. */
     kPXP_DitherMatrix16,    /*!< The dither index matrix is 16x16. */
 };
 
 /*! @brief PXP dither final LUT data. */
-typedef struct _pxp_dither_final_lut_data
-{
+typedef struct _pxp_dither_final_lut_data {
     uint32_t data_3_0;   /*!< Data 3 to data 0. Data 0 is the least significant byte. */
     uint32_t data_7_4;   /*!< Data 7 to data 4. Data 4 is the least significant byte. */
     uint32_t data_11_8;  /*!< Data 11 to data 8. Data 8 is the least significant byte. */
@@ -401,25 +373,24 @@ typedef struct _pxp_dither_final_lut_data
 } pxp_dither_final_lut_data_t;
 
 /*! @brief PXP dither configuration. */
-typedef struct _pxp_dither_config
-{
-    uint32_t enableDither0 : 1;  /*!< Enable dither engine 0 or not, set 1 to enable, 0 to disable. */
-    uint32_t enableDither1 : 1;  /*!< Enable dither engine 1 or not, set 1 to enable, 0 to disable. */
-    uint32_t enableDither2 : 1;  /*!< Enable dither engine 2 or not, set 1 to enable, 0 to disable. */
-    uint32_t ditherMode0 : 3;    /*!< Dither mode for dither engine 0. See @ref _pxp_dither_mode. */
-    uint32_t ditherMode1 : 3;    /*!< Dither mode for dither engine 1. See @ref _pxp_dither_mode. */
-    uint32_t ditherMode2 : 3;    /*!< Dither mode for dither engine 2. See @ref _pxp_dither_mode. */
-    uint32_t quantBitNum : 3;    /*!< Number of bits quantize down to, the valid value is 1~7. */
-    uint32_t lutMode : 2;        /*!< How to use the memory LUT, see @ref _pxp_dither_lut_mode. This must be set to @ref
+typedef struct _pxp_dither_config {
+    uint32_t enableDither0: 1;  /*!< Enable dither engine 0 or not, set 1 to enable, 0 to disable. */
+    uint32_t enableDither1: 1;  /*!< Enable dither engine 1 or not, set 1 to enable, 0 to disable. */
+    uint32_t enableDither2: 1;  /*!< Enable dither engine 2 or not, set 1 to enable, 0 to disable. */
+    uint32_t ditherMode0: 3;    /*!< Dither mode for dither engine 0. See @ref _pxp_dither_mode. */
+    uint32_t ditherMode1: 3;    /*!< Dither mode for dither engine 1. See @ref _pxp_dither_mode. */
+    uint32_t ditherMode2: 3;    /*!< Dither mode for dither engine 2. See @ref _pxp_dither_mode. */
+    uint32_t quantBitNum: 3;    /*!< Number of bits quantize down to, the valid value is 1~7. */
+    uint32_t lutMode: 2;        /*!< How to use the memory LUT, see @ref _pxp_dither_lut_mode. This must be set to @ref
                                     kPXP_DitherLutOff
                                       if any dither engine uses @ref kPXP_DitherOrdered mode. */
-    uint32_t idxMatrixSize0 : 2; /*!< Size of index matrix used for dither for dither engine 0, see @ref
+    uint32_t idxMatrixSize0: 2; /*!< Size of index matrix used for dither for dither engine 0, see @ref
                                     _pxp_dither_matrix_size. */
-    uint32_t idxMatrixSize1 : 2; /*!< Size of index matrix used for dither for dither engine 1, see @ref
+    uint32_t idxMatrixSize1: 2; /*!< Size of index matrix used for dither for dither engine 1, see @ref
                                     _pxp_dither_matrix_size. */
-    uint32_t idxMatrixSize2 : 2; /*!< Size of index matrix used for dither for dither engine 2, see @ref
+    uint32_t idxMatrixSize2: 2; /*!< Size of index matrix used for dither for dither engine 2, see @ref
                                     _pxp_dither_matrix_size. */
-    uint32_t enableFinalLut : 1; /*!< Enable the final LUT, set 1 to enable, 0 to disable. */
+    uint32_t enableFinalLut: 1; /*!< Enable the final LUT, set 1 to enable, 0 to disable. */
     uint32_t : 8;
 } pxp_dither_config_t;
 
@@ -477,8 +448,7 @@ void PXP_Reset(PXP_Type *base);
  *
  * @param base PXP peripheral base address.
  */
-static inline void PXP_Start(PXP_Type *base)
-{
+static inline void PXP_Start(PXP_Type *base) {
     base->CTRL_SET = PXP_CTRL_ENABLE_MASK;
 }
 
@@ -488,8 +458,7 @@ static inline void PXP_Start(PXP_Type *base)
  * @param base PXP peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void PXP_EnableLcdHandShake(PXP_Type *base, bool enable)
-{
+static inline void PXP_EnableLcdHandShake(PXP_Type *base, bool enable) {
 #if defined(PXP_CTRL_ENABLE_LCD_HANDSHAKE_MASK)
     if (enable)
     {
@@ -500,12 +469,9 @@ static inline void PXP_EnableLcdHandShake(PXP_Type *base, bool enable)
         base->CTRL_CLR = PXP_CTRL_ENABLE_LCD_HANDSHAKE_MASK;
     }
 #else
-    if (enable)
-    {
+    if (enable) {
         base->CTRL_SET = PXP_CTRL_ENABLE_LCD0_HANDSHAKE_MASK;
-    }
-    else
-    {
+    } else {
         base->CTRL_CLR = PXP_CTRL_ENABLE_LCD0_HANDSHAKE_MASK;
     }
 #endif
@@ -547,8 +513,7 @@ static inline void PXP_EnableContinousRun(PXP_Type *base, bool enable)
  * @param base PXP peripheral base address.
  * @param size The pixel block size.
  */
-static inline void PXP_SetProcessBlockSize(PXP_Type *base, pxp_block_size_t size)
-{
+static inline void PXP_SetProcessBlockSize(PXP_Type *base, pxp_block_size_t size) {
     base->CTRL = (base->CTRL & ~PXP_CTRL_BLOCK_SIZE_MASK) | PXP_CTRL_BLOCK_SIZE(size);
 }
 
@@ -576,8 +541,7 @@ static inline void PXP_SetProcessBlockSize(PXP_Type *base, pxp_block_size_t size
  * @param base PXP peripheral base address.
  * @return PXP status flags which are OR'ed by the enumerators in the _pxp_flags.
  */
-static inline uint32_t PXP_GetStatusFlags(PXP_Type *base)
-{
+static inline uint32_t PXP_GetStatusFlags(PXP_Type *base) {
 #if defined(PXP_STAT_AXI_READ_ERROR_1_MASK)
     return base->STAT &
            (PXP_STAT_NEXT_IRQ_MASK | PXP_STAT_IRQ0_MASK | PXP_STAT_AXI_READ_ERROR_0_MASK |
@@ -596,8 +560,7 @@ static inline uint32_t PXP_GetStatusFlags(PXP_Type *base)
  * @param base PXP peripheral base address.
  * @param statusMask The status flags to be cleared; it is logical OR value of @ref _pxp_flags.
  */
-static inline void PXP_ClearStatusFlags(PXP_Type *base, uint32_t statusMask)
-{
+static inline void PXP_ClearStatusFlags(PXP_Type *base, uint32_t statusMask) {
     base->STAT_CLR = statusMask;
 }
 
@@ -610,8 +573,7 @@ static inline void PXP_ClearStatusFlags(PXP_Type *base, uint32_t statusMask)
  *        - 1: AXI1
  * @return The AXI ID of the failing bus operation.
  */
-static inline uint8_t PXP_GetAxiErrorId(PXP_Type *base, uint8_t axiIndex)
-{
+static inline uint8_t PXP_GetAxiErrorId(PXP_Type *base, uint8_t axiIndex) {
 #if defined(PXP_STAT_AXI_ERROR_ID_1_MASK)
     if (0 == axiIndex)
     {
@@ -647,8 +609,7 @@ static inline uint8_t PXP_GetAxiErrorId(PXP_Type *base, uint8_t axiIndex)
  * @param base PXP peripheral base address.
  * @param mask The interrupts to enable. Logical OR of @ref _pxp_interrupt_enable.
  */
-static inline void PXP_EnableInterrupts(PXP_Type *base, uint32_t mask)
-{
+static inline void PXP_EnableInterrupts(PXP_Type *base, uint32_t mask) {
     base->CTRL_SET = mask;
 }
 
@@ -661,8 +622,7 @@ static inline void PXP_EnableInterrupts(PXP_Type *base, uint32_t mask)
  * @param base PXP peripheral base address.
  * @param mask The interrupts to disable. Logical OR of @ref _pxp_interrupt_enable.
  */
-static inline void PXP_DisableInterrupts(PXP_Type *base, uint32_t mask)
-{
+static inline void PXP_DisableInterrupts(PXP_Type *base, uint32_t mask) {
     base->CTRL_CLR = mask;
 }
 
@@ -711,14 +671,10 @@ void PXP_SetAlphaSurfaceOverlayColorKey(PXP_Type *base, uint32_t colorKeyLow, ui
  * @param base PXP peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void PXP_EnableAlphaSurfaceOverlayColorKey(PXP_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PXP_EnableAlphaSurfaceOverlayColorKey(PXP_Type *base, bool enable) {
+    if (enable) {
         base->AS_CTRL |= PXP_AS_CTRL_ENABLE_COLORKEY_MASK;
-    }
-    else
-    {
+    } else {
         base->AS_CTRL &= ~PXP_AS_CTRL_ENABLE_COLORKEY_MASK;
     }
 }
@@ -733,7 +689,7 @@ static inline void PXP_EnableAlphaSurfaceOverlayColorKey(PXP_Type *base, bool en
  * @param lowerRightY Y of the lower right corner.
  */
 void PXP_SetAlphaSurfacePosition(
-    PXP_Type *base, uint16_t upperLeftX, uint16_t upperLeftY, uint16_t lowerRightX, uint16_t lowerRightY);
+        PXP_Type *base, uint16_t upperLeftX, uint16_t upperLeftY, uint16_t lowerRightX, uint16_t lowerRightY);
 /* @} */
 
 /*!
@@ -747,8 +703,7 @@ void PXP_SetAlphaSurfacePosition(
  * @param base PXP peripheral base address.
  * @param backGroundColor Pixel value of the background color.
  */
-static inline void PXP_SetProcessSurfaceBackGroundColor(PXP_Type *base, uint32_t backGroundColor)
-{
+static inline void PXP_SetProcessSurfaceBackGroundColor(PXP_Type *base, uint32_t backGroundColor) {
 #if defined(PXP_PS_BACKGROUND_0_COLOR_MASK)
     base->PS_BACKGROUND_0 = backGroundColor;
 #else
@@ -776,7 +731,7 @@ void PXP_SetProcessSurfaceBufferConfig(PXP_Type *base, const pxp_ps_buffer_confi
  * @param outputHeight Output image height.
  */
 void PXP_SetProcessSurfaceScaler(
-    PXP_Type *base, uint16_t inputWidth, uint16_t inputHeight, uint16_t outputWidth, uint16_t outputHeight);
+        PXP_Type *base, uint16_t inputWidth, uint16_t inputHeight, uint16_t outputWidth, uint16_t outputHeight);
 
 /*!
  * @brief Set the process surface position in output buffer.
@@ -788,7 +743,7 @@ void PXP_SetProcessSurfaceScaler(
  * @param lowerRightY Y of the lower right corner.
  */
 void PXP_SetProcessSurfacePosition(
-    PXP_Type *base, uint16_t upperLeftX, uint16_t upperLeftY, uint16_t lowerRightX, uint16_t lowerRightY);
+        PXP_Type *base, uint16_t upperLeftX, uint16_t upperLeftY, uint16_t lowerRightX, uint16_t lowerRightY);
 
 /*!
  * @brief Set the process surface color key.
@@ -825,8 +780,7 @@ void PXP_SetOutputBufferConfig(PXP_Type *base, const pxp_output_buffer_config_t 
  * @param base PXP peripheral base address.
  * @param alpha The alpha value.
  */
-static inline void PXP_SetOverwrittenAlphaValue(PXP_Type *base, uint8_t alpha)
-{
+static inline void PXP_SetOverwrittenAlphaValue(PXP_Type *base, uint8_t alpha) {
     base->OUT_CTRL = (base->OUT_CTRL & ~PXP_OUT_CTRL_ALPHA_MASK) | PXP_OUT_CTRL_ALPHA(alpha);
 }
 
@@ -839,14 +793,10 @@ static inline void PXP_SetOverwrittenAlphaValue(PXP_Type *base, uint8_t alpha)
  * @param base PXP peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void PXP_EnableOverWrittenAlpha(PXP_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PXP_EnableOverWrittenAlpha(PXP_Type *base, bool enable) {
+    if (enable) {
         base->OUT_CTRL_SET = PXP_OUT_CTRL_ALPHA_OUTPUT_MASK;
-    }
-    else
-    {
+    } else {
         base->OUT_CTRL_CLR = PXP_OUT_CTRL_ALPHA_OUTPUT_MASK;
     }
 }
@@ -878,44 +828,34 @@ static inline void PXP_EnableOverWrittenAlpha(PXP_Type *base, bool enable)
 static inline void PXP_SetRotateConfig(PXP_Type *base,
                                        pxp_rotate_position_t position,
                                        pxp_rotate_degree_t degree,
-                                       pxp_flip_mode_t flipMode)
-{
+                                       pxp_flip_mode_t flipMode) {
 #if PXP_SHARE_ROTATE
     base->CTRL =
         (base->CTRL & ~(PXP_CTRL_ROTATE_MASK | PXP_CTRL_ROT_POS_MASK | PXP_CTRL_VFLIP_MASK | PXP_CTRL_HFLIP_MASK)) |
         PXP_CTRL_ROTATE(degree) | PXP_CTRL_ROT_POS(position) | ((uint32_t)flipMode << PXP_CTRL_HFLIP_SHIFT);
 #else
-    uint32_t ctrl       = base->CTRL;
+    uint32_t ctrl = base->CTRL;
 
-    if (kPXP_RotateOutputBuffer == position)
-    {
-        if ((degree != kPXP_Rotate0) || (flipMode != kPXP_FlipDisable))
-        {
+    if (kPXP_RotateOutputBuffer == position) {
+        if ((degree != kPXP_Rotate0) || (flipMode != kPXP_FlipDisable)) {
             base->DATA_PATH_CTRL0 =
-                (base->DATA_PATH_CTRL0 & (~PXP_DATA_PATH_CTRL0_MUX12_SEL_MASK)) | PXP_DATA_PATH_CTRL0_MUX12_SEL(0);
-        }
-        else
-        {
+                    (base->DATA_PATH_CTRL0 & (~PXP_DATA_PATH_CTRL0_MUX12_SEL_MASK)) | PXP_DATA_PATH_CTRL0_MUX12_SEL(0);
+        } else {
             base->DATA_PATH_CTRL0 =
-                (base->DATA_PATH_CTRL0 & (~PXP_DATA_PATH_CTRL0_MUX12_SEL_MASK)) | PXP_DATA_PATH_CTRL0_MUX12_SEL(1);
+                    (base->DATA_PATH_CTRL0 & (~PXP_DATA_PATH_CTRL0_MUX12_SEL_MASK)) | PXP_DATA_PATH_CTRL0_MUX12_SEL(1);
         }
         ctrl &= ~(PXP_CTRL_HFLIP0_MASK | PXP_CTRL_VFLIP0_MASK | PXP_CTRL_ROTATE0_MASK);
-        ctrl |= (PXP_CTRL_ROTATE0(degree) | ((uint32_t)flipMode << PXP_CTRL_HFLIP0_SHIFT));
-    }
-    else
-    {
-        if ((degree != kPXP_Rotate0) || (flipMode != kPXP_FlipDisable))
-        {
+        ctrl |= (PXP_CTRL_ROTATE0(degree) | ((uint32_t) flipMode << PXP_CTRL_HFLIP0_SHIFT));
+    } else {
+        if ((degree != kPXP_Rotate0) || (flipMode != kPXP_FlipDisable)) {
             base->DATA_PATH_CTRL0 =
-                (base->DATA_PATH_CTRL0 & (~PXP_DATA_PATH_CTRL0_MUX3_SEL_MASK)) | PXP_DATA_PATH_CTRL0_MUX3_SEL(1);
-        }
-        else
-        {
+                    (base->DATA_PATH_CTRL0 & (~PXP_DATA_PATH_CTRL0_MUX3_SEL_MASK)) | PXP_DATA_PATH_CTRL0_MUX3_SEL(1);
+        } else {
             base->DATA_PATH_CTRL0 =
-                (base->DATA_PATH_CTRL0 & (~PXP_DATA_PATH_CTRL0_MUX3_SEL_MASK)) | PXP_DATA_PATH_CTRL0_MUX3_SEL(0);
+                    (base->DATA_PATH_CTRL0 & (~PXP_DATA_PATH_CTRL0_MUX3_SEL_MASK)) | PXP_DATA_PATH_CTRL0_MUX3_SEL(0);
         }
         ctrl &= ~(PXP_CTRL_HFLIP1_MASK | PXP_CTRL_VFLIP1_MASK | PXP_CTRL_ROTATE1_MASK);
-        ctrl |= (PXP_CTRL_ROTATE1(degree) | ((uint32_t)flipMode << PXP_CTRL_HFLIP1_SHIFT));
+        ctrl |= (PXP_CTRL_ROTATE1(degree) | ((uint32_t) flipMode << PXP_CTRL_HFLIP1_SHIFT));
     }
 
     base->CTRL = ctrl;
@@ -980,9 +920,8 @@ void PXP_SetNextCommand(PXP_Type *base, void *commandAddr);
  * @param base UART peripheral base address.
  * @return True is pending, false is not.
  */
-static inline bool PXP_IsNextCommandPending(PXP_Type *base)
-{
-    return (bool)(base->NEXT & PXP_NEXT_ENABLED_MASK);
+static inline bool PXP_IsNextCommandPending(PXP_Type *base) {
+    return (bool) (base->NEXT & PXP_NEXT_ENABLED_MASK);
 }
 
 /*!
@@ -990,10 +929,9 @@ static inline bool PXP_IsNextCommandPending(PXP_Type *base)
  *
  * @param base UART peripheral base address.
  */
-static inline void PXP_CancelNextCommand(PXP_Type *base)
-{
+static inline void PXP_CancelNextCommand(PXP_Type *base) {
     /* Write PXP_NEXT_ENABLED_MASK to the register NEXT_CLR to canel the command. */
-    *((volatile uint32_t *)(&(base->NEXT)) + 2U) = PXP_NEXT_ENABLED_MASK;
+    *((volatile uint32_t *) (&(base->NEXT)) + 2U) = PXP_NEXT_ENABLED_MASK;
 }
 
 /* @} */
@@ -1004,6 +942,7 @@ static inline void PXP_CancelNextCommand(PXP_Type *base)
  */
 
 #if !(defined(FSL_FEATURE_PXP_HAS_NO_CSC2) && FSL_FEATURE_PXP_HAS_NO_CSC2)
+
 /*!
  * @brief Set the CSC2 configuration.
  *
@@ -1022,17 +961,14 @@ void PXP_SetCsc2Config(PXP_Type *base, const pxp_csc2_config_t *config);
  * @param base PXP peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void PXP_EnableCsc2(PXP_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PXP_EnableCsc2(PXP_Type *base, bool enable) {
+    if (enable) {
         base->CSC2_CTRL &= ~PXP_CSC2_CTRL_BYPASS_MASK;
-    }
-    else
-    {
+    } else {
         base->CSC2_CTRL |= PXP_CSC2_CTRL_BYPASS_MASK;
     }
 }
+
 #endif /* FSL_FEATURE_PXP_HAS_NO_CSC2 */
 
 /*!
@@ -1053,14 +989,10 @@ void PXP_SetCsc1Mode(PXP_Type *base, pxp_csc1_mode_t mode);
  * @param base PXP peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void PXP_EnableCsc1(PXP_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PXP_EnableCsc1(PXP_Type *base, bool enable) {
+    if (enable) {
         base->CSC1_COEF0 &= ~PXP_CSC1_COEF0_BYPASS_MASK;
-    }
-    else
-    {
+    } else {
         base->CSC1_COEF0 |= PXP_CSC1_COEF0_BYPASS_MASK;
     }
 }
@@ -1110,7 +1042,7 @@ void PXP_SetLutConfig(PXP_Type *base, const pxp_lut_config_t *config);
  * @retval kStatus_InvalidArgument Failed because of invalid argument.
  */
 status_t PXP_LoadLutTable(
-    PXP_Type *base, pxp_lut_lookup_mode_t lookupMode, uint32_t bytesNum, uint32_t memAddr, uint16_t lutStartAddr);
+        PXP_Type *base, pxp_lut_lookup_mode_t lookupMode, uint32_t bytesNum, uint32_t memAddr, uint16_t lutStartAddr);
 
 /*!
  * @brief Enable or disable the LUT.
@@ -1118,14 +1050,10 @@ status_t PXP_LoadLutTable(
  * @param base PXP peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void PXP_EnableLut(PXP_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void PXP_EnableLut(PXP_Type *base, bool enable) {
+    if (enable) {
         base->LUT_CTRL &= ~PXP_LUT_CTRL_BYPASS_MASK;
-    }
-    else
-    {
+    } else {
         base->LUT_CTRL |= PXP_LUT_CTRL_BYPASS_MASK;
     }
 }
@@ -1136,8 +1064,7 @@ static inline void PXP_EnableLut(PXP_Type *base, bool enable)
  * @param base PXP peripheral base address.
  * @param bank The bank to select.
  */
-static inline void PXP_Select8kLutBank(PXP_Type *base, pxp_lut_8k_bank_t bank)
-{
+static inline void PXP_Select8kLutBank(PXP_Type *base, pxp_lut_8k_bank_t bank) {
     base->LUT_CTRL = (base->LUT_CTRL & ~PXP_LUT_CTRL_SEL_8KB_MASK) | PXP_LUT_CTRL_SEL_8KB(bank);
 }
 /* @} */

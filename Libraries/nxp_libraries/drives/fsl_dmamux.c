@@ -43,15 +43,12 @@ static const clock_ip_name_t s_dmamuxClockName[] = DMAMUX_CLOCKS;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static uint32_t DMAMUX_GetInstance(DMAMUX_Type *base)
-{
+static uint32_t DMAMUX_GetInstance(DMAMUX_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_dmamuxBases); instance++)
-    {
-        if (s_dmamuxBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_dmamuxBases); instance++) {
+        if (s_dmamuxBases[instance] == base) {
             break;
         }
     }
@@ -69,8 +66,7 @@ static uint32_t DMAMUX_GetInstance(DMAMUX_Type *base)
  * param base DMAMUX peripheral base address.
  *
  */
-void DMAMUX_Init(DMAMUX_Type *base)
-{
+void DMAMUX_Init(DMAMUX_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     CLOCK_EnableClock(s_dmamuxClockName[DMAMUX_GetInstance(base)]);
 #endif /* FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL */
@@ -83,8 +79,7 @@ void DMAMUX_Init(DMAMUX_Type *base)
  *
  * param base DMAMUX peripheral base address.
  */
-void DMAMUX_Deinit(DMAMUX_Type *base)
-{
+void DMAMUX_Deinit(DMAMUX_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     CLOCK_DisableClock(s_dmamuxClockName[DMAMUX_GetInstance(base)]);
 #endif /* FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL */

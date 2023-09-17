@@ -68,7 +68,8 @@ void openart_uart1_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t
                     openart.fa_num[1]++;
                     // PID打靶(弃用)
                     //laser_angle = MINMAX(laser_angle + pid_solve(&laser_pid,openart.rx_array[3] - 160/2),0,180);
-                    openart.fruit_delta = atan((openart.rx_array[3] * 2 - 1.641845887701845e+02) / 2.188872028772782e+02) * 180. / PI;
+                    openart.fruit_delta =
+                            atan((openart.rx_array[3] * 2 - 1.641845887701845e+02) / 2.188872028772782e+02) * 180. / PI;
                     if (openart.fa_num[1] % 2 == 1 && openart.tag_type == TAG_STOP) laser_angle -= openart.fruit_delta;
                     if (fabs(openart.fruit_delta) < 0.3 && openart.tag_type == TAG_STOP) {
                         laser_on();
@@ -102,7 +103,8 @@ void openart_uart1_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t
 
 void check_openart(void) {
 
-    if (apriltag_type == APRILTAG_FOUND && (openart.fa_type == NONE && rt_tick_get_millisecond() - apriltag_time > 4000)) {
+    if (apriltag_type == APRILTAG_FOUND &&
+        (openart.fa_type == NONE && rt_tick_get_millisecond() - apriltag_time > 4000)) {
         openart.openart_mode = NUM_MODE;
         openart.tag_type = TAG_NONE;
         openart.fa_type = NONE;
@@ -117,7 +119,8 @@ void check_openart(void) {
     if (openart.openart_mode == FA_MODE) {
         //退出条件: 水果打靶编码器  动物2.5 或者1m内什么都没识别到
         if ((openart.fa_type == ANIMAL && rt_tick_get_millisecond() - openart.animaltime > 3200) ||
-            (openart.fa_type == FRUIT && openart.tag_type == TAG_SHOOTING && rt_tick_get_millisecond() - openart.fruittime > 1200)) {
+            (openart.fa_type == FRUIT && openart.tag_type == TAG_SHOOTING &&
+             rt_tick_get_millisecond() - openart.fruittime > 1200)) {
             openart.openart_mode = NUM_MODE;
             openart.tag_type = TAG_NONE;
             openart.fa_type = NONE;
@@ -176,7 +179,7 @@ void openart_putbuff(int32_t *array, int32_t input_dat) {
 void openart_send(void) {
     static uint8_t openart_data[1];
     openart_data[0] = openart.openart_mode;
-    uart_putbuff(USART_4, (uint8_t *) &openart_data, sizeof(openart_data));
+    uart_putbuff(USART_4, (uint8_t * ) & openart_data, sizeof(openart_data));
 }
 
 

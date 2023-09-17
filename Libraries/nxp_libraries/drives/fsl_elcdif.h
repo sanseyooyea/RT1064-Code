@@ -60,14 +60,13 @@
 /*!
  * @brief eLCDIF signal polarity flags
  */
-enum _elcdif_polarity_flags
-{
-    kELCDIF_VsyncActiveLow            = 0U,                            /*!< VSYNC active low. */
-    kELCDIF_VsyncActiveHigh           = LCDIF_VDCTRL0_VSYNC_POL_MASK,  /*!< VSYNC active high. */
-    kELCDIF_HsyncActiveLow            = 0U,                            /*!< HSYNC active low. */
-    kELCDIF_HsyncActiveHigh           = LCDIF_VDCTRL0_HSYNC_POL_MASK,  /*!< HSYNC active high. */
-    kELCDIF_DataEnableActiveLow       = 0U,                            /*!< Data enable line active low. */
-    kELCDIF_DataEnableActiveHigh      = LCDIF_VDCTRL0_ENABLE_POL_MASK, /*!< Data enable line active high. */
+enum _elcdif_polarity_flags {
+    kELCDIF_VsyncActiveLow = 0U,                            /*!< VSYNC active low. */
+    kELCDIF_VsyncActiveHigh = LCDIF_VDCTRL0_VSYNC_POL_MASK,  /*!< VSYNC active high. */
+    kELCDIF_HsyncActiveLow = 0U,                            /*!< HSYNC active low. */
+    kELCDIF_HsyncActiveHigh = LCDIF_VDCTRL0_HSYNC_POL_MASK,  /*!< HSYNC active high. */
+    kELCDIF_DataEnableActiveLow = 0U,                            /*!< Data enable line active low. */
+    kELCDIF_DataEnableActiveHigh = LCDIF_VDCTRL0_ENABLE_POL_MASK, /*!< Data enable line active high. */
     kELCDIF_DriveDataOnFallingClkEdge = 0U, /*!< Drive data on falling clock edge, capture data
                                                  on rising clock edge. */
     kELCDIF_DriveDataOnRisingClkEdge = LCDIF_VDCTRL0_DOTCLK_POL_MASK, /*!< Drive data on falling
@@ -78,15 +77,14 @@ enum _elcdif_polarity_flags
 /*!
  * @brief The eLCDIF interrupts to enable.
  */
-enum _elcdif_interrupt_enable
-{
-    kELCDIF_BusMasterErrorInterruptEnable  = LCDIF_CTRL1_BM_ERROR_IRQ_EN_MASK,  /*!< Bus master error interrupt. */
-    kELCDIF_TxFifoOverflowInterruptEnable  = LCDIF_CTRL1_OVERFLOW_IRQ_EN_MASK,  /*!< TXFIFO overflow interrupt. */
+enum _elcdif_interrupt_enable {
+    kELCDIF_BusMasterErrorInterruptEnable = LCDIF_CTRL1_BM_ERROR_IRQ_EN_MASK,  /*!< Bus master error interrupt. */
+    kELCDIF_TxFifoOverflowInterruptEnable = LCDIF_CTRL1_OVERFLOW_IRQ_EN_MASK,  /*!< TXFIFO overflow interrupt. */
     kELCDIF_TxFifoUnderflowInterruptEnable = LCDIF_CTRL1_UNDERFLOW_IRQ_EN_MASK, /*!< TXFIFO underflow interrupt. */
     kELCDIF_CurFrameDoneInterruptEnable =
-        LCDIF_CTRL1_CUR_FRAME_DONE_IRQ_EN_MASK, /*!< Interrupt when hardware enters vertical blanking state. */
+    LCDIF_CTRL1_CUR_FRAME_DONE_IRQ_EN_MASK, /*!< Interrupt when hardware enters vertical blanking state. */
     kELCDIF_VsyncEdgeInterruptEnable =
-        LCDIF_CTRL1_VSYNC_EDGE_IRQ_EN_MASK, /*!< Interrupt when hardware encounters VSYNC edge. */
+    LCDIF_CTRL1_VSYNC_EDGE_IRQ_EN_MASK, /*!< Interrupt when hardware encounters VSYNC edge. */
 #if defined(LCDIF_AS_CTRL_CSI_SYNC_ON_IRQ_EN_MASK)
     kELCDIF_SciSyncOnInterruptEnable =
         LCDIF_AS_CTRL_CSI_SYNC_ON_IRQ_EN_MASK, /*!< Interrupt when eLCDIF lock with CSI input. */
@@ -96,13 +94,12 @@ enum _elcdif_interrupt_enable
 /*!
  * @brief The eLCDIF interrupt status flags.
  */
-enum _elcdif_interrupt_flags
-{
-    kELCDIF_BusMasterError  = LCDIF_CTRL1_BM_ERROR_IRQ_MASK,  /*!< Bus master error interrupt. */
-    kELCDIF_TxFifoOverflow  = LCDIF_CTRL1_OVERFLOW_IRQ_MASK,  /*!< TXFIFO overflow interrupt. */
+enum _elcdif_interrupt_flags {
+    kELCDIF_BusMasterError = LCDIF_CTRL1_BM_ERROR_IRQ_MASK,  /*!< Bus master error interrupt. */
+    kELCDIF_TxFifoOverflow = LCDIF_CTRL1_OVERFLOW_IRQ_MASK,  /*!< TXFIFO overflow interrupt. */
     kELCDIF_TxFifoUnderflow = LCDIF_CTRL1_UNDERFLOW_IRQ_MASK, /*!< TXFIFO underflow interrupt. */
     kELCDIF_CurFrameDone =
-        LCDIF_CTRL1_CUR_FRAME_DONE_IRQ_MASK,             /*!< Interrupt when hardware enters vertical blanking state. */
+    LCDIF_CTRL1_CUR_FRAME_DONE_IRQ_MASK,             /*!< Interrupt when hardware enters vertical blanking state. */
     kELCDIF_VsyncEdge = LCDIF_CTRL1_VSYNC_EDGE_IRQ_MASK, /*!< Interrupt when hardware encounters VSYNC edge. */
 #if defined(LCDIF_AS_CTRL_CSI_SYNC_ON_IRQ_MASK)
     kELCDIF_SciSyncOn = LCDIF_AS_CTRL_CSI_SYNC_ON_IRQ_MASK, /*!< Interrupt when eLCDIF lock with CSI input. */
@@ -112,11 +109,10 @@ enum _elcdif_interrupt_flags
 /*!
  * @brief eLCDIF status flags
  */
-enum _elcdif_status_flags
-{
-    kELCDIF_LFifoFull   = LCDIF_STAT_LFIFO_FULL_MASK,   /*!< LFIFO full. */
-    kELCDIF_LFifoEmpty  = LCDIF_STAT_LFIFO_EMPTY_MASK,  /*!< LFIFO empty. */
-    kELCDIF_TxFifoFull  = LCDIF_STAT_TXFIFO_FULL_MASK,  /*!< TXFIFO full. */
+enum _elcdif_status_flags {
+    kELCDIF_LFifoFull = LCDIF_STAT_LFIFO_FULL_MASK,   /*!< LFIFO full. */
+    kELCDIF_LFifoEmpty = LCDIF_STAT_LFIFO_EMPTY_MASK,  /*!< LFIFO empty. */
+    kELCDIF_TxFifoFull = LCDIF_STAT_TXFIFO_FULL_MASK,  /*!< TXFIFO full. */
     kELCDIF_TxFifoEmpty = LCDIF_STAT_TXFIFO_EMPTY_MASK, /*!< TXFIFO empty. */
 #if defined(LCDIF_STAT_BUSY_MASK)
     kELCDIF_LcdControllerBusy = LCDIF_STAT_BUSY_MASK, /*!< The external LCD controller busy signal. */
@@ -133,20 +129,18 @@ enum _elcdif_status_flags
  * This enumerator should be defined together with the array s_pixelFormatReg.
  * To support new pixel format, enhance this enumerator and s_pixelFormatReg.
  */
-typedef enum _elcdif_pixel_format
-{
-    kELCDIF_PixelFormatRAW8   = 0,   /*!< RAW 8 bit, four data use 32 bits. */
+typedef enum _elcdif_pixel_format {
+    kELCDIF_PixelFormatRAW8 = 0,   /*!< RAW 8 bit, four data use 32 bits. */
     kELCDIF_PixelFormatRGB565 = 1,   /*!< RGB565, two pixel use 32 bits. */
     kELCDIF_PixelFormatRGB666 = 2,   /*!< RGB666 unpacked, one pixel uses 32 bits, high byte unused,
                                           upper 2 bits of other bytes unused. */
     kELCDIF_PixelFormatXRGB8888 = 3, /*!< XRGB8888 unpacked, one pixel uses 32 bits, high byte unused. */
-    kELCDIF_PixelFormatRGB888   = 4, /*!< RGB888 packed, one pixel uses 24 bits. */
+    kELCDIF_PixelFormatRGB888 = 4, /*!< RGB888 packed, one pixel uses 24 bits. */
 } elcdif_pixel_format_t;
 
 /*! @brief The LCD data bus type.  */
-typedef enum _elcdif_lcd_data_bus
-{
-    kELCDIF_DataBus8Bit  = LCDIF_CTRL_LCD_DATABUS_WIDTH(1), /*!< 8-bit data bus. */
+typedef enum _elcdif_lcd_data_bus {
+    kELCDIF_DataBus8Bit = LCDIF_CTRL_LCD_DATABUS_WIDTH(1), /*!< 8-bit data bus. */
     kELCDIF_DataBus16Bit = LCDIF_CTRL_LCD_DATABUS_WIDTH(0), /*!< 16-bit data bus, support RGB565. */
     kELCDIF_DataBus18Bit = LCDIF_CTRL_LCD_DATABUS_WIDTH(2), /*!< 18-bit data bus, support RGB666. */
     kELCDIF_DataBus24Bit = LCDIF_CTRL_LCD_DATABUS_WIDTH(3), /*!< 24-bit data bus, support RGB888. */
@@ -162,8 +156,7 @@ typedef enum _elcdif_lcd_data_bus
  * - CTRL[WORD_LENGTH]
  * - CTRL1[BYTE_PACKING_FORMAT]
  */
-typedef struct _elcdif_pixel_format_reg
-{
+typedef struct _elcdif_pixel_format_reg {
     uint32_t regCtrl;  /*!< Value of register CTRL. */
     uint32_t regCtrl1; /*!< Value of register CTRL1. */
 } elcdif_pixel_format_reg_t;
@@ -171,8 +164,7 @@ typedef struct _elcdif_pixel_format_reg
 /*!
  * @brief eLCDIF configure structure for RGB mode (DOTCLK mode).
  */
-typedef struct _elcdif_rgb_mode_config
-{
+typedef struct _elcdif_rgb_mode_config {
     uint16_t panelWidth;    /*!< Display panel width, pixels per line. */
     uint16_t panelHeight;   /*!< Display panel height, how many lines per panel. */
     uint8_t hsw;            /*!< HSYNC pulse width. */
@@ -190,22 +182,20 @@ typedef struct _elcdif_rgb_mode_config
 /*!
  * @brief eLCDIF alpha surface pixel format.
  */
-typedef enum _elcdif_as_pixel_format
-{
+typedef enum _elcdif_as_pixel_format {
     kELCDIF_AsPixelFormatARGB8888 = 0x0, /*!< 32-bit pixels with alpha. */
-    kELCDIF_AsPixelFormatRGB888   = 0x4, /*!< 32-bit pixels without alpha (unpacked 24-bit format) */
+    kELCDIF_AsPixelFormatRGB888 = 0x4, /*!< 32-bit pixels without alpha (unpacked 24-bit format) */
     kELCDIF_AsPixelFormatARGB1555 = 0x8, /*!< 16-bit pixels with alpha. */
     kELCDIF_AsPixelFormatARGB4444 = 0x9, /*!< 16-bit pixels with alpha. */
-    kELCDIF_AsPixelFormatRGB555   = 0xC, /*!< 16-bit pixels without alpha. */
-    kELCDIF_AsPixelFormatRGB444   = 0xD, /*!< 16-bit pixels without alpha. */
-    kELCDIF_AsPixelFormatRGB565   = 0xE, /*!< 16-bit pixels without alpha. */
+    kELCDIF_AsPixelFormatRGB555 = 0xC, /*!< 16-bit pixels without alpha. */
+    kELCDIF_AsPixelFormatRGB444 = 0xD, /*!< 16-bit pixels without alpha. */
+    kELCDIF_AsPixelFormatRGB565 = 0xE, /*!< 16-bit pixels without alpha. */
 } elcdif_as_pixel_format_t;
 
 /*!
  * @brief eLCDIF alpha surface buffer configuration.
  */
-typedef struct _elcdif_as_buffer_config
-{
+typedef struct _elcdif_as_buffer_config {
     uint32_t bufferAddr;                  /*!< Buffer address. */
     elcdif_as_pixel_format_t pixelFormat; /*!< Pixel format. */
 } elcdif_as_buffer_config_t;
@@ -213,8 +203,7 @@ typedef struct _elcdif_as_buffer_config
 /*!
  * @brief eLCDIF alpha mode during blending.
  */
-typedef enum _elcdif_alpha_mode
-{
+typedef enum _elcdif_alpha_mode {
     kELCDIF_AlphaEmbedded, /*!< The alpha surface pixel alpha value will be used for blend. */
     kELCDIF_AlphaOverride, /*!< The user defined alpha value will be used for blend directly. */
     kELCDIF_AlphaMultiply, /*!< The alpha surface pixel alpha value scaled the user defined
@@ -233,27 +222,25 @@ typedef enum _elcdif_alpha_mode
  * - nAS: Alpha surface NOT value
  * - nPS: Process surface NOT value
  */
-typedef enum _elcdif_rop_mode
-{
-    kELCDIF_RopMaskAs     = 0x0, /*!< AS AND PS. */
-    kELCDIF_RopMaskNotAs  = 0x1, /*!< nAS AND PS. */
-    kELCDIF_RopMaskAsNot  = 0x2, /*!< AS AND nPS. */
-    kELCDIF_RopMergeAs    = 0x3, /*!< AS OR PS. */
+typedef enum _elcdif_rop_mode {
+    kELCDIF_RopMaskAs = 0x0, /*!< AS AND PS. */
+    kELCDIF_RopMaskNotAs = 0x1, /*!< nAS AND PS. */
+    kELCDIF_RopMaskAsNot = 0x2, /*!< AS AND nPS. */
+    kELCDIF_RopMergeAs = 0x3, /*!< AS OR PS. */
     kELCDIF_RopMergeNotAs = 0x4, /*!< nAS OR PS. */
     kELCDIF_RopMergeAsNot = 0x5, /*!< AS OR nPS. */
-    kELCDIF_RopNotCopyAs  = 0x6, /*!< nAS. */
-    kELCDIF_RopNot        = 0x7, /*!< nPS. */
-    kELCDIF_RopNotMaskAs  = 0x8, /*!< AS NAND PS. */
+    kELCDIF_RopNotCopyAs = 0x6, /*!< nAS. */
+    kELCDIF_RopNot = 0x7, /*!< nPS. */
+    kELCDIF_RopNotMaskAs = 0x8, /*!< AS NAND PS. */
     kELCDIF_RopNotMergeAs = 0x9, /*!< AS NOR PS. */
-    kELCDIF_RopXorAs      = 0xA, /*!< AS XOR PS. */
-    kELCDIF_RopNotXorAs   = 0xB  /*!< AS XNOR PS. */
+    kELCDIF_RopXorAs = 0xA, /*!< AS XOR PS. */
+    kELCDIF_RopNotXorAs = 0xB  /*!< AS XNOR PS. */
 } elcdif_rop_mode_t;
 
 /*!
  * @brief eLCDIF alpha surface blending configuration.
  */
-typedef struct _elcdif_as_blend_config
-{
+typedef struct _elcdif_as_blend_config {
     uint8_t alpha;    /*!< User defined alpha value, only used when @ref alphaMode is @ref kELCDIF_AlphaOverride or @ref
                          kELCDIF_AlphaRop. */
     bool invertAlpha; /*!< Set true to invert the alpha. */
@@ -270,8 +257,7 @@ typedef struct _elcdif_as_blend_config
  * There are two 256x24 bits LUT memory in LCDIF, the LSB of frame buffer address
  * determins which memory to use.
  */
-typedef enum _elcdif_lut
-{
+typedef enum _elcdif_lut {
     kELCDIF_Lut0 = 0, /*!< LUT 0. */
     kELCDIF_Lut1,     /*!< LUT 1. */
 } elcdif_lut_t;
@@ -354,8 +340,7 @@ void ELCDIF_RgbModeSetPixelFormat(LCDIF_Type *base, elcdif_pixel_format_t pixelF
  *
  * @param base eLCDIF peripheral base address.
  */
-static inline void ELCDIF_RgbModeStart(LCDIF_Type *base)
-{
+static inline void ELCDIF_RgbModeStart(LCDIF_Type *base) {
     base->CTRL_SET = LCDIF_CTRL_RUN_MASK | LCDIF_CTRL_DOTCLK_MODE_MASK;
 }
 
@@ -372,8 +357,7 @@ void ELCDIF_RgbModeStop(LCDIF_Type *base);
  * @param base eLCDIF peripheral base address.
  * @param bufferAddr The frame buffer address to set.
  */
-static inline void ELCDIF_SetNextBufferAddr(LCDIF_Type *base, uint32_t bufferAddr)
-{
+static inline void ELCDIF_SetNextBufferAddr(LCDIF_Type *base, uint32_t bufferAddr) {
     base->NEXT_BUF = bufferAddr;
 }
 
@@ -385,23 +369,21 @@ static inline void ELCDIF_SetNextBufferAddr(LCDIF_Type *base, uint32_t bufferAdd
 void ELCDIF_Reset(LCDIF_Type *base);
 
 #if !(defined(FSL_FEATURE_LCDIF_HAS_NO_RESET_PIN) && FSL_FEATURE_LCDIF_HAS_NO_RESET_PIN)
+
 /*!
  * @brief Pull up or down the reset pin for the externel LCD controller.
  *
  * @param base eLCDIF peripheral base address.
  * @param pullUp True to pull up reset pin, false to pull down.
  */
-static inline void ELCDIF_PullUpResetPin(LCDIF_Type *base, bool pullUp)
-{
-    if (pullUp)
-    {
+static inline void ELCDIF_PullUpResetPin(LCDIF_Type *base, bool pullUp) {
+    if (pullUp) {
         base->CTRL1_SET = LCDIF_CTRL1_RESET_MASK;
-    }
-    else
-    {
+    } else {
         base->CTRL1_CLR = LCDIF_CTRL1_RESET_MASK;
     }
 }
+
 #endif
 
 /*!
@@ -410,14 +392,10 @@ static inline void ELCDIF_PullUpResetPin(LCDIF_Type *base, bool pullUp)
  * @param base eLCDIF peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void ELCDIF_EnablePxpHandShake(LCDIF_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void ELCDIF_EnablePxpHandShake(LCDIF_Type *base, bool enable) {
+    if (enable) {
         base->CTRL_SET = LCDIF_CTRL_ENABLE_PXP_HANDSHAKE_MASK;
-    }
-    else
-    {
+    } else {
         base->CTRL_CLR = LCDIF_CTRL_ENABLE_PXP_HANDSHAKE_MASK;
     }
 }
@@ -440,8 +418,7 @@ static inline void ELCDIF_EnablePxpHandShake(LCDIF_Type *base, bool enable)
  *
  * @note The CRC value is dependent on the LCD_DATABUS_WIDTH.
  */
-static inline uint32_t ELCDIF_GetCrcValue(LCDIF_Type *base)
-{
+static inline uint32_t ELCDIF_GetCrcValue(LCDIF_Type *base) {
     return base->CRC_STAT;
 }
 
@@ -455,8 +432,7 @@ static inline uint32_t ELCDIF_GetCrcValue(LCDIF_Type *base)
  * @param base eLCDIF peripheral base address.
  * @return The error virtual address.
  */
-static inline uint32_t ELCDIF_GetBusMasterErrorAddr(LCDIF_Type *base)
-{
+static inline uint32_t ELCDIF_GetBusMasterErrorAddr(LCDIF_Type *base) {
     return base->BM_ERROR_STAT;
 }
 
@@ -482,17 +458,16 @@ static inline uint32_t ELCDIF_GetBusMasterErrorAddr(LCDIF_Type *base)
  * @param base eLCDIF peripheral base address.
  * @return The mask value of status flags, it is OR'ed value of @ref _elcdif_status_flags.
  */
-static inline uint32_t ELCDIF_GetStatus(LCDIF_Type *base)
-{
+static inline uint32_t ELCDIF_GetStatus(LCDIF_Type *base) {
     return base->STAT & (LCDIF_STAT_LFIFO_FULL_MASK | LCDIF_STAT_LFIFO_EMPTY_MASK | LCDIF_STAT_TXFIFO_FULL_MASK |
                          LCDIF_STAT_TXFIFO_EMPTY_MASK
 #if defined(LCDIF_STAT_BUSY_MASK)
-                         | LCDIF_STAT_BUSY_MASK
+            | LCDIF_STAT_BUSY_MASK
 #endif
 #if defined(LCDIF_STAT_DVI_CURRENT_FIELD_MASK)
-                         | LCDIF_STAT_DVI_CURRENT_FIELD_MASK
+            | LCDIF_STAT_DVI_CURRENT_FIELD_MASK
 #endif
-                        );
+    );
 }
 
 /*!
@@ -501,8 +476,7 @@ static inline uint32_t ELCDIF_GetStatus(LCDIF_Type *base)
  * @param base eLCDIF peripheral base address.
  * @return The LFIFO current count
  */
-static inline uint32_t ELCDIF_GetLFifoCount(LCDIF_Type *base)
-{
+static inline uint32_t ELCDIF_GetLFifoCount(LCDIF_Type *base) {
     return (base->STAT & LCDIF_STAT_LFIFO_COUNT_MASK) >> LCDIF_STAT_LFIFO_COUNT_SHIFT;
 }
 
@@ -519,8 +493,7 @@ static inline uint32_t ELCDIF_GetLFifoCount(LCDIF_Type *base)
  * @param base eLCDIF peripheral base address.
  * @param mask interrupt source, OR'ed value of _elcdif_interrupt_enable.
  */
-static inline void ELCDIF_EnableInterrupts(LCDIF_Type *base, uint32_t mask)
-{
+static inline void ELCDIF_EnableInterrupts(LCDIF_Type *base, uint32_t mask) {
     base->CTRL1_SET = (mask & ELCDIF_CTRL1_IRQ_EN_MASK);
 #if !(defined(FSL_FEATURE_LCDIF_HAS_NO_AS) && FSL_FEATURE_LCDIF_HAS_NO_AS)
     base->AS_CTRL |= (mask & ELCDIF_AS_CTRL_IRQ_EN_MASK);
@@ -533,8 +506,7 @@ static inline void ELCDIF_EnableInterrupts(LCDIF_Type *base, uint32_t mask)
  * @param base eLCDIF peripheral base address.
  * @param mask interrupt source, OR'ed value of _elcdif_interrupt_enable.
  */
-static inline void ELCDIF_DisableInterrupts(LCDIF_Type *base, uint32_t mask)
-{
+static inline void ELCDIF_DisableInterrupts(LCDIF_Type *base, uint32_t mask) {
     base->CTRL1_CLR = (mask & ELCDIF_CTRL1_IRQ_EN_MASK);
 #if !(defined(FSL_FEATURE_LCDIF_HAS_NO_AS) && FSL_FEATURE_LCDIF_HAS_NO_AS)
     base->AS_CTRL &= ~(mask & ELCDIF_AS_CTRL_IRQ_EN_MASK);
@@ -547,8 +519,7 @@ static inline void ELCDIF_DisableInterrupts(LCDIF_Type *base, uint32_t mask)
  * @param base eLCDIF peripheral base address.
  * @return Interrupt pending status, OR'ed value of _elcdif_interrupt_flags.
  */
-static inline uint32_t ELCDIF_GetInterruptStatus(LCDIF_Type *base)
-{
+static inline uint32_t ELCDIF_GetInterruptStatus(LCDIF_Type *base) {
     uint32_t flags;
 
     flags = (base->CTRL1 & ELCDIF_CTRL1_IRQ_MASK);
@@ -565,8 +536,7 @@ static inline uint32_t ELCDIF_GetInterruptStatus(LCDIF_Type *base)
  * @param base eLCDIF peripheral base address.
  * @param mask of the flags to clear, OR'ed value of _elcdif_interrupt_flags.
  */
-static inline void ELCDIF_ClearInterruptStatus(LCDIF_Type *base, uint32_t mask)
-{
+static inline void ELCDIF_ClearInterruptStatus(LCDIF_Type *base, uint32_t mask) {
     base->CTRL1_CLR = (mask & ELCDIF_CTRL1_IRQ_MASK);
 #if !(defined(FSL_FEATURE_LCDIF_HAS_NO_AS) && FSL_FEATURE_LCDIF_HAS_NO_AS)
     base->AS_CTRL &= ~(mask & ELCDIF_AS_CTRL_IRQ_MASK);
@@ -603,8 +573,7 @@ void ELCDIF_SetAlphaSurfaceBlendConfig(LCDIF_Type *base, const elcdif_as_blend_c
  * @param base eLCDIF peripheral base address.
  * @param bufferAddr Alpha surface buffer address.
  */
-static inline void ELCDIF_SetNextAlphaSurfaceBufferAddr(LCDIF_Type *base, uint32_t bufferAddr)
-{
+static inline void ELCDIF_SetNextAlphaSurfaceBufferAddr(LCDIF_Type *base, uint32_t bufferAddr) {
     base->AS_NEXT_BUF = bufferAddr;
 }
 
@@ -621,9 +590,8 @@ static inline void ELCDIF_SetNextAlphaSurfaceBufferAddr(LCDIF_Type *base, uint32
  *
  * @note Colorkey operations are higher priority than alpha or ROP operations
  */
-static inline void ELCDIF_SetOverlayColorKey(LCDIF_Type *base, uint32_t colorKeyLow, uint32_t colorKeyHigh)
-{
-    base->AS_CLRKEYLOW  = colorKeyLow;
+static inline void ELCDIF_SetOverlayColorKey(LCDIF_Type *base, uint32_t colorKeyLow, uint32_t colorKeyHigh) {
+    base->AS_CLRKEYLOW = colorKeyLow;
     base->AS_CLRKEYHIGH = colorKeyHigh;
 }
 
@@ -633,14 +601,10 @@ static inline void ELCDIF_SetOverlayColorKey(LCDIF_Type *base, uint32_t colorKey
  * @param base eLCDIF peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void ELCDIF_EnableOverlayColorKey(LCDIF_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void ELCDIF_EnableOverlayColorKey(LCDIF_Type *base, bool enable) {
+    if (enable) {
         base->AS_CTRL |= LCDIF_AS_CTRL_ENABLE_COLORKEY_MASK;
-    }
-    else
-    {
+    } else {
         base->AS_CTRL &= ~LCDIF_AS_CTRL_ENABLE_COLORKEY_MASK;
     }
 }
@@ -651,14 +615,10 @@ static inline void ELCDIF_EnableOverlayColorKey(LCDIF_Type *base, bool enable)
  * @param base eLCDIF peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void ELCDIF_EnableAlphaSurface(LCDIF_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void ELCDIF_EnableAlphaSurface(LCDIF_Type *base, bool enable) {
+    if (enable) {
         base->AS_CTRL |= LCDIF_AS_CTRL_AS_ENABLE_MASK;
-    }
-    else
-    {
+    } else {
         base->AS_CTRL &= ~LCDIF_AS_CTRL_AS_ENABLE_MASK;
     }
 }
@@ -672,14 +632,10 @@ static inline void ELCDIF_EnableAlphaSurface(LCDIF_Type *base, bool enable)
  * @param base eLCDIF peripheral base address.
  * @param enable True to enable, false to disable.
  */
-static inline void ELCDIF_EnableProcessSurface(LCDIF_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void ELCDIF_EnableProcessSurface(LCDIF_Type *base, bool enable) {
+    if (enable) {
         base->AS_CTRL &= ~LCDIF_AS_CTRL_PS_DISABLE_MASK;
-    }
-    else
-    {
+    } else {
         base->AS_CTRL |= LCDIF_AS_CTRL_PS_DISABLE_MASK;
     }
 }

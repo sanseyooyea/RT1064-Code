@@ -23,15 +23,14 @@
 /*!
  * @brief Interrupt enable/disable mask.
  */
-enum _enc_interrupt_enable
-{
-    kENC_HOMETransitionInterruptEnable  = (1U << 0U), /*!< HOME interrupt enable. */
-    kENC_INDEXPulseInterruptEnable      = (1U << 1U), /*!< INDEX pulse interrupt enable. */
+enum _enc_interrupt_enable {
+    kENC_HOMETransitionInterruptEnable = (1U << 0U), /*!< HOME interrupt enable. */
+    kENC_INDEXPulseInterruptEnable = (1U << 1U), /*!< INDEX pulse interrupt enable. */
     kENC_WatchdogTimeoutInterruptEnable = (1U << 2U), /*!< Watchdog timeout interrupt enable. */
-    kENC_PositionCompareInerruptEnable  = (1U << 3U), /*!< Position compare interrupt enable. */
+    kENC_PositionCompareInerruptEnable = (1U << 3U), /*!< Position compare interrupt enable. */
     kENC_SimultBothPhaseChangeInterruptEnable =
-        (1U << 4U),                                     /*!< Simultaneous PHASEA and PHASEB change interrupt enable. */
-    kENC_PositionRollOverInterruptEnable  = (1U << 5U), /*!< Roll-over interrupt enable. */
+    (1U << 4U),                                     /*!< Simultaneous PHASEA and PHASEB change interrupt enable. */
+    kENC_PositionRollOverInterruptEnable = (1U << 5U), /*!< Roll-over interrupt enable. */
     kENC_PositionRollUnderInterruptEnable = (1U << 6U), /*!< Roll-under interrupt enable. */
 };
 
@@ -40,16 +39,15 @@ enum _enc_interrupt_enable
  *
  * These flags indicate the counter's events.
  */
-enum _enc_status_flags
-{
-    kENC_HOMETransitionFlag        = (1U << 0U), /*!< HOME signal transition interrupt request. */
-    kENC_INDEXPulseFlag            = (1U << 1U), /*!< INDEX Pulse Interrupt Request. */
-    kENC_WatchdogTimeoutFlag       = (1U << 2U), /*!< Watchdog timeout interrupt request. */
-    kENC_PositionCompareFlag       = (1U << 3U), /*!< Position compare interrupt request. */
+enum _enc_status_flags {
+    kENC_HOMETransitionFlag = (1U << 0U), /*!< HOME signal transition interrupt request. */
+    kENC_INDEXPulseFlag = (1U << 1U), /*!< INDEX Pulse Interrupt Request. */
+    kENC_WatchdogTimeoutFlag = (1U << 2U), /*!< Watchdog timeout interrupt request. */
+    kENC_PositionCompareFlag = (1U << 3U), /*!< Position compare interrupt request. */
     kENC_SimultBothPhaseChangeFlag = (1U << 4U), /*!< Simultaneous PHASEA and PHASEB change interrupt request. */
-    kENC_PositionRollOverFlag      = (1U << 5U), /*!< Roll-over interrupt request. */
-    kENC_PositionRollUnderFlag     = (1U << 6U), /*!< Roll-under interrupt request. */
-    kENC_LastCountDirectionFlag    = (1U << 7U), /*!< Last count was in the up direction, or the down direction. */
+    kENC_PositionRollOverFlag = (1U << 5U), /*!< Roll-over interrupt request. */
+    kENC_PositionRollUnderFlag = (1U << 6U), /*!< Roll-under interrupt request. */
+    kENC_LastCountDirectionFlag = (1U << 7U), /*!< Last count was in the up direction, or the down direction. */
 };
 
 /*!
@@ -57,16 +55,15 @@ enum _enc_status_flags
  *
  * These flags indicate the counter's signal.
  */
-enum _enc_signal_status_flags
-{
-    kENC_RawHOMEStatusFlag       = ENC_IMR_HOME_MASK,  /*!< Raw HOME input. */
-    kENC_RawINDEXStatusFlag      = ENC_IMR_INDEX_MASK, /*!< Raw INDEX input. */
-    kENC_RawPHBStatusFlag        = ENC_IMR_PHB_MASK,   /*!< Raw PHASEB input. */
-    kENC_RawPHAEXStatusFlag      = ENC_IMR_PHA_MASK,   /*!< Raw PHASEA input. */
-    kENC_FilteredHOMEStatusFlag  = ENC_IMR_FHOM_MASK,  /*!< The filtered version of HOME input. */
+enum _enc_signal_status_flags {
+    kENC_RawHOMEStatusFlag = ENC_IMR_HOME_MASK,  /*!< Raw HOME input. */
+    kENC_RawINDEXStatusFlag = ENC_IMR_INDEX_MASK, /*!< Raw INDEX input. */
+    kENC_RawPHBStatusFlag = ENC_IMR_PHB_MASK,   /*!< Raw PHASEB input. */
+    kENC_RawPHAEXStatusFlag = ENC_IMR_PHA_MASK,   /*!< Raw PHASEA input. */
+    kENC_FilteredHOMEStatusFlag = ENC_IMR_FHOM_MASK,  /*!< The filtered version of HOME input. */
     kENC_FilteredINDEXStatusFlag = ENC_IMR_FIND_MASK,  /*!< The filtered version of INDEX input. */
-    kENC_FilteredPHBStatusFlag   = ENC_IMR_FPHB_MASK,  /*!< The filtered version of PHASEB input. */
-    kENC_FilteredPHAStatusFlag   = ENC_IMR_FPHA_MASK,  /*!< The filtered version of PHASEA input. */
+    kENC_FilteredPHBStatusFlag = ENC_IMR_FPHB_MASK,  /*!< The filtered version of PHASEB input. */
+    kENC_FilteredPHAStatusFlag = ENC_IMR_FPHA_MASK,  /*!< The filtered version of PHASEA input. */
 };
 
 /*!
@@ -74,8 +71,7 @@ enum _enc_signal_status_flags
  *
  * The ENC would count the trigger from HOME signal line.
  */
-typedef enum _enc_home_trigger_mode
-{
+typedef enum _enc_home_trigger_mode {
     kENC_HOMETriggerDisabled = 0U, /*!< HOME signal's trigger is disabled. */
     kENC_HOMETriggerOnRisingEdge,  /*!< Use positive going edge-to-trigger initialization of position counters. */
     kENC_HOMETriggerOnFallingEdge, /*!< Use negative going edge-to-trigger initialization of position counters. */
@@ -86,8 +82,7 @@ typedef enum _enc_home_trigger_mode
  *
  * The ENC would count the trigger from INDEX signal line.
  */
-typedef enum _enc_index_trigger_mode
-{
+typedef enum _enc_index_trigger_mode {
     kENC_INDEXTriggerDisabled = 0U, /*!< INDEX signal's trigger is disabled. */
     kENC_INDEXTriggerOnRisingEdge,  /*!< Use positive going edge-to-trigger initialization of position counters. */
     kENC_INDEXTriggerOnFallingEdge, /*!< Use negative going edge-to-trigger initialization of position counters. */
@@ -101,8 +96,7 @@ typedef enum _enc_index_trigger_mode
  * control the counter direction. If the reverse direction is not enabled, PHASEB = 0 means counting up and PHASEB = 1
  * means counting down. Otherwise, the direction is reversed.
  */
-typedef enum _enc_decoder_work_mode
-{
+typedef enum _enc_decoder_work_mode {
     kENC_DecoderWorkAsNormalMode = 0U,      /*!< Use standard quadrature decoder with PHASEA and PHASEB. */
     kENC_DecoderWorkAsSignalPhaseCountMode, /*!< PHASEA input generates a count signal while PHASEB input control the
                                                direction. */
@@ -111,8 +105,7 @@ typedef enum _enc_decoder_work_mode
 /*!
  * @brief Define type for the condition of POSMATCH pulses.
  */
-typedef enum _enc_position_match_mode
-{
+typedef enum _enc_position_match_mode {
     kENC_POSMATCHOnPositionCounterEqualToComapreValue = 0U, /*!< POSMATCH pulses when a match occurs between the
                                                                position counters (POS) and the compare value (COMP). */
     kENC_POSMATCHOnReadingAnyPositionCounter, /*!< POSMATCH pulses when any position counter register is read. */
@@ -121,8 +114,7 @@ typedef enum _enc_position_match_mode
 /*!
  * @brief Define type for determining how the revolution counter (REV) is incremented/decremented.
  */
-typedef enum _enc_revolution_count_condition
-{
+typedef enum _enc_revolution_count_condition {
     kENC_RevolutionCountOnINDEXPulse = 0U, /*!< Use INDEX pulse to increment/decrement revolution counter. */
     kENC_RevolutionCountOnRollOverModulus, /*!< Use modulus counting roll-over/under to increment/decrement revolution
                                               counter. */
@@ -131,8 +123,7 @@ typedef enum _enc_revolution_count_condition
 /*!
  * @brief Define type for direction of self test generated signal.
  */
-typedef enum _enc_self_test_direction
-{
+typedef enum _enc_self_test_direction {
     kENC_SelfTestDirectionPositive = 0U, /*!< Self test generates the signal in positive direction. */
     kENC_SelfTestDirectionNegative,      /*!< Self test generates the signal in negative direction. */
 } enc_self_test_direction_t;
@@ -140,8 +131,7 @@ typedef enum _enc_self_test_direction
 /*!
  * @brief Define user configuration structure for ENC module.
  */
-typedef struct _enc_config
-{
+typedef struct _enc_config {
     /* Basic counter. */
     bool enableReverseDirection;             /*!< Enable reverse direction counting. */
     enc_decoder_work_mode_t decoderWorkMode; /*!< Enable signal phase count mode. */
@@ -188,8 +178,7 @@ typedef struct _enc_config
  * The self test module provides a quadrature test signal to the inputs of the quadrature decoder module.
  * This is a factory test feature. It is also useful to customers' software development and testing.
  */
-typedef struct _enc_self_test_config
-{
+typedef struct _enc_self_test_config {
     enc_self_test_direction_t signalDirection; /*!< Direction of self test generated signal. */
     uint16_t signalCount;  /*!< Hold the number of quadrature advances to generate. The available range is 0 - 255.*/
     uint16_t signalPeriod; /*!< Hold the period of quadrature phase in IPBus clock cycles.
@@ -327,8 +316,7 @@ void ENC_ClearStatusFlags(ENC_Type *base, uint32_t mask);
  *
  * @return      Mask value of signals' real-time status. For available mask, see to "_enc_signal_status_flags"
  */
-static inline uint16_t ENC_GetSignalStatusFlags(ENC_Type *base)
-{
+static inline uint16_t ENC_GetSignalStatusFlags(ENC_Type *base) {
     return base->IMR;
 }
 /* @} */
@@ -399,8 +387,7 @@ uint32_t ENC_GetHoldPositionValue(ENC_Type *base);
  *
  * @return     The position difference counter's value.
  */
-static inline uint16_t ENC_GetPositionDifferenceValue(ENC_Type *base)
-{
+static inline uint16_t ENC_GetPositionDifferenceValue(ENC_Type *base) {
     return base->POSD;
 }
 
@@ -415,8 +402,7 @@ static inline uint16_t ENC_GetPositionDifferenceValue(ENC_Type *base)
  *
  * @return      Hold position difference counter's value.
  */
-static inline uint16_t ENC_GetHoldPositionDifferenceValue(ENC_Type *base)
-{
+static inline uint16_t ENC_GetHoldPositionDifferenceValue(ENC_Type *base) {
     return base->POSDH;
 }
 
@@ -427,10 +413,10 @@ static inline uint16_t ENC_GetHoldPositionDifferenceValue(ENC_Type *base)
  *
  * @return     The position revolution counter's value.
  */
-static inline uint16_t ENC_GetRevolutionValue(ENC_Type *base)
-{
+static inline uint16_t ENC_GetRevolutionValue(ENC_Type *base) {
     return base->REV;
 }
+
 /*!
  * @brief  Get the hold position revolution counter's value.
  *
@@ -442,8 +428,7 @@ static inline uint16_t ENC_GetRevolutionValue(ENC_Type *base)
  *
  * @return      Hold position revolution counter's value.
  */
-static inline uint16_t ENC_GetHoldRevolutionValue(ENC_Type *base)
-{
+static inline uint16_t ENC_GetHoldRevolutionValue(ENC_Type *base) {
     return base->REVH;
 }
 

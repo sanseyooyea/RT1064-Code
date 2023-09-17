@@ -1,3 +1,4 @@
+#include "math.h"
 #include "pid.h"
 
 // 常规PID

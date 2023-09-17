@@ -82,9 +82,11 @@ void run_yroad() {
             }
             yroad_cnt++;
         }
-    } else if (yroad_type == YROAD_LEFT_RUN && Yfound && get_total_encoder() - yroad_encoder > ENCODER_PER_METER * 1.5) {
+    } else if (yroad_type == YROAD_LEFT_RUN && Yfound &&
+               get_total_encoder() - yroad_encoder > ENCODER_PER_METER * 1.5) {
         yroad_type = YROAD_LEFT_OUT;
-    } else if (yroad_type == YROAD_RIGHT_RUN && Yfound && get_total_encoder() - yroad_encoder > ENCODER_PER_METER * 1.5) {
+    } else if (yroad_type == YROAD_RIGHT_RUN && Yfound &&
+               get_total_encoder() - yroad_encoder > ENCODER_PER_METER * 1.5) {
         yroad_type = YROAD_RIGHT_OUT;
     } else if (yroad_type == YROAD_LEFT_OUT && !Yfound) {
         yroad_type = YROAD_NONE;

@@ -49,15 +49,12 @@ static flexio_isr_t s_flexioIsr[FLEXIO_HANDLE_COUNT];
  *
  * param base FLEXIO peripheral base address.
  */
-uint32_t FLEXIO_GetInstance(FLEXIO_Type *base)
-{
+uint32_t FLEXIO_GetInstance(FLEXIO_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_flexioBases); instance++)
-    {
-        if (s_flexioBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_flexioBases); instance++) {
+        if (s_flexioBases[instance] == base) {
             break;
         }
     }
@@ -85,8 +82,7 @@ uint32_t FLEXIO_GetInstance(FLEXIO_Type *base)
  * param base FlexIO peripheral base address
  * param userConfig pointer to flexio_config_t structure
 */
-void FLEXIO_Init(FLEXIO_Type *base, const flexio_config_t *userConfig)
-{
+void FLEXIO_Init(FLEXIO_Type *base, const flexio_config_t *userConfig) {
     uint32_t ctrlReg = 0;
 
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
@@ -99,8 +95,7 @@ void FLEXIO_Init(FLEXIO_Type *base, const flexio_config_t *userConfig)
     ctrlReg &= ~(FLEXIO_CTRL_DOZEN_MASK | FLEXIO_CTRL_DBGE_MASK | FLEXIO_CTRL_FASTACC_MASK | FLEXIO_CTRL_FLEXEN_MASK);
     ctrlReg |= (FLEXIO_CTRL_DBGE(userConfig->enableInDebug) | FLEXIO_CTRL_FASTACC(userConfig->enableFastAccess) |
                 FLEXIO_CTRL_FLEXEN(userConfig->enableFlexio));
-    if (!userConfig->enableInDoze)
-    {
+    if (!userConfig->enableInDoze) {
         ctrlReg |= FLEXIO_CTRL_DOZEN_MASK;
     }
 
@@ -114,8 +109,7 @@ void FLEXIO_Init(FLEXIO_Type *base, const flexio_config_t *userConfig)
  *
  * param base FlexIO peripheral base address
  */
-void FLEXIO_Deinit(FLEXIO_Type *base)
-{
+void FLEXIO_Deinit(FLEXIO_Type *base) {
     FLEXIO_Enable(base, false);
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     CLOCK_DisableClock(s_flexioClocks[FLEXIO_GetInstance(base)]);
@@ -134,16 +128,15 @@ void FLEXIO_Deinit(FLEXIO_Type *base)
  *
  * param userConfig pointer to flexio_config_t structure
 */
-void FLEXIO_GetDefaultConfig(flexio_config_t *userConfig)
-{
+void FLEXIO_GetDefaultConfig(flexio_config_t *userConfig) {
     assert(userConfig);
 
     /* Initializes the configure structure to zero. */
-    (void)memset(userConfig, 0, sizeof(*userConfig));
+    (void) memset(userConfig, 0, sizeof(*userConfig));
 
-    userConfig->enableFlexio     = true;
-    userConfig->enableInDoze     = false;
-    userConfig->enableInDebug    = true;
+    userConfig->enableFlexio = true;
+    userConfig->enableInDoze = false;
+    userConfig->enableInDebug = true;
     userConfig->enableFastAccess = false;
 }
 
@@ -152,8 +145,7 @@ void FLEXIO_GetDefaultConfig(flexio_config_t *userConfig)
  *
  * param base FlexIO peripheral base address
  */
-void FLEXIO_Reset(FLEXIO_Type *base)
-{
+void FLEXIO_Reset(FLEXIO_Type *base) {
     /*do software reset, software reset operation affect all other FLEXIO registers except CTRL*/
     base->CTRL |= FLEXIO_CTRL_SWRST_MASK;
     base->CTRL = 0;
@@ -167,14 +159,12 @@ void FLEXIO_Reset(FLEXIO_Type *base)
  * param index Shifter index
  * return Corresponding shifter buffer index
  */
-uint32_t FLEXIO_GetShifterBufferAddress(FLEXIO_Type *base, flexio_shifter_buffer_type_t type, uint8_t index)
-{
+uint32_t FLEXIO_GetShifterBufferAddress(FLEXIO_Type *base, flexio_shifter_buffer_type_t type, uint8_t index) {
     assert(index < FLEXIO_SHIFTBUF_COUNT);
 
     uint32_t address = 0;
 
-    switch (type)
-    {
+    switch (type) {
         case kFLEXIO_ShifterBuffer:
             address = (uint32_t) & (base->SHIFTBUF[index]);
             break;
@@ -192,21 +182,21 @@ uint32_t FLEXIO_GetShifterBufferAddress(FLEXIO_Type *base, flexio_shifter_buffer
             break;
 
 #if defined(FSL_FEATURE_FLEXIO_HAS_SHFT_BUFFER_NIBBLE_BYTE_SWAP) && FSL_FEATURE_FLEXIO_HAS_SHFT_BUFFER_NIBBLE_BYTE_SWAP
-        case kFLEXIO_ShifterBufferNibbleByteSwapped:
-            address = (uint32_t) & (base->SHIFTBUFNBS[index]);
-            break;
+            case kFLEXIO_ShifterBufferNibbleByteSwapped:
+                address = (uint32_t) & (base->SHIFTBUFNBS[index]);
+                break;
 
 #endif
 #if defined(FSL_FEATURE_FLEXIO_HAS_SHFT_BUFFER_HALF_WORD_SWAP) && FSL_FEATURE_FLEXIO_HAS_SHFT_BUFFER_HALF_WORD_SWAP
-        case kFLEXIO_ShifterBufferHalfWordSwapped:
-            address = (uint32_t) & (base->SHIFTBUFHWS[index]);
-            break;
+            case kFLEXIO_ShifterBufferHalfWordSwapped:
+                address = (uint32_t) & (base->SHIFTBUFHWS[index]);
+                break;
 
 #endif
 #if defined(FSL_FEATURE_FLEXIO_HAS_SHFT_BUFFER_NIBBLE_SWAP) && FSL_FEATURE_FLEXIO_HAS_SHFT_BUFFER_NIBBLE_SWAP
-        case kFLEXIO_ShifterBufferNibbleSwapped:
-            address = (uint32_t) & (base->SHIFTBUFNIS[index]);
-            break;
+            case kFLEXIO_ShifterBufferNibbleSwapped:
+                address = (uint32_t) & (base->SHIFTBUFNIS[index]);
+                break;
 
 #endif
         default:
@@ -241,19 +231,18 @@ uint32_t FLEXIO_GetShifterBufferAddress(FLEXIO_Type *base, flexio_shifter_buffer
  * param index Shifter index
  * param shifterConfig Pointer to flexio_shifter_config_t structure
 */
-void FLEXIO_SetShifterConfig(FLEXIO_Type *base, uint8_t index, const flexio_shifter_config_t *shifterConfig)
-{
+void FLEXIO_SetShifterConfig(FLEXIO_Type *base, uint8_t index, const flexio_shifter_config_t *shifterConfig) {
     base->SHIFTCFG[index] = FLEXIO_SHIFTCFG_INSRC(shifterConfig->inputSource)
-#if FSL_FEATURE_FLEXIO_HAS_PARALLEL_WIDTH
+                            #if FSL_FEATURE_FLEXIO_HAS_PARALLEL_WIDTH
                             | FLEXIO_SHIFTCFG_PWIDTH(shifterConfig->parallelWidth)
-#endif /* FSL_FEATURE_FLEXIO_HAS_PARALLEL_WIDTH */
+                            #endif /* FSL_FEATURE_FLEXIO_HAS_PARALLEL_WIDTH */
                             | FLEXIO_SHIFTCFG_SSTOP(shifterConfig->shifterStop) |
                             FLEXIO_SHIFTCFG_SSTART(shifterConfig->shifterStart);
 
     base->SHIFTCTL[index] =
-        FLEXIO_SHIFTCTL_TIMSEL(shifterConfig->timerSelect) | FLEXIO_SHIFTCTL_TIMPOL(shifterConfig->timerPolarity) |
-        FLEXIO_SHIFTCTL_PINCFG(shifterConfig->pinConfig) | FLEXIO_SHIFTCTL_PINSEL(shifterConfig->pinSelect) |
-        FLEXIO_SHIFTCTL_PINPOL(shifterConfig->pinPolarity) | FLEXIO_SHIFTCTL_SMOD(shifterConfig->shifterMode);
+            FLEXIO_SHIFTCTL_TIMSEL(shifterConfig->timerSelect) | FLEXIO_SHIFTCTL_TIMPOL(shifterConfig->timerPolarity) |
+            FLEXIO_SHIFTCTL_PINCFG(shifterConfig->pinConfig) | FLEXIO_SHIFTCTL_PINSEL(shifterConfig->pinSelect) |
+            FLEXIO_SHIFTCTL_PINPOL(shifterConfig->pinPolarity) | FLEXIO_SHIFTCTL_SMOD(shifterConfig->shifterMode);
 }
 
 /*!
@@ -286,13 +275,12 @@ void FLEXIO_SetShifterConfig(FLEXIO_Type *base, uint8_t index, const flexio_shif
  * param index Timer index
  * param timerConfig Pointer to the flexio_timer_config_t structure
 */
-void FLEXIO_SetTimerConfig(FLEXIO_Type *base, uint8_t index, const flexio_timer_config_t *timerConfig)
-{
+void FLEXIO_SetTimerConfig(FLEXIO_Type *base, uint8_t index, const flexio_timer_config_t *timerConfig) {
     base->TIMCFG[index] =
-        FLEXIO_TIMCFG_TIMOUT(timerConfig->timerOutput) | FLEXIO_TIMCFG_TIMDEC(timerConfig->timerDecrement) |
-        FLEXIO_TIMCFG_TIMRST(timerConfig->timerReset) | FLEXIO_TIMCFG_TIMDIS(timerConfig->timerDisable) |
-        FLEXIO_TIMCFG_TIMENA(timerConfig->timerEnable) | FLEXIO_TIMCFG_TSTOP(timerConfig->timerStop) |
-        FLEXIO_TIMCFG_TSTART(timerConfig->timerStart);
+            FLEXIO_TIMCFG_TIMOUT(timerConfig->timerOutput) | FLEXIO_TIMCFG_TIMDEC(timerConfig->timerDecrement) |
+            FLEXIO_TIMCFG_TIMRST(timerConfig->timerReset) | FLEXIO_TIMCFG_TIMDIS(timerConfig->timerDisable) |
+            FLEXIO_TIMCFG_TIMENA(timerConfig->timerEnable) | FLEXIO_TIMCFG_TSTOP(timerConfig->timerStop) |
+            FLEXIO_TIMCFG_TSTART(timerConfig->timerStart);
 
     base->TIMCMP[index] = FLEXIO_TIMCMP_CMP(timerConfig->timerCompare);
 
@@ -312,8 +300,7 @@ void FLEXIO_SetTimerConfig(FLEXIO_Type *base, uint8_t index, const flexio_timer_
  * retval kStatus_Success Successfully create the handle.
  * retval kStatus_OutOfRange The FlexIO type/handle/ISR table out of range.
  */
-status_t FLEXIO_RegisterHandleIRQ(void *base, void *handle, flexio_isr_t isr)
-{
+status_t FLEXIO_RegisterHandleIRQ(void *base, void *handle, flexio_isr_t isr) {
     assert(base);
     assert(handle);
     assert(isr);
@@ -321,24 +308,19 @@ status_t FLEXIO_RegisterHandleIRQ(void *base, void *handle, flexio_isr_t isr)
     uint8_t index;
 
     /* Find the an empty handle pointer to store the handle. */
-    for (index = 0U; index < (uint8_t)FLEXIO_HANDLE_COUNT; index++)
-    {
-        if (s_flexioHandle[index] == NULL)
-        {
+    for (index = 0U; index < (uint8_t) FLEXIO_HANDLE_COUNT; index++) {
+        if (s_flexioHandle[index] == NULL) {
             /* Register FLEXIO simulated driver base, handle and isr. */
-            s_flexioType[index]   = base;
+            s_flexioType[index] = base;
             s_flexioHandle[index] = handle;
-            s_flexioIsr[index]    = isr;
+            s_flexioIsr[index] = isr;
             break;
         }
     }
 
-    if (index == (uint8_t)FLEXIO_HANDLE_COUNT)
-    {
+    if (index == (uint8_t) FLEXIO_HANDLE_COUNT) {
         return kStatus_OutOfRange;
-    }
-    else
-    {
+    } else {
         return kStatus_Success;
     }
 }
@@ -350,43 +332,34 @@ status_t FLEXIO_RegisterHandleIRQ(void *base, void *handle, flexio_isr_t isr)
  * retval kStatus_Success Successfully create the handle.
  * retval kStatus_OutOfRange The FlexIO type/handle/ISR table out of range.
  */
-status_t FLEXIO_UnregisterHandleIRQ(void *base)
-{
+status_t FLEXIO_UnregisterHandleIRQ(void *base) {
     assert(base);
 
     uint8_t index;
 
     /* Find the index from base address mappings. */
-    for (index = 0U; index < (uint8_t)FLEXIO_HANDLE_COUNT; index++)
-    {
-        if (s_flexioType[index] == base)
-        {
+    for (index = 0U; index < (uint8_t) FLEXIO_HANDLE_COUNT; index++) {
+        if (s_flexioType[index] == base) {
             /* Unregister FLEXIO simulated driver handle and isr. */
-            s_flexioType[index]   = NULL;
+            s_flexioType[index] = NULL;
             s_flexioHandle[index] = NULL;
-            s_flexioIsr[index]    = NULL;
+            s_flexioIsr[index] = NULL;
             break;
         }
     }
 
-    if (index == (uint8_t)FLEXIO_HANDLE_COUNT)
-    {
+    if (index == (uint8_t) FLEXIO_HANDLE_COUNT) {
         return kStatus_OutOfRange;
-    }
-    else
-    {
+    } else {
         return kStatus_Success;
     }
 }
 
-void FLEXIO_CommonIRQHandler(void)
-{
+void FLEXIO_CommonIRQHandler(void) {
     uint8_t index;
 
-    for (index = 0U; index < (uint8_t)FLEXIO_HANDLE_COUNT; index++)
-    {
-        if (s_flexioHandle[index] != NULL)
-        {
+    for (index = 0U; index < (uint8_t) FLEXIO_HANDLE_COUNT; index++) {
+        if (s_flexioHandle[index] != NULL) {
             s_flexioIsr[index](s_flexioType[index], s_flexioHandle[index]);
         }
     }
@@ -397,32 +370,26 @@ void FLEXIO_CommonIRQHandler(void)
 #endif
 }
 
-void FLEXIO_DriverIRQHandler(void)
-{
+void FLEXIO_DriverIRQHandler(void) {
     FLEXIO_CommonIRQHandler();
 }
 
-void FLEXIO0_DriverIRQHandler(void)
-{
+void FLEXIO0_DriverIRQHandler(void) {
     FLEXIO_CommonIRQHandler();
 }
 
-void FLEXIO1_DriverIRQHandler(void)
-{
+void FLEXIO1_DriverIRQHandler(void) {
     FLEXIO_CommonIRQHandler();
 }
 
-void UART2_FLEXIO_DriverIRQHandler(void)
-{
+void UART2_FLEXIO_DriverIRQHandler(void) {
     FLEXIO_CommonIRQHandler();
 }
 
-void FLEXIO2_DriverIRQHandler(void)
-{
+void FLEXIO2_DriverIRQHandler(void) {
     FLEXIO_CommonIRQHandler();
 }
 
-void FLEXIO3_DriverIRQHandler(void)
-{
+void FLEXIO3_DriverIRQHandler(void) {
     FLEXIO_CommonIRQHandler();
 }

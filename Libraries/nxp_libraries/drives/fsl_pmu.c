@@ -17,38 +17,37 @@
  * {
  */
 
-uint32_t PMU_GetStatusFlags(PMU_Type *base)
-{
+uint32_t PMU_GetStatusFlags(PMU_Type *base) {
     uint32_t ret = 0U;
 
     /* For 1P1. */
-    if (PMU_REG_1P1_OK_VDD1P1_MASK == (PMU_REG_1P1_OK_VDD1P1_MASK & base->REG_1P1))
-    {
-        ret |= (uint32_t)kPMU_1P1RegulatorOutputOK;
+    if (PMU_REG_1P1_OK_VDD1P1_MASK == (PMU_REG_1P1_OK_VDD1P1_MASK & base->REG_1P1)) {
+        ret |= (uint32_t)
+        kPMU_1P1RegulatorOutputOK;
     }
-    if (PMU_REG_1P1_BO_VDD1P1_MASK == (PMU_REG_1P1_BO_VDD1P1_MASK & base->REG_1P1))
-    {
-        ret |= (uint32_t)kPMU_1P1BrownoutOnOutput;
+    if (PMU_REG_1P1_BO_VDD1P1_MASK == (PMU_REG_1P1_BO_VDD1P1_MASK & base->REG_1P1)) {
+        ret |= (uint32_t)
+        kPMU_1P1BrownoutOnOutput;
     }
 
     /* For 3P0. */
-    if (PMU_REG_3P0_OK_VDD3P0_MASK == (PMU_REG_3P0_OK_VDD3P0_MASK & base->REG_3P0))
-    {
-        ret |= (uint32_t)kPMU_3P0RegulatorOutputOK;
+    if (PMU_REG_3P0_OK_VDD3P0_MASK == (PMU_REG_3P0_OK_VDD3P0_MASK & base->REG_3P0)) {
+        ret |= (uint32_t)
+        kPMU_3P0RegulatorOutputOK;
     }
-    if (PMU_REG_3P0_BO_VDD3P0_MASK == (PMU_REG_3P0_BO_VDD3P0_MASK & base->REG_3P0))
-    {
-        ret |= (uint32_t)kPMU_3P0BrownoutOnOutput;
+    if (PMU_REG_3P0_BO_VDD3P0_MASK == (PMU_REG_3P0_BO_VDD3P0_MASK & base->REG_3P0)) {
+        ret |= (uint32_t)
+        kPMU_3P0BrownoutOnOutput;
     }
 
     /* For 2P5. */
-    if (PMU_REG_2P5_OK_VDD2P5_MASK == (PMU_REG_2P5_OK_VDD2P5_MASK & base->REG_2P5))
-    {
-        ret |= (uint32_t)kPMU_2P5RegulatorOutputOK;
+    if (PMU_REG_2P5_OK_VDD2P5_MASK == (PMU_REG_2P5_OK_VDD2P5_MASK & base->REG_2P5)) {
+        ret |= (uint32_t)
+        kPMU_2P5RegulatorOutputOK;
     }
-    if (PMU_REG_2P5_BO_VDD2P5_MASK == (PMU_REG_2P5_BO_VDD2P5_MASK & base->REG_2P5))
-    {
-        ret |= (uint32_t)kPMU_2P5BrownoutOnOutput;
+    if (PMU_REG_2P5_BO_VDD2P5_MASK == (PMU_REG_2P5_BO_VDD2P5_MASK & base->REG_2P5)) {
+        ret |= (uint32_t)
+        kPMU_2P5BrownoutOnOutput;
     }
 
     return ret;

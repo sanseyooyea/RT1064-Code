@@ -7,6 +7,7 @@
  */
 
 #include "fsl_enet.h"
+
 #if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
 #include "fsl_cache.h"
 #endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */
@@ -94,8 +95,7 @@
 #define ENET_NTOHL(n) __REV(n)
 
 /*! @brief Define the ENET ring/class bumber . */
-enum _enet_ring_number
-{
+enum _enet_ring_number {
     kENET_Ring0 = 0U, /*!< ENET ring/class 0. */
 #if FSL_FEATURE_ENET_QUEUE > 1
     kENET_Ring1 = 1U, /*!< ENET ring/class 1. */
@@ -107,13 +107,13 @@ enum _enet_ring_number
 #if FSL_FEATURE_ENET_QUEUE > 1
 typedef void (*enet_isr_ring_t)(ENET_Type *base, enet_handle_t *handle, uint32_t ringId);
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
+
 typedef void (*enet_isr_t)(ENET_Type *base, enet_handle_t *handle);
 
 /*!
  * @brief Used for conversion between `void*` and `uint32_t`.
  */
-typedef union enet_pvoid_to_u32
-{
+typedef union enet_pvoid_to_u32 {
     void *pvoid;
     uint32_t u32;
 } enet_pvoid_to_u32_t;
@@ -129,6 +129,7 @@ typedef union enet_pvoid_to_u32
  * @return ENET instance.
  */
 uint32_t ENET_GetInstance(ENET_Type *base);
+
 /*!
  * @brief Set ENET MAC controller with the configuration.
  *
@@ -145,6 +146,7 @@ static void ENET_SetMacController(ENET_Type *base,
                                   const enet_buffer_config_t *bufferConfig,
                                   uint8_t *macAddr,
                                   uint32_t srcClock_Hz);
+
 /*!
  * @brief Set ENET handler.
  *
@@ -157,6 +159,7 @@ static void ENET_SetHandler(ENET_Type *base,
                             enet_handle_t *handle,
                             const enet_config_t *config,
                             const enet_buffer_config_t *bufferConfig);
+
 /*!
  * @brief Set ENET MAC transmit buffer descriptors.
  *
@@ -203,6 +206,7 @@ static void ENET_UpdateReadBuffers(ENET_Type *base, enet_handle_t *handle, uint3
  * this should be called when the ENET receive required.
  */
 static void ENET_ActiveSend(ENET_Type *base, uint32_t ringId);
+
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
 /*!
  * @brief Parses the ENET frame for time-stamp process of PTP 1588 frame.
@@ -303,19 +307,17 @@ static enet_isr_t s_enetRxIsr;
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
 static enet_isr_t s_enetErrIsr;
 static enet_isr_t s_enetTsIsr;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
 
-uint32_t ENET_GetInstance(ENET_Type *base)
-{
+uint32_t ENET_GetInstance(ENET_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_enetBases); instance++)
-    {
-        if (s_enetBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_enetBases); instance++) {
+        if (s_enetBases[instance] == base) {
             break;
         }
     }
@@ -339,13 +341,12 @@ uint32_t ENET_GetInstance(ENET_Type *base)
    endcode
  * param config The ENET mac controller configuration structure pointer.
  */
-void ENET_GetDefaultConfig(enet_config_t *config)
-{
+void ENET_GetDefaultConfig(enet_config_t *config) {
     /* Checks input parameter. */
     assert(config != NULL);
 
     /* Initializes the MAC configure structure to zero. */
-    (void)memset(config, 0, sizeof(enet_config_t));
+    (void) memset(config, 0, sizeof(enet_config_t));
 
 /* Sets MII mode, full duplex, 100Mbps for MAC and PHY data interface. */
 #if defined(FSL_FEATURE_ENET_HAS_AVB) && FSL_FEATURE_ENET_HAS_AVB
@@ -353,7 +354,7 @@ void ENET_GetDefaultConfig(enet_config_t *config)
 #else
     config->miiMode = kENET_RmiiMode;
 #endif
-    config->miiSpeed  = kENET_MiiSpeed100M;
+    config->miiSpeed = kENET_MiiSpeed100M;
     config->miiDuplex = kENET_MiiFullDuplex;
 
     config->ringNum = 1;
@@ -394,14 +395,13 @@ void ENET_Init(ENET_Type *base,
                const enet_config_t *config,
                const enet_buffer_config_t *bufferConfig,
                uint8_t *macAddr,
-               uint32_t srcClock_Hz)
-{
+               uint32_t srcClock_Hz) {
     /* Checks input parameters. */
     assert(handle != NULL);
     assert(config != NULL);
     assert(bufferConfig != NULL);
     assert(macAddr != NULL);
-    assert(config->ringNum <= (uint8_t)FSL_FEATURE_ENET_QUEUE);
+    assert(config->ringNum <= (uint8_t) FSL_FEATURE_ENET_QUEUE);
 
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     uint32_t instance = ENET_GetInstance(base);
@@ -432,8 +432,7 @@ void ENET_Init(ENET_Type *base,
  *
  * param base  ENET peripheral base address.
  */
-void ENET_Deinit(ENET_Type *base)
-{
+void ENET_Deinit(ENET_Type *base) {
     /* Disable interrupt. */
     base->EIMR = 0;
 
@@ -455,8 +454,7 @@ void ENET_Deinit(ENET_Type *base)
  * param callback The ENET callback function.
  * param userData The callback function parameter.
  */
-void ENET_SetCallback(enet_handle_t *handle, enet_callback_t callback, void *userData)
-{
+void ENET_SetCallback(enet_handle_t *handle, enet_callback_t callback, void *userData) {
     assert(handle != NULL);
 
     /* Set callback and userData. */
@@ -467,26 +465,24 @@ void ENET_SetCallback(enet_handle_t *handle, enet_callback_t callback, void *use
 static void ENET_SetHandler(ENET_Type *base,
                             enet_handle_t *handle,
                             const enet_config_t *config,
-                            const enet_buffer_config_t *bufferConfig)
-{
+                            const enet_buffer_config_t *bufferConfig) {
     uint8_t count;
-    uint32_t instance                   = ENET_GetInstance(base);
+    uint32_t instance = ENET_GetInstance(base);
     const enet_buffer_config_t *buffCfg = bufferConfig;
 
     /* Store transfer parameters in handle pointer. */
-    (void)memset(handle, 0, sizeof(enet_handle_t));
+    (void) memset(handle, 0, sizeof(enet_handle_t));
 
     handle->ringNum =
-        (config->ringNum > (uint8_t)FSL_FEATURE_ENET_QUEUE) ? (uint8_t)FSL_FEATURE_ENET_QUEUE : config->ringNum;
-    for (count = 0; count < handle->ringNum; count++)
-    {
+            (config->ringNum > (uint8_t) FSL_FEATURE_ENET_QUEUE) ? (uint8_t) FSL_FEATURE_ENET_QUEUE : config->ringNum;
+    for (count = 0; count < handle->ringNum; count++) {
         assert(buffCfg->rxBuffSizeAlign * buffCfg->rxBdNumber > config->rxMaxFrameLen);
 
-        handle->rxBdBase[count]        = buffCfg->rxBdStartAddrAlign;
-        handle->rxBdCurrent[count]     = buffCfg->rxBdStartAddrAlign;
+        handle->rxBdBase[count] = buffCfg->rxBdStartAddrAlign;
+        handle->rxBdCurrent[count] = buffCfg->rxBdStartAddrAlign;
         handle->rxBuffSizeAlign[count] = buffCfg->rxBuffSizeAlign;
-        handle->txBdBase[count]        = buffCfg->txBdStartAddrAlign;
-        handle->txBdCurrent[count]     = buffCfg->txBdStartAddrAlign;
+        handle->txBdBase[count] = buffCfg->txBdStartAddrAlign;
+        handle->txBdCurrent[count] = buffCfg->txBdStartAddrAlign;
         handle->txBuffSizeAlign[count] = buffCfg->txBuffSizeAlign;
         buffCfg++;
     }
@@ -498,17 +494,17 @@ static void ENET_SetHandler(ENET_Type *base,
     if (0U != (config->interrupt & (uint32_t)ENET_TX_INTERRUPT))
     {
         s_enetTxIsr = ENET_TransmitIRQHandler;
-        (void)EnableIRQ(s_enetTxIrqId[instance]);
+        (void) EnableIRQ(s_enetTxIrqId[instance]);
     }
     if (0U != (config->interrupt & (uint32_t)ENET_RX_INTERRUPT))
     {
         s_enetRxIsr = ENET_ReceiveIRQHandler;
-        (void)EnableIRQ(s_enetRxIrqId[instance]);
+        (void) EnableIRQ(s_enetRxIrqId[instance]);
     }
     if (0U != (config->interrupt & (uint32_t)ENET_ERR_INTERRUPT))
     {
         s_enetErrIsr = ENET_ErrorIRQHandler;
-        (void)EnableIRQ(s_enetErrIrqId[instance]);
+        (void) EnableIRQ(s_enetErrIrqId[instance]);
     }
 }
 
@@ -517,8 +513,7 @@ static void ENET_SetMacController(ENET_Type *base,
                                   const enet_config_t *config,
                                   const enet_buffer_config_t *bufferConfig,
                                   uint8_t *macAddr,
-                                  uint32_t srcClock_Hz)
-{
+                                  uint32_t srcClock_Hz) {
 #if defined(FSL_FEATURE_ENET_HAS_AVB) && FSL_FEATURE_ENET_HAS_AVB
     /* Check the MII mode/speed/duplex setting. */
     if (config->miiSpeed == kENET_MiiSpeed1000M)
@@ -529,12 +524,12 @@ static void ENET_SetMacController(ENET_Type *base,
     }
 #endif /* FSL_FEATURE_ENET_HAS_AVB */
 
-    uint32_t rcr              = 0;
-    uint32_t tcr              = 0;
-    uint32_t ecr              = base->ECR;
+    uint32_t rcr = 0;
+    uint32_t tcr = 0;
+    uint32_t ecr = base->ECR;
     uint32_t macSpecialConfig = config->macSpecialConfig;
-    uint32_t maxFrameLen      = config->rxMaxFrameLen;
-    uint32_t configVal        = 0;
+    uint32_t maxFrameLen = config->rxMaxFrameLen;
+    uint32_t configVal = 0;
 
     /* Maximum frame length check. */
     if ((0U != (macSpecialConfig & (uint32_t)kENET_ControlVLANTagEnable)) && (maxFrameLen <= ENET_FRAME_MAX_FRAMELEN))
@@ -554,13 +549,25 @@ static void ENET_SetMacController(ENET_Type *base,
     }
 
     /* Configures MAC receive controller with user configure structure. */
-    rcr = ((0U != (macSpecialConfig & (uint32_t)kENET_ControlRxPayloadCheckEnable)) ? ENET_RCR_NLC_MASK : 0U) |
-          ((0U != (macSpecialConfig & (uint32_t)kENET_ControlFlowControlEnable)) ? ENET_RCR_CFEN_MASK : 0U) |
-          ((0U != (macSpecialConfig & (uint32_t)kENET_ControlFlowControlEnable)) ? ENET_RCR_FCE_MASK : 0U) |
-          ((0U != (macSpecialConfig & (uint32_t)kENET_ControlRxPadRemoveEnable)) ? ENET_RCR_PADEN_MASK : 0U) |
-          ((0U != (macSpecialConfig & (uint32_t)kENET_ControlRxBroadCastRejectEnable)) ? ENET_RCR_BC_REJ_MASK : 0U) |
-          ((0U != (macSpecialConfig & (uint32_t)kENET_ControlPromiscuousEnable)) ? ENET_RCR_PROM_MASK : 0U) |
-          ENET_RCR_MAX_FL(maxFrameLen) | ENET_RCR_CRCFWD_MASK;
+    rcr = ((0U != (macSpecialConfig & (uint32_t)
+    kENET_ControlRxPayloadCheckEnable)) ? ENET_RCR_NLC_MASK :
+    0U) |
+    ((0U != (macSpecialConfig & (uint32_t)
+    kENET_ControlFlowControlEnable)) ? ENET_RCR_CFEN_MASK :
+    0U) |
+    ((0U != (macSpecialConfig & (uint32_t)
+    kENET_ControlFlowControlEnable)) ? ENET_RCR_FCE_MASK :
+    0U) |
+    ((0U != (macSpecialConfig & (uint32_t)
+    kENET_ControlRxPadRemoveEnable)) ? ENET_RCR_PADEN_MASK :
+    0U) |
+    ((0U != (macSpecialConfig & (uint32_t)
+    kENET_ControlRxBroadCastRejectEnable)) ? ENET_RCR_BC_REJ_MASK :
+    0U) |
+    ((0U != (macSpecialConfig & (uint32_t)
+    kENET_ControlPromiscuousEnable)) ? ENET_RCR_PROM_MASK :
+    0U) |
+    ENET_RCR_MAX_FL(maxFrameLen) | ENET_RCR_CRCFWD_MASK;
 
 /* Set the RGMII or RMII, MII mode and control register. */
 #if defined(FSL_FEATURE_ENET_HAS_AVB) && FSL_FEATURE_ENET_HAS_AVB
@@ -573,17 +580,15 @@ static void ENET_SetMacController(ENET_Type *base,
     {
         rcr &= ~ENET_RCR_RGMII_EN_MASK;
 #endif /* FSL_FEATURE_ENET_HAS_AVB */
-        rcr |= ENET_RCR_MII_MODE_MASK;
-        if (config->miiMode == kENET_RmiiMode)
-        {
-            rcr |= ENET_RCR_RMII_MODE_MASK;
-        }
+    rcr |= ENET_RCR_MII_MODE_MASK;
+    if (config->miiMode == kENET_RmiiMode) {
+        rcr |= ENET_RCR_RMII_MODE_MASK;
+    }
 #if defined(FSL_FEATURE_ENET_HAS_AVB) && FSL_FEATURE_ENET_HAS_AVB
     }
 #endif /* FSL_FEATURE_ENET_HAS_AVB */
     /* Speed. */
-    if (config->miiSpeed == kENET_MiiSpeed10M)
-    {
+    if (config->miiSpeed == kENET_MiiSpeed10M) {
         rcr |= ENET_RCR_RMII_10T_MASK;
     }
 #if defined(FSL_FEATURE_ENET_HAS_AVB) && FSL_FEATURE_ENET_HAS_AVB
@@ -594,13 +599,12 @@ static void ENET_SetMacController(ENET_Type *base,
 #endif /* FSL_FEATURE_ENET_HAS_AVB */
 
     /* Receive setting for half duplex. */
-    if (config->miiDuplex == kENET_MiiHalfDuplex)
-    {
+    if (config->miiDuplex == kENET_MiiHalfDuplex) {
         rcr |= ENET_RCR_DRT_MASK;
     }
     /* Sets internal loop only for MII mode. */
     if ((0U != (config->macSpecialConfig & (uint32_t)kENET_ControlMIILoopEnable)) &&
-        (config->miiMode != kENET_RmiiMode))
+    (config->miiMode != kENET_RmiiMode))
     {
         rcr |= ENET_RCR_LOOP_MASK;
         rcr &= ~ENET_RCR_DRT_MASK;
@@ -610,7 +614,10 @@ static void ENET_SetMacController(ENET_Type *base,
     /* Configures MAC transmit controller: duplex mode, mac address insertion. */
     tcr = base->TCR & ~(ENET_TCR_FDEN_MASK | ENET_TCR_ADDINS_MASK);
     tcr |= ((kENET_MiiHalfDuplex != config->miiDuplex) ? (uint32_t)ENET_TCR_FDEN_MASK : 0U) |
-           ((0U != (macSpecialConfig & (uint32_t)kENET_ControlMacAddrInsert)) ? (uint32_t)ENET_TCR_ADDINS_MASK : 0U);
+    ((0U != (macSpecialConfig & (uint32_t)
+    kENET_ControlMacAddrInsert)) ? (uint32_t)
+    ENET_TCR_ADDINS_MASK :
+    0U);
     base->TCR = tcr;
 
     /* Configures receive and transmit accelerator. */
@@ -622,7 +629,7 @@ static void ENET_SetMacController(ENET_Type *base,
     {
         uint32_t reemReg;
         base->OPD = config->pauseDuration;
-        reemReg   = ENET_RSEM_RX_SECTION_EMPTY(config->rxFifoEmptyThreshold);
+        reemReg = ENET_RSEM_RX_SECTION_EMPTY(config->rxFifoEmptyThreshold);
 #if defined(FSL_FEATURE_ENET_HAS_RECEIVE_STATUS_THRESHOLD) && FSL_FEATURE_ENET_HAS_RECEIVE_STATUS_THRESHOLD
         reemReg |= ENET_RSEM_STAT_SECTION_EMPTY(config->rxFifoStatEmptyThreshold);
 #endif /* FSL_FEATURE_ENET_HAS_RECEIVE_STATUS_THRESHOLD */
@@ -633,10 +640,12 @@ static void ENET_SetMacController(ENET_Type *base,
     if (0U != (macSpecialConfig & (uint32_t)kENET_ControlStoreAndFwdDisable))
     {
         /* Transmit fifo watermark settings. */
-        configVal  = ((uint32_t)config->txFifoWatermark) & ENET_TFWR_TFWR_MASK;
+        configVal = ((uint32_t)
+        config->txFifoWatermark) &ENET_TFWR_TFWR_MASK;
         base->TFWR = configVal;
         /* Receive fifo full threshold settings. */
-        configVal  = ((uint32_t)config->rxFifoFullThreshold) & ENET_RSFL_RX_SECTION_FULL_MASK;
+        configVal = ((uint32_t)
+        config->rxFifoFullThreshold) &ENET_RSFL_RX_SECTION_FULL_MASK;
         base->RSFL = configVal;
     }
     else
@@ -648,12 +657,16 @@ static void ENET_SetMacController(ENET_Type *base,
 
     /* Enable store and forward when accelerator is enabled */
     if (0U !=
-        (config->txAccelerConfig & ((uint32_t)kENET_TxAccelIpCheckEnabled | (uint32_t)kENET_TxAccelProtoCheckEnabled)))
+        (config->txAccelerConfig & ((uint32_t)
+        kENET_TxAccelIpCheckEnabled | (uint32_t)
+    kENET_TxAccelProtoCheckEnabled)))
     {
         base->TFWR = ENET_TFWR_STRFWD_MASK;
     }
     if (0U != ((config->rxAccelerConfig &
-                ((uint32_t)kENET_RxAccelIpCheckEnabled | (uint32_t)kENET_RxAccelProtoCheckEnabled))))
+                ((uint32_t)
+        kENET_RxAccelIpCheckEnabled | (uint32_t)
+    kENET_RxAccelProtoCheckEnabled))))
     {
         base->RSFL = 0;
     }
@@ -663,10 +676,13 @@ static void ENET_SetMacController(ENET_Type *base,
     base->TDSR = MEMORY_ConvertMemoryMapAddress((uint32_t)bufferConfig->txBdStartAddrAlign, kMEMORY_Local2DMA);
     base->RDSR = MEMORY_ConvertMemoryMapAddress((uint32_t)bufferConfig->rxBdStartAddrAlign, kMEMORY_Local2DMA);
 #else
-    base->TDSR      = (uint32_t)bufferConfig->txBdStartAddrAlign;
-    base->RDSR      = (uint32_t)bufferConfig->rxBdStartAddrAlign;
+    base->TDSR = (uint32_t)
+    bufferConfig->txBdStartAddrAlign;
+    base->RDSR = (uint32_t)
+    bufferConfig->rxBdStartAddrAlign;
 #endif
-    base->MRBR = (uint32_t)bufferConfig->rxBuffSizeAlign;
+    base->MRBR = (uint32_t)
+    bufferConfig->rxBuffSizeAlign;
 
 #if defined(FSL_FEATURE_ENET_HAS_AVB) && FSL_FEATURE_ENET_HAS_AVB
     const enet_buffer_config_t *buffCfg = bufferConfig;
@@ -713,10 +729,11 @@ static void ENET_SetMacController(ENET_Type *base,
     ENET_SetMacAddr(base, macAddr);
 
     /* Initialize the SMI if uninitialized. */
-    if (!ENET_GetSMI(base))
-    {
+    if (!ENET_GetSMI(base)) {
         ENET_SetSMI(base, srcClock_Hz,
-                    ((0U != (config->macSpecialConfig & (uint32_t)kENET_ControlSMIPreambleDisable)) ? true : false));
+                    ((0U != (config->macSpecialConfig & (uint32_t)
+        kENET_ControlSMIPreambleDisable)) ? true :
+        false));
     }
 
 /* Enables Ethernet interrupt, enables the interrupt coalsecing if it is required. */
@@ -765,8 +782,7 @@ static void ENET_SetMacController(ENET_Type *base,
 
 static void ENET_SetTxBufferDescriptors(enet_handle_t *handle,
                                         const enet_config_t *config,
-                                        const enet_buffer_config_t *bufferConfig)
-{
+                                        const enet_buffer_config_t *bufferConfig) {
     assert(config != NULL);
     assert(bufferConfig != NULL);
 
@@ -778,28 +794,24 @@ static void ENET_SetTxBufferDescriptors(enet_handle_t *handle,
     const enet_buffer_config_t *buffCfg = bufferConfig;
 
     /* Check the input parameters. */
-    for (ringNum = 0; ringNum < config->ringNum; ringNum++)
-    {
-        if ((buffCfg->txBdStartAddrAlign != NULL) && (buffCfg->txBufferAlign != NULL))
-        {
+    for (ringNum = 0; ringNum < config->ringNum; ringNum++) {
+        if ((buffCfg->txBdStartAddrAlign != NULL) && (buffCfg->txBufferAlign != NULL)) {
             volatile enet_tx_bd_struct_t *curBuffDescrip = buffCfg->txBdStartAddrAlign;
-            txBuffSizeAlign                              = buffCfg->txBuffSizeAlign;
+            txBuffSizeAlign = buffCfg->txBuffSizeAlign;
 #if defined(FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET) && FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET
             txBuffer = (uint8_t *)MEMORY_ConvertMemoryMapAddress((uint32_t)buffCfg->txBufferAlign, kMEMORY_Local2DMA);
 #else
             txBuffer = buffCfg->txBufferAlign;
 #endif
-            for (count = 0; count < buffCfg->txBdNumber; count++)
-            {
+            for (count = 0; count < buffCfg->txBdNumber; count++) {
                 /* Set data buffer address. */
-                curBuffDescrip->buffer = (uint8_t *)((uint32_t)&txBuffer[count * txBuffSizeAlign]);
+                curBuffDescrip->buffer = (uint8_t * )((uint32_t) & txBuffer[count * txBuffSizeAlign]);
                 /* Initializes data length. */
                 curBuffDescrip->length = 0;
                 /* Sets the crc. */
                 curBuffDescrip->control = ENET_BUFFDESCRIPTOR_TX_TRANMITCRC_MASK;
                 /* Sets the last buffer descriptor with the wrap flag. */
-                if (count == (buffCfg->txBdNumber - 1U))
-                {
+                if (count == (buffCfg->txBdNumber - 1U)) {
                     curBuffDescrip->control |= ENET_BUFFDESCRIPTOR_TX_WRAP_MASK;
                 }
 
@@ -821,8 +833,7 @@ static void ENET_SetTxBufferDescriptors(enet_handle_t *handle,
 
 static void ENET_SetRxBufferDescriptors(enet_handle_t *handle,
                                         const enet_config_t *config,
-                                        const enet_buffer_config_t *bufferConfig)
-{
+                                        const enet_buffer_config_t *bufferConfig) {
     assert(config != NULL);
     assert(bufferConfig != NULL);
 
@@ -837,8 +848,7 @@ static void ENET_SetRxBufferDescriptors(enet_handle_t *handle,
 #endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
 
     /* Check the input parameters. */
-    for (ringNum = 0; ringNum < config->ringNum; ringNum++)
-    {
+    for (ringNum = 0; ringNum < config->ringNum; ringNum++) {
         assert(buffCfg->rxBuffSizeAlign >= ENET_RX_MIN_BUFFERSIZE);
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
 #if FSL_FEATURE_ENET_QUEUE > 1
@@ -853,10 +863,9 @@ static void ENET_SetRxBufferDescriptors(enet_handle_t *handle,
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
 #endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
 
-        if ((buffCfg->rxBdStartAddrAlign != NULL) && (buffCfg->rxBufferAlign != NULL))
-        {
+        if ((buffCfg->rxBdStartAddrAlign != NULL) && (buffCfg->rxBufferAlign != NULL)) {
             volatile enet_rx_bd_struct_t *curBuffDescrip = buffCfg->rxBdStartAddrAlign;
-            rxBuffSizeAlign                              = buffCfg->rxBuffSizeAlign;
+            rxBuffSizeAlign = buffCfg->rxBuffSizeAlign;
 #if defined(FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET) && FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET
             rxBuffer = (uint8_t *)MEMORY_ConvertMemoryMapAddress((uint32_t)buffCfg->rxBufferAlign, kMEMORY_Local2DMA);
 #else
@@ -868,17 +877,15 @@ static void ENET_SetRxBufferDescriptors(enet_handle_t *handle,
             DCACHE_InvalidateByRange((uint32_t)rxBuffer, (buffCfg->rxBdNumber * rxBuffSizeAlign));
 #endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */
 
-            for (count = 0; count < buffCfg->rxBdNumber; count++)
-            {
+            for (count = 0; count < buffCfg->rxBdNumber; count++) {
                 /* Set data buffer and the length. */
-                curBuffDescrip->buffer = (uint8_t *)((uint32_t)&rxBuffer[count * rxBuffSizeAlign]);
+                curBuffDescrip->buffer = (uint8_t * )((uint32_t) & rxBuffer[count * rxBuffSizeAlign]);
                 curBuffDescrip->length = 0;
 
                 /* Initializes the buffer descriptors with empty bit. */
                 curBuffDescrip->control = ENET_BUFFDESCRIPTOR_RX_EMPTY_MASK;
                 /* Sets the last buffer descriptor with the wrap flag. */
-                if (count == (buffCfg->rxBdNumber - 1U))
-                {
+                if (count == (buffCfg->rxBdNumber - 1U)) {
                     curBuffDescrip->control |= ENET_BUFFDESCRIPTOR_RX_WRAP_MASK;
                 }
 
@@ -901,25 +908,24 @@ static void ENET_SetRxBufferDescriptors(enet_handle_t *handle,
     }
 }
 
-static void ENET_ActiveSend(ENET_Type *base, uint32_t ringId)
-{
-    assert(ringId < (uint32_t)FSL_FEATURE_ENET_QUEUE);
+static void ENET_ActiveSend(ENET_Type *base, uint32_t ringId) {
+    assert(ringId < (uint32_t)
+    FSL_FEATURE_ENET_QUEUE);
 
     /* Ensure previous data update is completed with Data Synchronization Barrier before activing Tx BD. */
     __DSB();
 
-    switch (ringId)
-    {
+    switch (ringId) {
         case (uint32_t)kENET_Ring0:
             base->TDAR = ENET_TDAR_TDAR_MASK;
             break;
 #if FSL_FEATURE_ENET_QUEUE > 1
-        case (uint32_t)kENET_Ring1:
-            base->TDAR1 = ENET_TDAR1_TDAR_MASK;
-            break;
-        case (uint32_t)kENET_Ring2:
-            base->TDAR2 = ENET_TDAR2_TDAR_MASK;
-            break;
+            case (uint32_t)kENET_Ring1:
+                base->TDAR1 = ENET_TDAR1_TDAR_MASK;
+                break;
+            case (uint32_t)kENET_Ring2:
+                base->TDAR2 = ENET_TDAR2_TDAR_MASK;
+                break;
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
         default:
             assert(false);
@@ -937,8 +943,7 @@ static void ENET_ActiveSend(ENET_Type *base, uint32_t ringId)
  * param speed The speed of the RMII mode.
  * param duplex The duplex of the RMII mode.
  */
-void ENET_SetMII(ENET_Type *base, enet_mii_speed_t speed, enet_mii_duplex_t duplex)
-{
+void ENET_SetMII(ENET_Type *base, enet_mii_speed_t speed, enet_mii_duplex_t duplex) {
     uint32_t rcr = base->RCR;
     uint32_t tcr = base->TCR;
 
@@ -959,22 +964,16 @@ void ENET_SetMII(ENET_Type *base, enet_mii_speed_t speed, enet_mii_duplex_t dupl
 #endif /* FSL_FEATURE_ENET_HAS_AVB */
 
     /* Sets speed mode. */
-    if (kENET_MiiSpeed10M == speed)
-    {
+    if (kENET_MiiSpeed10M == speed) {
         rcr |= ENET_RCR_RMII_10T_MASK;
-    }
-    else
-    {
+    } else {
         rcr &= ~ENET_RCR_RMII_10T_MASK;
     }
     /* Set duplex mode. */
-    if (duplex == kENET_MiiHalfDuplex)
-    {
+    if (duplex == kENET_MiiHalfDuplex) {
         rcr |= ENET_RCR_DRT_MASK;
         tcr &= ~ENET_TCR_FDEN_MASK;
-    }
-    else
-    {
+    } else {
         rcr &= ~ENET_RCR_DRT_MASK;
         tcr |= ENET_TCR_FDEN_MASK;
     }
@@ -990,16 +989,21 @@ void ENET_SetMII(ENET_Type *base, enet_mii_speed_t speed, enet_mii_duplex_t dupl
  * param macAddr The six-byte Mac address pointer.
  *        The pointer is allocated by application and input into the API.
  */
-void ENET_SetMacAddr(ENET_Type *base, uint8_t *macAddr)
-{
+void ENET_SetMacAddr(ENET_Type *base, uint8_t *macAddr) {
     uint32_t address;
 
     /* Set physical address lower register. */
-    address = (uint32_t)(((uint32_t)macAddr[0] << 24U) | ((uint32_t)macAddr[1] << 16U) | ((uint32_t)macAddr[2] << 8U) |
-                         (uint32_t)macAddr[3]);
+    address = (uint32_t)(((uint32_t)
+    macAddr[0] << 24U) | ((uint32_t)
+    macAddr[1] << 16U) | ((uint32_t)
+    macAddr[2] << 8U) |
+    (uint32_t)
+    macAddr[3]);
     base->PALR = address;
     /* Set physical address high register. */
-    address    = (uint32_t)(((uint32_t)macAddr[4] << 8U) | ((uint32_t)macAddr[5]));
+    address = (uint32_t)(((uint32_t)
+    macAddr[4] << 8U) | ((uint32_t)
+    macAddr[5]));
     base->PAUR = address << ENET_PAUR_PADDR2_SHIFT;
 }
 
@@ -1010,23 +1014,22 @@ void ENET_SetMacAddr(ENET_Type *base, uint8_t *macAddr)
  * param macAddr The six-byte Mac address pointer.
  *        The pointer is allocated by application and input into the API.
  */
-void ENET_GetMacAddr(ENET_Type *base, uint8_t *macAddr)
-{
+void ENET_GetMacAddr(ENET_Type *base, uint8_t *macAddr) {
     assert(macAddr != NULL);
 
     uint32_t address;
 
     /* Get from physical address lower register. */
-    address    = base->PALR;
+    address = base->PALR;
     macAddr[0] = 0xFFU & (uint8_t)(address >> 24U);
     macAddr[1] = 0xFFU & (uint8_t)(address >> 16U);
     macAddr[2] = 0xFFU & (uint8_t)(address >> 8U);
-    macAddr[3] = 0xFFU & (uint8_t)address;
+    macAddr[3] = 0xFFU & (uint8_t) address;
 
     /* Get from physical address high register. */
-    address    = (base->PAUR & ENET_PAUR_PADDR2_MASK) >> ENET_PAUR_PADDR2_SHIFT;
+    address = (base->PAUR & ENET_PAUR_PADDR2_MASK) >> ENET_PAUR_PADDR2_SHIFT;
     macAddr[4] = 0xFFU & (uint8_t)(address >> 8U);
-    macAddr[5] = 0xFFU & (uint8_t)address;
+    macAddr[5] = 0xFFU & (uint8_t) address;
 }
 
 /*!
@@ -1038,13 +1041,12 @@ void ENET_GetMacAddr(ENET_Type *base, uint8_t *macAddr)
  *        - true   Enables the preamble.
  *        - false  Disables the preamble.
  */
-void ENET_SetSMI(ENET_Type *base, uint32_t srcClock_Hz, bool isPreambleDisabled)
-{
+void ENET_SetSMI(ENET_Type *base, uint32_t srcClock_Hz, bool isPreambleDisabled) {
     assert(srcClock_Hz != 0U);
 
     uint32_t clkCycle = 0;
-    uint32_t speed    = 0;
-    uint32_t mscr     = 0;
+    uint32_t speed = 0;
+    uint32_t mscr = 0;
 
     /* Calculate the MII speed which controls the frequency of the MDC. */
     speed = srcClock_Hz / (2U * ENET_MDC_FREQUENCY);
@@ -1052,7 +1054,8 @@ void ENET_SetSMI(ENET_Type *base, uint32_t srcClock_Hz, bool isPreambleDisabled)
     clkCycle = (10U + ENET_NANOSECOND_ONE_SECOND / srcClock_Hz - 1U) / (ENET_NANOSECOND_ONE_SECOND / srcClock_Hz) - 1U;
     /* Build the configuration for MDC/MDIO control. */
     mscr =
-        ENET_MSCR_MII_SPEED(speed) | ENET_MSCR_HOLDTIME(clkCycle) | (isPreambleDisabled ? ENET_MSCR_DIS_PRE_MASK : 0U);
+            ENET_MSCR_MII_SPEED(speed) | ENET_MSCR_HOLDTIME(clkCycle) |
+            (isPreambleDisabled ? ENET_MSCR_DIS_PRE_MASK : 0U);
     base->MSCR = mscr;
 }
 
@@ -1067,8 +1070,7 @@ void ENET_SetSMI(ENET_Type *base, uint32_t srcClock_Hz, bool isPreambleDisabled)
  * param operation The write operation.
  * param data The data written to PHY.
  */
-void ENET_StartSMIWrite(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, enet_mii_write_t operation, uint32_t data)
-{
+void ENET_StartSMIWrite(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, enet_mii_write_t operation, uint32_t data) {
     uint32_t mmfr = 0;
 
     /* Build MII write command. */
@@ -1087,8 +1089,7 @@ void ENET_StartSMIWrite(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, enet
  * param phyReg The PHY register. Range from 0 ~ 31.
  * param operation The read operation.
  */
-void ENET_StartSMIRead(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, enet_mii_read_t operation)
-{
+void ENET_StartSMIRead(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, enet_mii_read_t operation) {
     uint32_t mmfr = 0;
 
     /* Build MII read command. */
@@ -1173,43 +1174,35 @@ void ENET_StartExtC45SMIRead(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg)
  * param handle The ENET handler structure pointer. This is the same handler pointer used in the ENET_Init.
  * param eErrorStatic The error statistics structure pointer.
  */
-void ENET_GetRxErrBeforeReadFrame(enet_handle_t *handle, enet_data_error_stats_t *eErrorStatic)
-{
+void ENET_GetRxErrBeforeReadFrame(enet_handle_t *handle, enet_data_error_stats_t *eErrorStatic) {
     assert(handle != NULL);
     assert(handle->rxBdCurrent[0] != NULL);
     assert(eErrorStatic != NULL);
 
-    uint16_t control                             = 0;
+    uint16_t control = 0;
     volatile enet_rx_bd_struct_t *curBuffDescrip = handle->rxBdCurrent[0];
 
-    do
-    {
+    do {
         /* The last buffer descriptor of a frame. */
-        if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_LAST_MASK))
-        {
+        if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_LAST_MASK)) {
             control = curBuffDescrip->control;
-            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_TRUNC_MASK))
-            {
+            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_TRUNC_MASK)) {
                 /* The receive truncate error. */
                 eErrorStatic->statsRxTruncateErr++;
             }
-            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_OVERRUN_MASK))
-            {
+            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_OVERRUN_MASK)) {
                 /* The receive over run error. */
                 eErrorStatic->statsRxOverRunErr++;
             }
-            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_LENVLIOLATE_MASK))
-            {
+            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_LENVLIOLATE_MASK)) {
                 /* The receive length violation error. */
                 eErrorStatic->statsRxLenGreaterErr++;
             }
-            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_NOOCTET_MASK))
-            {
+            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_NOOCTET_MASK)) {
                 /* The receive alignment error. */
                 eErrorStatic->statsRxAlignErr++;
             }
-            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_CRC_MASK))
-            {
+            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_CRC_MASK)) {
                 /* The receive CRC error. */
                 eErrorStatic->statsRxFcsErr++;
             }
@@ -1236,12 +1229,9 @@ void ENET_GetRxErrBeforeReadFrame(enet_handle_t *handle, enet_data_error_stats_t
         }
 
         /* Increase the buffer descriptor, if it is the last one, increase to first one of the ring buffer. */
-        if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_WRAP_MASK))
-        {
+        if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_WRAP_MASK)) {
             curBuffDescrip = handle->rxBdBase[0];
-        }
-        else
-        {
+        } else {
             curBuffDescrip++;
         }
 
@@ -1264,8 +1254,7 @@ void ENET_GetRxErrBeforeReadFrame(enet_handle_t *handle, enet_data_error_stats_t
  * retval kStatus_Success Receive a frame Successfully then the ENET_ReadFrame
  *         should be called with the right data buffer and the captured data length input.
  */
-status_t ENET_GetRxFrameSize(enet_handle_t *handle, uint32_t *length)
-{
+status_t ENET_GetRxFrameSize(enet_handle_t *handle, uint32_t *length) {
     assert(handle != NULL);
     assert(handle->rxBdCurrent[0] != NULL);
     assert(length != NULL);
@@ -1273,40 +1262,33 @@ status_t ENET_GetRxFrameSize(enet_handle_t *handle, uint32_t *length)
     /* Reset the length to zero. */
     *length = 0;
 
-    uint16_t validLastMask                       = ENET_BUFFDESCRIPTOR_RX_LAST_MASK | ENET_BUFFDESCRIPTOR_RX_EMPTY_MASK;
+    uint16_t validLastMask = ENET_BUFFDESCRIPTOR_RX_LAST_MASK | ENET_BUFFDESCRIPTOR_RX_EMPTY_MASK;
     volatile enet_rx_bd_struct_t *curBuffDescrip = handle->rxBdCurrent[0];
-    bool isReturn                                = false;
-    status_t result                              = kStatus_Success;
+    bool isReturn = false;
+    status_t result = kStatus_Success;
 
     /* Check the current buffer descriptor's empty flag.  if empty means there is no frame received. */
-    if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_EMPTY_MASK))
-    {
+    if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_EMPTY_MASK)) {
         isReturn = true;
-        result   = kStatus_ENET_RxFrameEmpty;
-    }
-    else
-    {
-        do
-        {
+        result = kStatus_ENET_RxFrameEmpty;
+    } else {
+        do {
             /* Add check for abnormal case. */
-            if (curBuffDescrip->length == 0U)
-            {
+            if (curBuffDescrip->length == 0U) {
                 isReturn = true;
-                result   = kStatus_ENET_RxFrameError;
+                result = kStatus_ENET_RxFrameError;
                 break;
             }
 
             /* Find the last buffer descriptor. */
-            if ((curBuffDescrip->control & validLastMask) == ENET_BUFFDESCRIPTOR_RX_LAST_MASK)
-            {
+            if ((curBuffDescrip->control & validLastMask) == ENET_BUFFDESCRIPTOR_RX_LAST_MASK) {
                 isReturn = true;
                 /* The last buffer descriptor in the frame check the status of the received frame. */
                 if ((0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_ERR_MASK))
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
                     || (0U != (curBuffDescrip->controlExtend1 & ENET_BUFFDESCRIPTOR_RX_EXT_ERR_MASK))
 #endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
-                )
-                {
+                        ) {
                     result = kStatus_ENET_RxFrameError;
                     break;
                 }
@@ -1315,20 +1297,16 @@ status_t ENET_GetRxFrameSize(enet_handle_t *handle, uint32_t *length)
                 break;
             }
             /* Increase the buffer descriptor, if it is the last one, increase to first one of the ring buffer. */
-            if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_WRAP_MASK))
-            {
+            if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_WRAP_MASK)) {
                 curBuffDescrip = handle->rxBdBase[0];
-            }
-            else
-            {
+            } else {
                 curBuffDescrip++;
             }
 
         } while (curBuffDescrip != handle->rxBdCurrent[0]);
     }
 
-    if (isReturn == false)
-    {
+    if (isReturn == false) {
         /* The frame is on processing - set to empty status to make application to receive it next time. */
         result = kStatus_ENET_RxFrameEmpty;
     }
@@ -1373,45 +1351,40 @@ status_t ENET_GetRxFrameSize(enet_handle_t *handle, uint32_t *length)
  * param length The size of the data buffer which is still the length of the received frame.
  * return The execute status, successful or failure.
  */
-status_t ENET_ReadFrame(ENET_Type *base, enet_handle_t *handle, uint8_t *data, uint32_t length)
-{
+status_t ENET_ReadFrame(ENET_Type *base, enet_handle_t *handle, uint8_t *data, uint32_t length) {
     assert(handle != NULL);
     assert(handle->rxBdCurrent[0] != NULL);
 
-    uint32_t len    = 0;
+    uint32_t len = 0;
     uint32_t offset = 0;
     uint16_t control;
-    bool isLastBuff                              = false;
+    bool isLastBuff = false;
     volatile enet_rx_bd_struct_t *curBuffDescrip = handle->rxBdCurrent[0];
-    status_t result                              = kStatus_Success;
+    status_t result = kStatus_Success;
     enet_pvoid_to_u32_t address;
     enet_pvoid_to_u32_t dest;
 
     /* For data-NULL input, only update the buffer descriptor. */
-    if (NULL == data)
-    {
-        do
-        {
+    if (NULL == data) {
+        do {
             /* Update the control flag. */
             control = handle->rxBdCurrent[0]->control;
             /* Updates the receive buffer descriptors. */
             ENET_UpdateReadBuffers(base, handle, 0);
 
             /* Find the last buffer descriptor for the frame. */
-            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_LAST_MASK))
-            {
+            if (0U != (control & ENET_BUFFDESCRIPTOR_RX_LAST_MASK)) {
                 break;
             }
 
         } while (handle->rxBdCurrent[0] != curBuffDescrip);
-    }
-    else
-    {
+    } else {
 /* A frame on one buffer or several receive buffers are both considered. */
 #if defined(FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET) && FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET
         address.u32 = MEMORY_ConvertMemoryMapAddress((uint32_t)curBuffDescrip->buffer, kMEMORY_DMA2Local);
 #else
-        address.u32 = (uint32_t)curBuffDescrip->buffer;
+        address.u32 = (uint32_t)
+        curBuffDescrip->buffer;
 #endif /* FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET */
 #if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
         /* Add the cache invalidate maintain. */
@@ -1424,19 +1397,17 @@ status_t ENET_ReadFrame(ENET_Type *base, enet_handle_t *handle, uint8_t *data, u
         isPtpEventMessage = ENET_Ptp1588ParseFrame((uint8_t *)address.u32, &ptpTimestamp, false);
 #endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
 
-        while (!isLastBuff)
-        {
+        while (!isLastBuff) {
             /* The last buffer descriptor of a frame. */
-            dest.u32 = (uint32_t)data + offset;
-            if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_LAST_MASK))
-            {
+            dest.u32 = (uint32_t)
+            data + offset;
+            if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_RX_LAST_MASK)) {
                 /* This is a valid frame. */
                 isLastBuff = true;
-                if (length == curBuffDescrip->length)
-                {
+                if (length == curBuffDescrip->length) {
                     /* Copy the frame to user's buffer without FCS. */
                     len = curBuffDescrip->length - offset;
-                    (void)memcpy(dest.pvoid, address.pvoid, len);
+                    (void) memcpy(dest.pvoid, address.pvoid, len);
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
                     /* Store the PTP 1588 timestamp for received PTP event frame. */
                     if (isPtpEventMessage)
@@ -1450,25 +1421,20 @@ status_t ENET_ReadFrame(ENET_Type *base, enet_handle_t *handle, uint8_t *data, u
                     /* Updates the receive buffer descriptors. */
                     ENET_UpdateReadBuffers(base, handle, 0);
                     break;
-                }
-                else
-                {
+                } else {
                     /* Updates the receive buffer descriptors. */
                     ENET_UpdateReadBuffers(base, handle, 0);
                 }
-            }
-            else
-            {
+            } else {
                 /* Store a frame on several buffer descriptors. */
                 isLastBuff = false;
                 /* Length check. */
-                if (offset >= length)
-                {
+                if (offset >= length) {
                     result = kStatus_ENET_RxFrameFail;
                     break;
                 }
 
-                (void)memcpy(dest.pvoid, address.pvoid, handle->rxBuffSizeAlign[0]);
+                (void) memcpy(dest.pvoid, address.pvoid, handle->rxBuffSizeAlign[0]);
                 offset += handle->rxBuffSizeAlign[0];
 
                 /* Updates the receive buffer descriptors. */
@@ -1481,7 +1447,8 @@ status_t ENET_ReadFrame(ENET_Type *base, enet_handle_t *handle, uint8_t *data, u
 #if defined(FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET) && FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET
             address.u32 = MEMORY_ConvertMemoryMapAddress((uint32_t)curBuffDescrip->buffer, kMEMORY_DMA2Local);
 #else
-            address.u32 = (uint32_t)curBuffDescrip->buffer;
+            address.u32 = (uint32_t)
+            curBuffDescrip->buffer;
 #endif /* FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET */
 #if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
             DCACHE_InvalidateByRange(address.u32, handle->rxBuffSizeAlign[0]);
@@ -1492,10 +1459,10 @@ status_t ENET_ReadFrame(ENET_Type *base, enet_handle_t *handle, uint8_t *data, u
     return result;
 }
 
-static void ENET_UpdateReadBuffers(ENET_Type *base, enet_handle_t *handle, uint32_t ringId)
-{
+static void ENET_UpdateReadBuffers(ENET_Type *base, enet_handle_t *handle, uint32_t ringId) {
     assert(handle != NULL);
-    assert(ringId < (uint32_t)FSL_FEATURE_ENET_QUEUE);
+    assert(ringId < (uint32_t)
+    FSL_FEATURE_ENET_QUEUE);
 
     /* Clears status. */
     handle->rxBdCurrent[ringId]->control &= ENET_BUFFDESCRIPTOR_RX_WRAP_MASK;
@@ -1503,12 +1470,9 @@ static void ENET_UpdateReadBuffers(ENET_Type *base, enet_handle_t *handle, uint3
     handle->rxBdCurrent[ringId]->control |= ENET_BUFFDESCRIPTOR_RX_EMPTY_MASK;
 
     /* Increase current buffer descriptor to the next one. */
-    if (0U != (handle->rxBdCurrent[ringId]->control & ENET_BUFFDESCRIPTOR_RX_WRAP_MASK))
-    {
+    if (0U != (handle->rxBdCurrent[ringId]->control & ENET_BUFFDESCRIPTOR_RX_WRAP_MASK)) {
         handle->rxBdCurrent[ringId] = handle->rxBdBase[ringId];
-    }
-    else
-    {
+    } else {
         handle->rxBdCurrent[ringId]++;
     }
 
@@ -1516,18 +1480,17 @@ static void ENET_UpdateReadBuffers(ENET_Type *base, enet_handle_t *handle, uint3
     __DSB();
 
     /* Actives the receive buffer descriptor. */
-    switch (ringId)
-    {
+    switch (ringId) {
         case (uint32_t)kENET_Ring0:
             base->RDAR = ENET_RDAR_RDAR_MASK;
             break;
 #if FSL_FEATURE_ENET_QUEUE > 1
-        case (uint32_t)kENET_Ring1:
-            base->RDAR1 = ENET_RDAR1_RDAR_MASK;
-            break;
-        case (uint32_t)kENET_Ring2:
-            base->RDAR2 = ENET_RDAR2_RDAR_MASK;
-            break;
+            case (uint32_t)kENET_Ring1:
+                base->RDAR1 = ENET_RDAR1_RDAR_MASK;
+                break;
+            case (uint32_t)kENET_Ring2:
+                base->RDAR2 = ENET_RDAR2_RDAR_MASK;
+                break;
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
         default:
             assert(false);
@@ -1552,13 +1515,12 @@ static void ENET_UpdateReadBuffers(ENET_Type *base, enet_handle_t *handle, uint3
  *         The waiting mechanism is recommended to be added after each call return with
  *         kStatus_ENET_TxFrameBusy.
  */
-status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *data, uint32_t length)
-{
+status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *data, uint32_t length) {
     assert(handle != NULL);
     assert(data != NULL);
 
     volatile enet_tx_bd_struct_t *curBuffDescrip;
-    uint32_t len      = 0;
+    uint32_t len = 0;
     uint32_t sizeleft = 0;
     enet_pvoid_to_u32_t address;
     status_t result = kStatus_Success;
@@ -1566,40 +1528,34 @@ status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *d
     uint32_t configVal;
 
     /* Check the frame length. */
-    if (length > ENET_FRAME_MAX_FRAMELEN)
-    {
+    if (length > ENET_FRAME_MAX_FRAMELEN) {
         result = kStatus_ENET_TxFrameOverLen;
-    }
-    else
-    {
+    } else {
         /* Check if the transmit buffer is ready. */
         curBuffDescrip = handle->txBdCurrent[0];
-        if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_READY_MASK))
-        {
+        if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_READY_MASK)) {
             result = kStatus_ENET_TxFrameBusy;
-        }
-        else
-        {
+        } else {
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
             bool isPtpEventMessage = false;
             /* Check PTP message with the PTP header. */
             isPtpEventMessage = ENET_Ptp1588ParseFrame(data, NULL, true);
 #endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
             /* One transmit buffer is enough for one frame. */
-            if (handle->txBuffSizeAlign[0] >= length)
-            {
+            if (handle->txBuffSizeAlign[0] >= length) {
                 /* Copy data to the buffer for uDMA transfer. */
 #if defined(FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET) && FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET
                 address.u32 = MEMORY_ConvertMemoryMapAddress((uint32_t)curBuffDescrip->buffer, kMEMORY_DMA2Local);
 #else
-                address.u32 = (uint32_t)curBuffDescrip->buffer;
+                address.u32 = (uint32_t)
+                curBuffDescrip->buffer;
 #endif /* FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET */
-                (void)memcpy(address.pvoid, (const void *)data, length);
+                (void) memcpy(address.pvoid, (const void *) data, length);
 #if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
                 DCACHE_CleanByRange(address.u32, length);
 #endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */
                 /* Set data length. */
-                curBuffDescrip->length = (uint16_t)length;
+                curBuffDescrip->length = (uint16_t) length;
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
                 /* For enable the timestamp. */
                 if (isPtpEventMessage)
@@ -1615,24 +1571,18 @@ status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *d
                 curBuffDescrip->control |= (ENET_BUFFDESCRIPTOR_TX_READY_MASK | ENET_BUFFDESCRIPTOR_TX_LAST_MASK);
 
                 /* Increase the buffer descriptor address. */
-                if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_WRAP_MASK))
-                {
+                if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_WRAP_MASK)) {
                     handle->txBdCurrent[0] = handle->txBdBase[0];
-                }
-                else
-                {
+                } else {
                     handle->txBdCurrent[0]++;
                 }
                 /* Active the transmit buffer descriptor. */
                 ENET_ActiveSend(base, 0);
 
                 result = kStatus_Success;
-            }
-            else
-            {
+            } else {
                 /* One frame requires more than one transmit buffers. */
-                do
-                {
+                do {
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
                     /* For enable the timestamp. */
                     if (isPtpEventMessage)
@@ -1646,12 +1596,9 @@ status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *d
 #endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
 
                     /* Increase the buffer descriptor address. */
-                    if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_WRAP_MASK))
-                    {
+                    if (0U != (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_WRAP_MASK)) {
                         handle->txBdCurrent[0] = handle->txBdBase[0];
-                    }
-                    else
-                    {
+                    } else {
                         handle->txBdCurrent[0]++;
                     }
                     /* update the size left to be transmit. */
@@ -1659,13 +1606,14 @@ status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *d
 #if defined(FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET) && FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET
                     address.u32 = MEMORY_ConvertMemoryMapAddress((uint32_t)curBuffDescrip->buffer, kMEMORY_DMA2Local);
 #else
-                    address.u32 = (uint32_t)curBuffDescrip->buffer;
+                    address.u32 = (uint32_t)
+                    curBuffDescrip->buffer;
 #endif /* FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET */
-                    src.u32 = (uint32_t)data + len;
-                    if (sizeleft > handle->txBuffSizeAlign[0])
-                    {
+                    src.u32 = (uint32_t)
+                    data + len;
+                    if (sizeleft > handle->txBuffSizeAlign[0]) {
                         /* Data copy. */
-                        (void)memcpy(address.pvoid, src.pvoid, handle->txBuffSizeAlign[0]);
+                        (void) memcpy(address.pvoid, src.pvoid, handle->txBuffSizeAlign[0]);
 #if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
                         /* Add the cache clean maintain. */
                         DCACHE_CleanByRange(address.u32, handle->txBuffSizeAlign[0]);
@@ -1674,21 +1622,20 @@ status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *d
                         curBuffDescrip->length = handle->txBuffSizeAlign[0];
                         len += handle->txBuffSizeAlign[0];
                         /* Sets the control flag. */
-                        configVal = (uint32_t)curBuffDescrip->control;
+                        configVal = (uint32_t)
+                        curBuffDescrip->control;
                         configVal &= ~ENET_BUFFDESCRIPTOR_TX_LAST_MASK;
                         configVal |= ENET_BUFFDESCRIPTOR_TX_READY_MASK;
-                        curBuffDescrip->control = (uint16_t)configVal;
+                        curBuffDescrip->control = (uint16_t) configVal;
                         /* Active the transmit buffer descriptor*/
                         ENET_ActiveSend(base, 0);
-                    }
-                    else
-                    {
-                        (void)memcpy(address.pvoid, src.pvoid, sizeleft);
+                    } else {
+                        (void) memcpy(address.pvoid, src.pvoid, sizeleft);
 #if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
                         /* Add the cache clean maintain. */
                         DCACHE_CleanByRange(address.u32, sizeleft);
 #endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */
-                        curBuffDescrip->length = (uint16_t)sizeleft;
+                        curBuffDescrip->length = (uint16_t) sizeleft;
                         /* Set Last buffer wrap flag. */
                         curBuffDescrip->control |= ENET_BUFFDESCRIPTOR_TX_READY_MASK | ENET_BUFFDESCRIPTOR_TX_LAST_MASK;
                         /* Active the transmit buffer descriptor. */
@@ -2217,29 +2164,23 @@ status_t ENET_SendFrameMultiRing(
  * param base    ENET peripheral base address.
  * param address The six-byte multicast group address which is provided by application.
  */
-void ENET_AddMulticastGroup(ENET_Type *base, uint8_t *address)
-{
+void ENET_AddMulticastGroup(ENET_Type *base, uint8_t *address) {
     assert(address != NULL);
 
-    uint32_t crc       = 0xFFFFFFFFU;
-    uint32_t count1    = 0;
-    uint32_t count2    = 0;
+    uint32_t crc = 0xFFFFFFFFU;
+    uint32_t count1 = 0;
+    uint32_t count2 = 0;
     uint32_t configVal = 0;
 
     /* Calculates the CRC-32 polynomial on the multicast group address. */
-    for (count1 = 0; count1 < ENET_FRAME_MACLEN; count1++)
-    {
+    for (count1 = 0; count1 < ENET_FRAME_MACLEN; count1++) {
         uint8_t c = address[count1];
-        for (count2 = 0; count2 < 0x08U; count2++)
-        {
-            if (0U != ((c ^ crc) & 1U))
-            {
+        for (count2 = 0; count2 < 0x08U; count2++) {
+            if (0U != ((c ^ crc) & 1U)) {
                 crc >>= 1U;
                 c >>= 1U;
                 crc ^= 0xEDB88320U;
-            }
-            else
-            {
+            } else {
                 crc >>= 1U;
                 c >>= 1U;
             }
@@ -2250,12 +2191,9 @@ void ENET_AddMulticastGroup(ENET_Type *base, uint8_t *address)
     configVal = 1U;
     configVal = configVal << ((crc >> 0x1AU) & 0x1FU);
 
-    if (0U == ((crc >> 0x1FU) & 1U))
-    {
+    if (0U == ((crc >> 0x1FU) & 1U)) {
         base->GALR |= configVal;
-    }
-    else
-    {
+    } else {
         base->GAUR |= configVal;
     }
 }
@@ -2266,29 +2204,23 @@ void ENET_AddMulticastGroup(ENET_Type *base, uint8_t *address)
  * param base  ENET peripheral base address.
  * param address The six-byte multicast group address which is provided by application.
  */
-void ENET_LeaveMulticastGroup(ENET_Type *base, uint8_t *address)
-{
+void ENET_LeaveMulticastGroup(ENET_Type *base, uint8_t *address) {
     assert(address != NULL);
 
-    uint32_t crc       = 0xFFFFFFFFU;
-    uint32_t count1    = 0;
-    uint32_t count2    = 0;
+    uint32_t crc = 0xFFFFFFFFU;
+    uint32_t count1 = 0;
+    uint32_t count2 = 0;
     uint32_t configVal = 0;
 
     /* Calculates the CRC-32 polynomial on the multicast group address. */
-    for (count1 = 0; count1 < ENET_FRAME_MACLEN; count1++)
-    {
+    for (count1 = 0; count1 < ENET_FRAME_MACLEN; count1++) {
         uint8_t c = address[count1];
-        for (count2 = 0; count2 < 0x08U; count2++)
-        {
-            if (0U != ((c ^ crc) & 1U))
-            {
+        for (count2 = 0; count2 < 0x08U; count2++) {
+            if (0U != ((c ^ crc) & 1U)) {
                 crc >>= 1U;
                 c >>= 1U;
                 crc ^= 0xEDB88320U;
-            }
-            else
-            {
+            } else {
                 crc >>= 1U;
                 c >>= 1U;
             }
@@ -2298,12 +2230,9 @@ void ENET_LeaveMulticastGroup(ENET_Type *base, uint8_t *address)
     /* Set the hash table. */
     configVal = 1U;
     configVal = ~(configVal << ((crc >> 0x1AU) & 0x1FU));
-    if (0U == ((crc >> 0x1FU) & 1U))
-    {
+    if (0U == ((crc >> 0x1FU) & 1U)) {
         base->GALR &= configVal;
-    }
-    else
-    {
+    } else {
         base->GAUR &= configVal;
     }
 }
@@ -3123,6 +3052,7 @@ void ENET_AVBConfigure(ENET_Type *base, enet_handle_t *handle, const enet_avb_co
  */
 void ENET_TransmitIRQHandler(ENET_Type *base, enet_handle_t *handle, uint32_t ringId)
 #else
+
 /*!
  * brief The transmit IRQ handler.
  *
@@ -3133,7 +3063,10 @@ void ENET_TransmitIRQHandler(ENET_Type *base, enet_handle_t *handle)
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
 {
     assert(handle != NULL);
-    uint32_t mask = (uint32_t)kENET_TxBufferInterrupt | (uint32_t)kENET_TxFrameInterrupt;
+    uint32_t
+    mask = (uint32_t)
+    kENET_TxBufferInterrupt | (uint32_t)
+    kENET_TxFrameInterrupt;
 #if defined(ENET_ENHANCEDBUFFERDESCRIPTOR_MODE) || (FSL_FEATURE_ENET_QUEUE > 1)
     uint32_t index = 0;
 #endif /* ENET_ENHANCEDBUFFERDESCRIPTORMODE  || (FSL_FEATURE_ENET_QUEUE > 1) */
@@ -3155,8 +3088,7 @@ void ENET_TransmitIRQHandler(ENET_Type *base, enet_handle_t *handle)
     index = ringId;
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
 
-    while (0U != (mask & base->EIR))
-    {
+    while (0U != (mask & base->EIR)) {
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
         if (0U != (base->EIR & (uint32_t)kENET_TxFrameInterrupt))
         {
@@ -3169,8 +3101,7 @@ void ENET_TransmitIRQHandler(ENET_Type *base, enet_handle_t *handle)
         base->EIR = mask;
 
         /* Callback function. */
-        if (NULL != handle->callback)
-        {
+        if (NULL != handle->callback) {
 #if FSL_FEATURE_ENET_QUEUE > 1
             handle->callback(base, handle, index, kENET_TxEvent, handle->userData);
 #else
@@ -3189,6 +3120,7 @@ void ENET_TransmitIRQHandler(ENET_Type *base, enet_handle_t *handle)
  */
 void ENET_ReceiveIRQHandler(ENET_Type *base, enet_handle_t *handle, uint32_t ringId)
 #else
+
 /*!
  * brief The receive IRQ handler.
  *
@@ -3199,7 +3131,10 @@ void ENET_ReceiveIRQHandler(ENET_Type *base, enet_handle_t *handle)
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
 {
     assert(handle != NULL);
-    uint32_t mask = (uint32_t)kENET_RxFrameInterrupt | (uint32_t)kENET_RxBufferInterrupt;
+    uint32_t
+    mask = (uint32_t)
+    kENET_RxFrameInterrupt | (uint32_t)
+    kENET_RxBufferInterrupt;
 
 /* Check if the receive interrupt happen. */
 #if FSL_FEATURE_ENET_QUEUE > 1
@@ -3217,14 +3152,12 @@ void ENET_ReceiveIRQHandler(ENET_Type *base, enet_handle_t *handle)
     }
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
 
-    while (0U != (mask & base->EIR))
-    {
+    while (0U != (mask & base->EIR)) {
         /* Clear the transmit interrupt event. */
         base->EIR = mask;
 
         /* Callback function. */
-        if (NULL != handle->callback)
-        {
+        if (NULL != handle->callback) {
 #if FSL_FEATURE_ENET_QUEUE > 1
             handle->callback(base, handle, ringId, kENET_RxEvent, handle->userData);
 #else
@@ -3240,24 +3173,31 @@ void ENET_ReceiveIRQHandler(ENET_Type *base, enet_handle_t *handle)
  * param base  ENET peripheral base address.
  * param handle The ENET handler pointer.
  */
-void ENET_ErrorIRQHandler(ENET_Type *base, enet_handle_t *handle)
-{
+void ENET_ErrorIRQHandler(ENET_Type *base, enet_handle_t *handle) {
     assert(handle != NULL);
 
-    uint32_t errMask = (uint32_t)kENET_BabrInterrupt | (uint32_t)kENET_BabtInterrupt | (uint32_t)kENET_EBusERInterrupt |
-                       (uint32_t)kENET_PayloadRxInterrupt | (uint32_t)kENET_LateCollisionInterrupt |
-                       (uint32_t)kENET_RetryLimitInterrupt | (uint32_t)kENET_UnderrunInterrupt;
+    uint32_t
+    errMask = (uint32_t)
+    kENET_BabrInterrupt | (uint32_t)
+    kENET_BabtInterrupt | (uint32_t)
+    kENET_EBusERInterrupt |
+    (uint32_t)
+    kENET_PayloadRxInterrupt | (uint32_t)
+    kENET_LateCollisionInterrupt |
+    (uint32_t)
+    kENET_RetryLimitInterrupt | (uint32_t)
+    kENET_UnderrunInterrupt;
 
     /* Check if the error interrupt happen. */
     if (0U != ((uint32_t)kENET_WakeupInterrupt & base->EIR))
     {
         /* Clear the wakeup interrupt. */
-        base->EIR = (uint32_t)kENET_WakeupInterrupt;
+        base->EIR = (uint32_t)
+        kENET_WakeupInterrupt;
         /* wake up and enter the normal mode. */
         ENET_EnableSleepMode(base, false);
         /* Callback function. */
-        if (NULL != handle->callback)
-        {
+        if (NULL != handle->callback) {
 #if FSL_FEATURE_ENET_QUEUE > 1
             handle->callback(base, handle, 0, kENET_WakeUpEvent, handle->userData);
 #else
@@ -3271,8 +3211,7 @@ void ENET_ErrorIRQHandler(ENET_Type *base, enet_handle_t *handle)
         errMask &= base->EIR;
         base->EIR = errMask;
         /* Callback function. */
-        if (NULL != handle->callback)
-        {
+        if (NULL != handle->callback) {
 #if FSL_FEATURE_ENET_QUEUE > 1
             handle->callback(base, handle, 0, kENET_ErrEvent, handle->userData);
 #else
@@ -3346,12 +3285,12 @@ void ENET_Ptp1588TimerIRQHandler(ENET_Type *base, enet_handle_t *handle)
  *
  * param base  ENET peripheral base address.
  */
-void ENET_CommonFrame0IRQHandler(ENET_Type *base)
-{
-    uint32_t event    = base->EIR;
+void ENET_CommonFrame0IRQHandler(ENET_Type *base) {
+    uint32_t event = base->EIR;
     uint32_t instance = ENET_GetInstance(base);
 
-    if (0U != (event & ((uint32_t)kENET_TxBufferInterrupt | (uint32_t)kENET_TxFrameInterrupt)))
+    if (0U != (event & ((uint32_t)kENET_TxBufferInterrupt | (uint32_t)
+    kENET_TxFrameInterrupt)))
     {
 #if FSL_FEATURE_ENET_QUEUE > 1
         s_enetTxIsr(base, s_ENETHandle[instance], 0);
@@ -3360,7 +3299,8 @@ void ENET_CommonFrame0IRQHandler(ENET_Type *base)
 #endif /* FSL_FEATURE_ENET_QUEUE > 1 */
     }
 
-    if (0U != (event & ((uint32_t)kENET_RxBufferInterrupt | (uint32_t)kENET_RxFrameInterrupt)))
+    if (0U != (event & ((uint32_t)kENET_RxBufferInterrupt | (uint32_t)
+    kENET_RxFrameInterrupt)))
     {
 #if FSL_FEATURE_ENET_QUEUE > 1
         s_enetRxIsr(base, s_ENETHandle[instance], 0);

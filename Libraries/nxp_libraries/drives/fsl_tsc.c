@@ -37,15 +37,12 @@ static const clock_ip_name_t s_tscClocks[] = TSC_CLOCKS;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static uint32_t TSC_GetInstance(TSC_Type *base)
-{
+static uint32_t TSC_GetInstance(TSC_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_tscBases); instance++)
-    {
-        if (s_tscBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_tscBases); instance++) {
+        if (s_tscBases[instance] == base) {
             break;
         }
     }
@@ -61,8 +58,7 @@ static uint32_t TSC_GetInstance(TSC_Type *base)
  * param base TSC peripheral base address.
  * param config Pointer to "tsc_config_t" structure.
  */
-void TSC_Init(TSC_Type *base, const tsc_config_t *config)
-{
+void TSC_Init(TSC_Type *base, const tsc_config_t *config) {
     assert(NULL != config);
     assert(config->measureDelayTime <= 0xFFFFFFU);
 
@@ -75,8 +71,7 @@ void TSC_Init(TSC_Type *base, const tsc_config_t *config)
     /* Configure TSC_BASIC_SETTING register. */
     tmp32 = TSC_BASIC_SETTING_MEASURE_DELAY_TIME(config->measureDelayTime) |
             TSC_BASIC_SETTING__4_5_WIRE(config->detectionMode);
-    if (config->enableAutoMeasure)
-    {
+    if (config->enableAutoMeasure) {
         tmp32 |= TSC_BASIC_SETTING_AUTO_MEASURE_MASK;
     }
     base->BASIC_SETTING = tmp32;
@@ -89,8 +84,7 @@ void TSC_Init(TSC_Type *base, const tsc_config_t *config)
  *
  * param base TSC peripheral base address.
  */
-void TSC_Deinit(TSC_Type *base)
-{
+void TSC_Deinit(TSC_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     /* Disable the TSC clcok. */
     CLOCK_DisableClock(s_tscClocks[TSC_GetInstance(base)]);
@@ -111,15 +105,14 @@ void TSC_Deinit(TSC_Type *base)
  * endCode
  * param config Pointer to "tsc_config_t" structure.
  */
-void TSC_GetDefaultConfig(tsc_config_t *config)
-{
+void TSC_GetDefaultConfig(tsc_config_t *config) {
     /* Initializes the configure structure to zero. */
-    (void)memset(config, 0, sizeof(*config));
+    (void) memset(config, 0, sizeof(*config));
 
     config->enableAutoMeasure = false;
-    config->measureDelayTime  = 0xFFFFU;
-    config->prechargeTime     = 0xFFFFU;
-    config->detectionMode     = kTSC_Detection4WireMode;
+    config->measureDelayTime = 0xFFFFU;
+    config->prechargeTime = 0xFFFFU;
+    config->detectionMode = kTSC_Detection4WireMode;
 }
 
 /*!
@@ -131,20 +124,14 @@ void TSC_GetDefaultConfig(tsc_config_t *config)
  * return If selection is "kTSC_XCoordinateValueSelection", the API returns x-coordinate vlaue.
  *         If selection is "kTSC_YCoordinateValueSelection", the API returns y-coordinate vlaue.
  */
-uint32_t TSC_GetMeasureValue(TSC_Type *base, tsc_corrdinate_value_selection_t selection)
-{
+uint32_t TSC_GetMeasureValue(TSC_Type *base, tsc_corrdinate_value_selection_t selection) {
     uint32_t tmp32 = 0;
 
-    if (selection == kTSC_XCoordinateValueSelection)
-    {
+    if (selection == kTSC_XCoordinateValueSelection) {
         tmp32 = ((base->MEASEURE_VALUE) & TSC_MEASEURE_VALUE_X_VALUE_MASK) >> TSC_MEASEURE_VALUE_X_VALUE_SHIFT;
-    }
-    else if (selection == kTSC_YCoordinateValueSelection)
-    {
+    } else if (selection == kTSC_YCoordinateValueSelection) {
         tmp32 = ((base->MEASEURE_VALUE) & TSC_MEASEURE_VALUE_Y_VALUE_MASK) >> TSC_MEASEURE_VALUE_Y_VALUE_SHIFT;
-    }
-    else
-    {
+    } else {
         /* Intentional empty */
     }
 
@@ -160,18 +147,14 @@ uint32_t TSC_GetMeasureValue(TSC_Type *base, tsc_corrdinate_value_selection_t se
  * param enable Switcher of the trigger signal. "true" means generate trigger signal, "false" means don't generate
  *               trigger signal.
  */
-void TSC_DebugTriggerSignalToADC(TSC_Type *base, tsc_trigger_signal_t hwts, bool enable)
-{
-    if (enable)
-    {
+void TSC_DebugTriggerSignalToADC(TSC_Type *base, tsc_trigger_signal_t hwts, bool enable) {
+    if (enable) {
         /* TSC_DEBUG_MODE_EXT_HWTS field should be writed before writing TSC_DEBUG_MODE_TRIGGER field.
            If the two fields are writed at the same time, the trigger couldn't work as expect. */
         base->DEBUG_MODE &= ~TSC_DEBUG_MODE_EXT_HWTS_MASK;
         base->DEBUG_MODE |= TSC_DEBUG_MODE_EXT_HWTS(hwts);
         base->DEBUG_MODE |= TSC_DEBUG_MODE_TRIGGER_MASK;
-    }
-    else
-    {
+    } else {
         base->DEBUG_MODE &= ~TSC_DEBUG_MODE_TRIGGER_MASK;
     }
 }
@@ -183,32 +166,20 @@ void TSC_DebugTriggerSignalToADC(TSC_Type *base, tsc_trigger_signal_t hwts, bool
  * param detectionMode Set detect mode. See "tsc_detection_mode_t"
  * param enable Switcher of detect enable. "true" means enable detection, "false" means disable detection.
  */
-void TSC_DebugEnableDetection(TSC_Type *base, tsc_detection_mode_t detectionMode, bool enable)
-{
-    if (detectionMode == kTSC_Detection4WireMode)
-    {
-        if (enable)
-        {
+void TSC_DebugEnableDetection(TSC_Type *base, tsc_detection_mode_t detectionMode, bool enable) {
+    if (detectionMode == kTSC_Detection4WireMode) {
+        if (enable) {
             base->DEBUG_MODE2 |= TSC_DEBUG_MODE2_DETECT_ENABLE_FOUR_WIRE_MASK;
-        }
-        else
-        {
+        } else {
             base->DEBUG_MODE2 &= ~TSC_DEBUG_MODE2_DETECT_ENABLE_FOUR_WIRE_MASK;
         }
-    }
-    else if (detectionMode == kTSC_Detection5WireMode)
-    {
-        if (enable)
-        {
+    } else if (detectionMode == kTSC_Detection5WireMode) {
+        if (enable) {
             base->DEBUG_MODE2 |= TSC_DEBUG_MODE2_DETECT_ENABLE_FIVE_WIRE_MASK;
-        }
-        else
-        {
+        } else {
             base->DEBUG_MODE2 &= ~TSC_DEBUG_MODE2_DETECT_ENABLE_FIVE_WIRE_MASK;
         }
-    }
-    else
-    {
+    } else {
         /* Intentional empty */
     }
 }
@@ -220,37 +191,40 @@ void TSC_DebugEnableDetection(TSC_Type *base, tsc_detection_mode_t detectionMode
  * param port TSC controller ports.
  * param mode TSC port mode.(pull down, pull up and 200k-pull up)
  */
-void TSC_DebugSetPortMode(TSC_Type *base, tsc_port_source_t port, tsc_port_mode_t mode)
-{
+void TSC_DebugSetPortMode(TSC_Type *base, tsc_port_source_t port, tsc_port_mode_t mode) {
     uint32_t tmp32;
 
     tmp32 = base->DEBUG_MODE2;
-    switch (port)
-    {
+    switch (port) {
         case kTSC_WiperPortSource:
             tmp32 &= ~(TSC_DEBUG_MODE2_WIPER_200K_PULL_UP_MASK | TSC_DEBUG_MODE2_WIPER_PULL_UP_MASK |
                        TSC_DEBUG_MODE2_WIPER_PULL_DOWN_MASK);
-            tmp32 |= ((uint32_t)mode << TSC_DEBUG_MODE2_WIPER_PULL_DOWN_SHIFT);
+            tmp32 |= ((uint32_t)
+            mode << TSC_DEBUG_MODE2_WIPER_PULL_DOWN_SHIFT);
             break;
         case kTSC_YnlrPortSource:
             tmp32 &= ~(TSC_DEBUG_MODE2_YNLR_200K_PULL_UP_MASK | TSC_DEBUG_MODE2_YNLR_PULL_UP_MASK |
                        TSC_DEBUG_MODE2_YNLR_PULL_DOWN_MASK);
-            tmp32 |= ((uint32_t)mode << TSC_DEBUG_MODE2_YNLR_PULL_DOWN_SHIFT);
+            tmp32 |= ((uint32_t)
+            mode << TSC_DEBUG_MODE2_YNLR_PULL_DOWN_SHIFT);
             break;
         case kTSC_YpllPortSource:
             tmp32 &= ~(TSC_DEBUG_MODE2_YPLL_200K_PULL_UP_MASK | TSC_DEBUG_MODE2_YPLL_PULL_UP_MASK |
                        TSC_DEBUG_MODE2_YPLL_PULL_DOWN_MASK);
-            tmp32 |= ((uint32_t)mode << TSC_DEBUG_MODE2_YPLL_PULL_DOWN_SHIFT);
+            tmp32 |= ((uint32_t)
+            mode << TSC_DEBUG_MODE2_YPLL_PULL_DOWN_SHIFT);
             break;
         case kTSC_XnurPortSource:
             tmp32 &= ~(TSC_DEBUG_MODE2_XNUR_200K_PULL_UP_MASK | TSC_DEBUG_MODE2_XNUR_PULL_UP_MASK |
                        TSC_DEBUG_MODE2_XNUR_PULL_DOWN_MASK);
-            tmp32 |= ((uint32_t)mode << TSC_DEBUG_MODE2_XNUR_PULL_DOWN_SHIFT);
+            tmp32 |= ((uint32_t)
+            mode << TSC_DEBUG_MODE2_XNUR_PULL_DOWN_SHIFT);
             break;
         case kTSC_XpulPortSource:
             tmp32 &= ~(TSC_DEBUG_MODE2_XPUL_200K_PULL_UP_MASK | TSC_DEBUG_MODE2_XPUL_PULL_UP_MASK |
                        TSC_DEBUG_MODE2_XPUL_PULL_DOWN_MASK);
-            tmp32 |= ((uint32_t)mode << TSC_DEBUG_MODE2_XPUL_PULL_DOWN_SHIFT);
+            tmp32 |= ((uint32_t)
+            mode << TSC_DEBUG_MODE2_XPUL_PULL_DOWN_SHIFT);
             break;
         default:
             assert(false);

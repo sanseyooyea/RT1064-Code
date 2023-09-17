@@ -31,21 +31,19 @@
 /*!
  * @brief XBARA active edge for detection
  */
-typedef enum _xbara_active_edge
-{
-    kXBARA_EdgeNone             = 0U, /*!< Edge detection status bit never asserts. */
-    kXBARA_EdgeRising           = 1U, /*!< Edge detection status bit asserts on rising edges. */
-    kXBARA_EdgeFalling          = 2U, /*!< Edge detection status bit asserts on falling edges. */
+typedef enum _xbara_active_edge {
+    kXBARA_EdgeNone = 0U, /*!< Edge detection status bit never asserts. */
+    kXBARA_EdgeRising = 1U, /*!< Edge detection status bit asserts on rising edges. */
+    kXBARA_EdgeFalling = 2U, /*!< Edge detection status bit asserts on falling edges. */
     kXBARA_EdgeRisingAndFalling = 3U  /*!< Edge detection status bit asserts on rising and falling edges. */
 } xbara_active_edge_t;
 
 /*!
  * @brief Defines the XBARA DMA and interrupt configurations.
  */
-typedef enum _xbar_request
-{
-    kXBARA_RequestDisable         = 0U, /*!< Interrupt and DMA are disabled. */
-    kXBARA_RequestDMAEnable       = 1U, /*!< DMA enabled, interrupt disabled. */
+typedef enum _xbar_request {
+    kXBARA_RequestDisable = 0U, /*!< Interrupt and DMA are disabled. */
+    kXBARA_RequestDMAEnable = 1U, /*!< DMA enabled, interrupt disabled. */
     kXBARA_RequestInterruptEnalbe = 2U  /*!< Interrupt enabled, DMA disabled. */
 } xbara_request_t;
 
@@ -54,16 +52,15 @@ typedef enum _xbar_request
  *
  * This provides constants for the XBARA status flags for use in the XBARA functions.
  */
-typedef enum _xbara_status_flag_t
-{
+typedef enum _xbara_status_flag_t {
     kXBARA_EdgeDetectionOut0 =
-        (XBARA_CTRL0_STS0_MASK), /*!< XBAR_OUT0 active edge interrupt flag, sets when active edge detected. */
+    (XBARA_CTRL0_STS0_MASK), /*!< XBAR_OUT0 active edge interrupt flag, sets when active edge detected. */
     kXBARA_EdgeDetectionOut1 =
-        (XBARA_CTRL0_STS1_MASK), /*!< XBAR_OUT1 active edge interrupt flag, sets when active edge detected. */
+    (XBARA_CTRL0_STS1_MASK), /*!< XBAR_OUT1 active edge interrupt flag, sets when active edge detected. */
     kXBARA_EdgeDetectionOut2 =
-        (XBARA_CTRL1_STS2_MASK << 16U), /*!< XBAR_OUT2 active edge interrupt flag, sets when active edge detected. */
+    (XBARA_CTRL1_STS2_MASK << 16U), /*!< XBAR_OUT2 active edge interrupt flag, sets when active edge detected. */
     kXBARA_EdgeDetectionOut3 =
-        (XBARA_CTRL1_STS3_MASK << 16U), /*!< XBAR_OUT3 active edge interrupt flag, sets when active edge detected. */
+    (XBARA_CTRL1_STS3_MASK << 16U), /*!< XBAR_OUT3 active edge interrupt flag, sets when active edge detected. */
 } xbara_status_flag_t;
 
 /*!
@@ -73,8 +70,7 @@ typedef enum _xbara_status_flag_t
  * Control registers are available only for a few outputs. Not every XBARA module has
  * control registers.
  */
-typedef struct XBARAControlConfig
-{
+typedef struct XBARAControlConfig {
     xbara_active_edge_t activeEdge; /*!< Active edge to be detected. */
     xbara_request_t requestType;    /*!< Selects DMA/Interrupt request. */
 } xbara_control_config_t;

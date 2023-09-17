@@ -31,15 +31,12 @@ static const clock_ip_name_t s_gptClocks[] = GPT_CLOCKS;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static uint32_t GPT_GetInstance(GPT_Type *base)
-{
+static uint32_t GPT_GetInstance(GPT_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0U; instance < ARRAY_SIZE(s_gptBases); instance++)
-    {
-        if (s_gptBases[instance] == base)
-        {
+    for (instance = 0U; instance < ARRAY_SIZE(s_gptBases); instance++) {
+        if (s_gptBases[instance] == base) {
             break;
         }
     }
@@ -55,8 +52,7 @@ static uint32_t GPT_GetInstance(GPT_Type *base)
  * param base GPT peripheral base address.
  * param initConfig GPT mode setting configuration.
  */
-void GPT_Init(GPT_Type *base, const gpt_config_t *initConfig)
-{
+void GPT_Init(GPT_Type *base, const gpt_config_t *initConfig) {
     assert(NULL != initConfig);
 
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
@@ -68,10 +64,11 @@ void GPT_Init(GPT_Type *base, const gpt_config_t *initConfig)
     GPT_SoftwareReset(base);
 
     base->CR =
-        (initConfig->enableFreeRun ? GPT_CR_FRR_MASK : 0UL) | (initConfig->enableRunInWait ? GPT_CR_WAITEN_MASK : 0UL) |
-        (initConfig->enableRunInStop ? GPT_CR_STOPEN_MASK : 0UL) |
-        (initConfig->enableRunInDoze ? GPT_CR_DOZEEN_MASK : 0UL) |
-        (initConfig->enableRunInDbg ? GPT_CR_DBGEN_MASK : 0UL) | (initConfig->enableMode ? GPT_CR_ENMOD_MASK : 0UL);
+            (initConfig->enableFreeRun ? GPT_CR_FRR_MASK : 0UL) |
+            (initConfig->enableRunInWait ? GPT_CR_WAITEN_MASK : 0UL) |
+            (initConfig->enableRunInStop ? GPT_CR_STOPEN_MASK : 0UL) |
+            (initConfig->enableRunInDoze ? GPT_CR_DOZEEN_MASK : 0UL) |
+            (initConfig->enableRunInDbg ? GPT_CR_DBGEN_MASK : 0UL) | (initConfig->enableMode ? GPT_CR_ENMOD_MASK : 0UL);
 
     GPT_SetClockSource(base, initConfig->clockSource);
     GPT_SetClockDivider(base, initConfig->divider);
@@ -82,8 +79,7 @@ void GPT_Init(GPT_Type *base, const gpt_config_t *initConfig)
  *
  * param base GPT peripheral base address.
  */
-void GPT_Deinit(GPT_Type *base)
-{
+void GPT_Deinit(GPT_Type *base) {
     /* Disable GPT timers */
     base->CR = 0U;
 
@@ -109,19 +105,18 @@ void GPT_Deinit(GPT_Type *base)
  * endcode
  * param config Pointer to the user configuration structure.
  */
-void GPT_GetDefaultConfig(gpt_config_t *config)
-{
+void GPT_GetDefaultConfig(gpt_config_t *config) {
     assert(NULL != config);
 
     /* Initializes the configure structure to zero. */
-    (void)memset(config, 0, sizeof(*config));
+    (void) memset(config, 0, sizeof(*config));
 
-    config->clockSource     = kGPT_ClockSource_Periph;
-    config->divider         = 1U;
+    config->clockSource = kGPT_ClockSource_Periph;
+    config->divider = 1U;
     config->enableRunInStop = true;
     config->enableRunInWait = true;
     config->enableRunInDoze = false;
-    config->enableRunInDbg  = false;
-    config->enableFreeRun   = false;
-    config->enableMode      = true;
+    config->enableRunInDbg = false;
+    config->enableFreeRun = false;
+    config->enableMode = true;
 }

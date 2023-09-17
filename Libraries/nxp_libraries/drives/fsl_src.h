@@ -29,8 +29,7 @@
 /*!
  * @brief SRC reset status flags.
  */
-enum _src_reset_status_flags
-{
+enum _src_reset_status_flags {
 #if (defined(FSL_FEATURE_SRC_HAS_SRSR_RESET_OUT) && FSL_FEATURE_SRC_HAS_SRSR_RESET_OUT)
     kSRC_ResetOutputEnableFlag = SRC_SRSR_RESET_OUT_MASK, /*!< This bit indicates if RESET status is
                                                                driven out on PTE0 pin. */
@@ -146,12 +145,11 @@ typedef enum _src_wdog3_reset_option
  * reset. If the MMDC acknowledge is not asserted before this counter is elapsed, a COLD reset will
  * be initiated.
  */
-typedef enum _src_warm_reset_bypass_count
-{
+typedef enum _src_warm_reset_bypass_count {
     kSRC_WarmResetWaitAlways = 0U, /*!< System will wait until MMDC acknowledge is asserted. */
-    kSRC_WarmResetWaitClk16  = 1U, /*!< Wait 16 32KHz clock cycles before switching the reset. */
-    kSRC_WarmResetWaitClk32  = 2U, /*!< Wait 32 32KHz clock cycles before switching the reset. */
-    kSRC_WarmResetWaitClk64  = 3U, /*!< Wait 64 32KHz clock cycles before switching the reset. */
+    kSRC_WarmResetWaitClk16 = 1U, /*!< Wait 16 32KHz clock cycles before switching the reset. */
+    kSRC_WarmResetWaitClk32 = 2U, /*!< Wait 32 32KHz clock cycles before switching the reset. */
+    kSRC_WarmResetWaitClk64 = 3U, /*!< Wait 64 32KHz clock cycles before switching the reset. */
 } src_warm_reset_bypass_count_t;
 
 #if defined(__cplusplus)
@@ -380,19 +378,18 @@ static inline void SRC_AssertEIMReset(SRC_Type *base, bool enable)
  * @param base SRC peripheral base address.
  * @param enable Enable the reset or not.
  */
-static inline void SRC_EnableWDOGReset(SRC_Type *base, bool enable)
-{
+static inline void SRC_EnableWDOGReset(SRC_Type *base, bool enable) {
     if (enable) /* WDOG Reset is not masked in SRC (default). */
     {
         base->SCR = (base->SCR & ~SRC_SCR_MWDR_MASK) | SRC_SCR_MWDR(0xA);
-    }
-    else /* WDOG Reset is masked in SRC. */
+    } else /* WDOG Reset is masked in SRC. */
     {
         base->SCR = (base->SCR & ~SRC_SCR_MWDR_MASK) | SRC_SCR_MWDR(0x5);
     }
 }
 
 #if !(defined(FSL_FEATURE_SRC_HAS_NO_SCR_WRBC) && FSL_FEATURE_SRC_HAS_NO_SCR_WRBC)
+
 /*!
  * @brief Set the delay count of waiting MMDC's acknowledge.
  *
@@ -403,10 +400,10 @@ static inline void SRC_EnableWDOGReset(SRC_Type *base, bool enable)
  * @param base SRC peripheral base address.
  * @param option The option of setting mode, see to #src_warm_reset_bypass_count_t.
  */
-static inline void SRC_SetWarmResetBypassCount(SRC_Type *base, src_warm_reset_bypass_count_t option)
-{
+static inline void SRC_SetWarmResetBypassCount(SRC_Type *base, src_warm_reset_bypass_count_t option) {
     base->SCR = (base->SCR & ~SRC_SCR_WRBC_MASK) | SRC_SCR_WRBC(option);
 }
+
 #endif /* FSL_FEATURE_SRC_HAS_NO_SCR_WRBC */
 
 #if (defined(FSL_FEATURE_SRC_HAS_SCR_LOCKUP_RST) && FSL_FEATURE_SRC_HAS_SCR_LOCKUP_RST)
@@ -452,6 +449,7 @@ static inline void SRC_EnableCoreLockupReset(SRC_Type *base, bool enable)
 #endif /* FSL_FEATURE_SRC_HAS_SCR_LUEN */
 
 #if !(defined(FSL_FEATURE_SRC_HAS_NO_SCR_WRE) && FSL_FEATURE_SRC_HAS_NO_SCR_WRE)
+
 /*!
  * @brief Enable the WARM reset.
  *
@@ -461,17 +459,14 @@ static inline void SRC_EnableCoreLockupReset(SRC_Type *base, bool enable)
  * @param base SRC peripheral base address.
  * @param enable Enable the WARM reset or not.
  */
-static inline void SRC_EnableWarmReset(SRC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void SRC_EnableWarmReset(SRC_Type *base, bool enable) {
+    if (enable) {
         base->SCR |= SRC_SCR_WRE_MASK;
-    }
-    else
-    {
+    } else {
         base->SCR &= ~SRC_SCR_WRE_MASK;
     }
 }
+
 #endif /* FSL_FEATURE_SRC_HAS_NO_SCR_WRE */
 
 #if (defined(FSL_FEATURE_SRC_HAS_SISR) && FSL_FEATURE_SRC_HAS_SISR)
@@ -496,8 +491,7 @@ static inline uint32_t SRC_GetStatusFlags(SRC_Type *base)
  * @param base SRC peripheral base address.
  * @return status of BOOT_CFGx pins of the chip.
  */
-static inline uint32_t SRC_GetBootModeWord1(SRC_Type *base)
-{
+static inline uint32_t SRC_GetBootModeWord1(SRC_Type *base) {
     return base->SBMR1;
 }
 
@@ -510,12 +504,12 @@ static inline uint32_t SRC_GetBootModeWord1(SRC_Type *base)
  * @param base SRC peripheral base address.
  * @return status of BOOT_MODEx Pins and fuse values that controls boot of the chip.
  */
-static inline uint32_t SRC_GetBootModeWord2(SRC_Type *base)
-{
+static inline uint32_t SRC_GetBootModeWord2(SRC_Type *base) {
     return base->SBMR2;
 }
 
 #if !(defined(FSL_FEATURE_SRC_HAS_NO_SRSR_WBI) && FSL_FEATURE_SRC_HAS_NO_SRSR_WBI)
+
 /*!
  * @brief Set the warm boot indication flag.
  *
@@ -528,17 +522,14 @@ static inline uint32_t SRC_GetBootModeWord2(SRC_Type *base)
  * @param base SRC peripheral base address.
  * @param enable Assert the flag or not.
  */
-static inline void SRC_SetWarmBootIndication(SRC_Type *base, bool enable)
-{
-    if (enable)
-    {
+static inline void SRC_SetWarmBootIndication(SRC_Type *base, bool enable) {
+    if (enable) {
         base->SRSR = (base->SRSR & ~SRC_SRSR_W1C_BITS_MASK) | SRC_SRSR_WBI_MASK;
-    }
-    else
-    {
+    } else {
         base->SRSR = (base->SRSR & ~SRC_SRSR_W1C_BITS_MASK) & ~SRC_SRSR_WBI_MASK;
     }
 }
+
 #endif /* FSL_FEATURE_SRC_HAS_NO_SRSR_WBI */
 
 /*!
@@ -547,8 +538,7 @@ static inline void SRC_SetWarmBootIndication(SRC_Type *base, bool enable)
  * @param base SRC peripheral base address.
  * @return Mask value of status flags, see to #_src_reset_status_flags.
  */
-static inline uint32_t SRC_GetResetStatusFlags(SRC_Type *base)
-{
+static inline uint32_t SRC_GetResetStatusFlags(SRC_Type *base) {
     return base->SRSR;
 }
 
@@ -572,8 +562,7 @@ void SRC_ClearResetStatusFlags(SRC_Type *base, uint32_t flags);
  * @param index The index of GPRx register array. Note index 0 reponses the GPR1 register.
  * @param value Setting value for GPRx register.
  */
-static inline void SRC_SetGeneralPurposeRegister(SRC_Type *base, uint32_t index, uint32_t value)
-{
+static inline void SRC_SetGeneralPurposeRegister(SRC_Type *base, uint32_t index, uint32_t value) {
     assert(index < SRC_GPR_COUNT);
 
     base->GPR[index] = value;
@@ -586,8 +575,7 @@ static inline void SRC_SetGeneralPurposeRegister(SRC_Type *base, uint32_t index,
  * @param index The index of GPRx register array. Note index 0 reponses the GPR1 register.
  * @return The setting value for GPRx register.
  */
-static inline uint32_t SRC_GetGeneralPurposeRegister(SRC_Type *base, uint32_t index)
-{
+static inline uint32_t SRC_GetGeneralPurposeRegister(SRC_Type *base, uint32_t index) {
     assert(index < SRC_GPR_COUNT);
 
     return base->GPR[index];

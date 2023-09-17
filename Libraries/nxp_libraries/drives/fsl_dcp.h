@@ -12,8 +12,7 @@
 #include "fsl_common.h"
 
 /*! @brief DCP status return codes. */
-enum _dcp_status
-{
+enum _dcp_status {
     kStatus_DCP_Again = MAKE_STATUS(kStatusGroup_DCP, 0), /*!< Non-blocking function shall be called again. */
 };
 
@@ -55,21 +54,19 @@ enum _dcp_status
 /*! @brief DCP channel enable.
  *
  */
-typedef enum _dcp_ch_enable
-{
-    kDCP_chDisable   = 0U,  /*!< DCP channel disable */
-    kDCP_ch0Enable   = 1U,  /*!< DCP channel 0 enable */
-    kDCP_ch1Enable   = 2U,  /*!< DCP channel 1 enable */
-    kDCP_ch2Enable   = 4U,  /*!< DCP channel 2 enable */
-    kDCP_ch3Enable   = 8U,  /*!< DCP channel 3 enable */
+typedef enum _dcp_ch_enable {
+    kDCP_chDisable = 0U,  /*!< DCP channel disable */
+    kDCP_ch0Enable = 1U,  /*!< DCP channel 0 enable */
+    kDCP_ch1Enable = 2U,  /*!< DCP channel 1 enable */
+    kDCP_ch2Enable = 4U,  /*!< DCP channel 2 enable */
+    kDCP_ch3Enable = 8U,  /*!< DCP channel 3 enable */
     kDCP_chEnableAll = 15U, /*!< DCP channel enable all */
 } _dcp_ch_enable_t;
 
 /*! @brief DCP interrupt enable.
  *
  */
-typedef enum _dcp_ch_int_enable
-{
+typedef enum _dcp_ch_int_enable {
     kDCP_chIntDisable = 0U, /*!< DCP interrupts disable */
     kDCP_ch0IntEnable = 1U, /*!< DCP channel 0 interrupt enable */
     kDCP_ch1IntEnable = 2U, /*!< DCP channel 1 interrupt enable */
@@ -80,8 +77,7 @@ typedef enum _dcp_ch_int_enable
 /*! @brief DCP channel selection.
  *
  */
-typedef enum _dcp_channel
-{
+typedef enum _dcp_channel {
     kDCP_Channel0 = (1u << 16), /*!< DCP channel 0. */
     kDCP_Channel1 = (1u << 17), /*!< DCP channel 1. */
     kDCP_Channel2 = (1u << 18), /*!< DCP channel 2. */
@@ -91,34 +87,31 @@ typedef enum _dcp_channel
 /*! @brief DCP key slot selection.
  *
  */
-typedef enum _dcp_key_slot
-{
-    kDCP_KeySlot0     = 0U, /*!< DCP key slot 0. */
-    kDCP_KeySlot1     = 1U, /*!< DCP key slot 1. */
-    kDCP_KeySlot2     = 2U, /*!< DCP key slot 2.*/
-    kDCP_KeySlot3     = 3U, /*!< DCP key slot 3. */
-    kDCP_OtpKey       = 4U, /*!< DCP OTP key. */
+typedef enum _dcp_key_slot {
+    kDCP_KeySlot0 = 0U, /*!< DCP key slot 0. */
+    kDCP_KeySlot1 = 1U, /*!< DCP key slot 1. */
+    kDCP_KeySlot2 = 2U, /*!< DCP key slot 2.*/
+    kDCP_KeySlot3 = 3U, /*!< DCP key slot 3. */
+    kDCP_OtpKey = 4U, /*!< DCP OTP key. */
     kDCP_OtpUniqueKey = 5U, /*!< DCP unique OTP key. */
-    kDCP_PayloadKey   = 6U, /*!< DCP payload key. */
+    kDCP_PayloadKey = 6U, /*!< DCP payload key. */
 } dcp_key_slot_t;
 
 /*! @brief DCP key, input & output swap options
  *
  */
-typedef enum _dcp_swap
-{
-    kDCP_NoSwap         = 0x0U,
-    kDCP_KeyByteSwap    = 0x40000U,
-    kDCP_KeyWordSwap    = 0x80000U,
-    kDCP_InputByteSwap  = 0x100000U,
-    kDCP_InputWordSwap  = 0x200000U,
+typedef enum _dcp_swap {
+    kDCP_NoSwap = 0x0U,
+    kDCP_KeyByteSwap = 0x40000U,
+    kDCP_KeyWordSwap = 0x80000U,
+    kDCP_InputByteSwap = 0x100000U,
+    kDCP_InputWordSwap = 0x200000U,
     kDCP_OutputByteSwap = 0x400000U,
     kDCP_OutputWordSwap = 0x800000U,
 } dcp_swap_t;
 
 /*! @brief DCP's work packet. */
-typedef struct _dcp_work_packet
-{
+typedef struct _dcp_work_packet {
     uint32_t nextCmdAddress;
     uint32_t control0;
     uint32_t control1;
@@ -130,8 +123,7 @@ typedef struct _dcp_work_packet
 } dcp_work_packet_t;
 
 /*! @brief Specify DCP's key resource and DCP channel. */
-typedef struct _dcp_handle
-{
+typedef struct _dcp_handle {
     dcp_channel_t channel;  /*!< Specify DCP channel. */
     dcp_key_slot_t keySlot; /*!< For operations with key (such as AES encryption/decryption), specify DCP key slot. */
     uint32_t swapConfig;    /*!< For configuration of key, input, output byte/word swap options */
@@ -140,14 +132,12 @@ typedef struct _dcp_handle
 } dcp_handle_t;
 
 /*! @brief DCP's context buffer, used by DCP for context switching between channels. */
-typedef struct _dcp_context
-{
+typedef struct _dcp_context {
     uint32_t x[208 / sizeof(uint32_t)];
 } dcp_context_t;
 
 /*! @brief DCP's configuration structure. */
-typedef struct _dcp_config
-{
+typedef struct _dcp_config {
     bool gatherResidualWrites;      /*!< Enable the ragged writes to the unaligned buffers. */
     bool enableContextCaching;      /*!< Enable the caching of contexts between the operations. */
     bool enableContextSwitching;    /*!< Enable automatic context switching for the channels. */
@@ -187,8 +177,7 @@ typedef struct _dcp_config
 #define DCP_HASH_CAVP_COMPATIBLE
 
 /*! @brief Supported cryptographic block cipher functions for HASH creation */
-typedef enum _dcp_hash_algo_t
-{
+typedef enum _dcp_hash_algo_t {
     kDCP_Sha1,   /*!< SHA_1 */
     kDCP_Sha256, /*!< SHA_256 */
     kDCP_Crc32,  /*!< CRC_32 */
@@ -202,8 +191,7 @@ typedef enum _dcp_hash_algo_t
 #define DCP_HASH_CTX_SIZE 58
 
 /*! @brief Storage type used to save hash context. */
-typedef struct _dcp_hash_ctx_t
-{
+typedef struct _dcp_hash_ctx_t {
     uint32_t x[DCP_HASH_CTX_SIZE];
 } dcp_hash_ctx_t;
 
@@ -316,7 +304,7 @@ status_t DCP_AES_SetKey(DCP_Type *base, dcp_handle_t *handle, const uint8_t *key
  * @return Status from encrypt operation
  */
 status_t DCP_AES_EncryptEcb(
-    DCP_Type *base, dcp_handle_t *handle, const uint8_t *plaintext, uint8_t *ciphertext, size_t size);
+        DCP_Type *base, dcp_handle_t *handle, const uint8_t *plaintext, uint8_t *ciphertext, size_t size);
 
 /*!
  * @brief Decrypts AES on one or multiple 128-bit block(s).
@@ -332,7 +320,7 @@ status_t DCP_AES_EncryptEcb(
  * @return Status from decrypt operation
  */
 status_t DCP_AES_DecryptEcb(
-    DCP_Type *base, dcp_handle_t *handle, const uint8_t *ciphertext, uint8_t *plaintext, size_t size);
+        DCP_Type *base, dcp_handle_t *handle, const uint8_t *ciphertext, uint8_t *plaintext, size_t size);
 
 /*!
  * @brief Encrypts AES using CBC block mode.

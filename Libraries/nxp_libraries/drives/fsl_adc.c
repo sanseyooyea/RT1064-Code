@@ -37,15 +37,12 @@ static const clock_ip_name_t s_adcClocks[] = ADC_CLOCKS;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static uint32_t ADC_GetInstance(ADC_Type *base)
-{
+static uint32_t ADC_GetInstance(ADC_Type *base) {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0; instance < ARRAY_SIZE(s_adcBases); instance++)
-    {
-        if (s_adcBases[instance] == base)
-        {
+    for (instance = 0; instance < ARRAY_SIZE(s_adcBases); instance++) {
+        if (s_adcBases[instance] == base) {
             break;
         }
     }
@@ -61,8 +58,7 @@ static uint32_t ADC_GetInstance(ADC_Type *base)
  * param base ADC peripheral base address.
  * param config Pointer to "adc_config_t" structure.
  */
-void ADC_Init(ADC_Type *base, const adc_config_t *config)
-{
+void ADC_Init(ADC_Type *base, const adc_config_t *config) {
     assert(NULL != config);
 
     uint32_t tmp32;
@@ -75,32 +71,26 @@ void ADC_Init(ADC_Type *base, const adc_config_t *config)
     tmp32 = base->CFG & (ADC_CFG_AVGS_MASK | ADC_CFG_ADTRG_MASK); /* Reserve AVGS and ADTRG bits. */
     tmp32 |= ADC_CFG_REFSEL(config->referenceVoltageSource) | ADC_CFG_ADSTS(config->samplePeriodMode) |
              ADC_CFG_ADICLK(config->clockSource) | ADC_CFG_ADIV(config->clockDriver) | ADC_CFG_MODE(config->resolution);
-    if (config->enableOverWrite)
-    {
+    if (config->enableOverWrite) {
         tmp32 |= ADC_CFG_OVWREN_MASK;
     }
-    if (config->enableLongSample)
-    {
+    if (config->enableLongSample) {
         tmp32 |= ADC_CFG_ADLSMP_MASK;
     }
-    if (config->enableLowPower)
-    {
+    if (config->enableLowPower) {
         tmp32 |= ADC_CFG_ADLPC_MASK;
     }
-    if (config->enableHighSpeed)
-    {
+    if (config->enableHighSpeed) {
         tmp32 |= ADC_CFG_ADHSC_MASK;
     }
     base->CFG = tmp32;
 
     /* ADCx_GC  */
     tmp32 = base->GC & ~(ADC_GC_ADCO_MASK | ADC_GC_ADACKEN_MASK);
-    if (config->enableContinuousConversion)
-    {
+    if (config->enableContinuousConversion) {
         tmp32 |= ADC_GC_ADCO_MASK;
     }
-    if (config->enableAsynchronousClockOutput)
-    {
+    if (config->enableAsynchronousClockOutput) {
         tmp32 |= ADC_GC_ADACKEN_MASK;
     }
     base->GC = tmp32;
@@ -111,8 +101,7 @@ void ADC_Init(ADC_Type *base, const adc_config_t *config)
  *
  * param base ADC peripheral base address.
  */
-void ADC_Deinit(ADC_Type *base)
-{
+void ADC_Deinit(ADC_Type *base) {
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
     /* Disable the clock. */
     CLOCK_DisableClock(s_adcClocks[ADC_GetInstance(base)]);
@@ -139,24 +128,23 @@ void ADC_Deinit(ADC_Type *base)
  * param base   ADC peripheral base address.
  * param config Pointer to the configuration structure.
  */
-void ADC_GetDefaultConfig(adc_config_t *config)
-{
+void ADC_GetDefaultConfig(adc_config_t *config) {
     assert(NULL != config);
 
     /* Initializes the configure structure to zero. */
-    (void)memset(config, 0, sizeof(*config));
+    (void) memset(config, 0, sizeof(*config));
 
     config->enableAsynchronousClockOutput = true;
-    config->enableOverWrite               = false;
-    config->enableContinuousConversion    = false;
-    config->enableHighSpeed               = false;
-    config->enableLowPower                = false;
-    config->enableLongSample              = false;
-    config->referenceVoltageSource        = kADC_ReferenceVoltageSourceAlt0;
-    config->samplePeriodMode              = kADC_SamplePeriod2or12Clocks;
-    config->clockSource                   = kADC_ClockSourceAD;
-    config->clockDriver                   = kADC_ClockDriver1;
-    config->resolution                    = kADC_Resolution12Bit;
+    config->enableOverWrite = false;
+    config->enableContinuousConversion = false;
+    config->enableHighSpeed = false;
+    config->enableLowPower = false;
+    config->enableLongSample = false;
+    config->referenceVoltageSource = kADC_ReferenceVoltageSourceAlt0;
+    config->samplePeriodMode = kADC_SamplePeriod2or12Clocks;
+    config->clockSource = kADC_ClockSourceAD;
+    config->clockDriver = kADC_ClockDriver1;
+    config->resolution = kADC_Resolution12Bit;
 }
 
 /*!
@@ -186,16 +174,14 @@ void ADC_GetDefaultConfig(adc_config_t *config)
  * param channelGroup  Channel group index.
  * param config        Pointer to the "adc_channel_config_t" structure for the conversion channel.
  */
-void ADC_SetChannelConfig(ADC_Type *base, uint32_t channelGroup, const adc_channel_config_t *config)
-{
+void ADC_SetChannelConfig(ADC_Type *base, uint32_t channelGroup, const adc_channel_config_t *config) {
     assert(NULL != config);
     assert(channelGroup < FSL_FEATURE_ADC_CONVERSION_CONTROL_COUNT);
 
     uint32_t tmp32;
 
     tmp32 = ADC_HC_ADCH(config->channelNumber);
-    if (config->enableInterruptOnConversionCompleted)
-    {
+    if (config->enableInterruptOnConversionCompleted) {
         tmp32 |= ADC_HC_AIEN_MASK;
     }
     base->HC[channelGroup] = tmp32;
@@ -221,16 +207,14 @@ void ADC_SetChannelConfig(ADC_Type *base, uint32_t channelGroup, const adc_chann
  * retval kStatus_Success Calibration is done successfully.
  * retval kStatus_Fail    Calibration has failed.
  */
-status_t ADC_DoAutoCalibration(ADC_Type *base)
-{
+status_t ADC_DoAutoCalibration(ADC_Type *base) {
     status_t status = kStatus_Success;
 #if !(defined(FSL_FEATURE_ADC_SUPPORT_HARDWARE_TRIGGER_REMOVE) && FSL_FEATURE_ADC_SUPPORT_HARDWARE_TRIGGER_REMOVE)
     bool bHWTrigger = false;
 
     /* The calibration would be failed when in hardwar mode.
      * Remember the hardware trigger state here and restore it later if the hardware trigger is enabled.*/
-    if (0U != (ADC_CFG_ADTRG_MASK & base->CFG))
-    {
+    if (0U != (ADC_CFG_ADTRG_MASK & base->CFG)) {
         bHWTrigger = true;
         ADC_EnableHardwareTrigger(base, false);
     }
@@ -241,8 +225,7 @@ status_t ADC_DoAutoCalibration(ADC_Type *base)
     base->GC |= ADC_GC_CAL_MASK; /* Launch the calibration. */
 
     /* Check the status of CALF bit in ADC_GS and the CAL bit in ADC_GC. */
-    while (0U != (base->GC & ADC_GC_CAL_MASK))
-    {
+    while (0U != (base->GC & ADC_GC_CAL_MASK)) {
         /* Check the CALF when the calibration is active. */
         if (0U != (ADC_GetStatusFlags(base) & (uint32_t)kADC_CalibrationFailedFlag))
         {
@@ -262,12 +245,11 @@ status_t ADC_DoAutoCalibration(ADC_Type *base)
     }
 
     /* Clear conversion done flag. */
-    (void)ADC_GetChannelConversionValue(base, 0U);
+    (void) ADC_GetChannelConversionValue(base, 0U);
 
 #if !(defined(FSL_FEATURE_ADC_SUPPORT_HARDWARE_TRIGGER_REMOVE) && FSL_FEATURE_ADC_SUPPORT_HARDWARE_TRIGGER_REMOVE)
     /* Restore original trigger mode. */
-    if (true == bHWTrigger)
-    {
+    if (true == bHWTrigger) {
         ADC_EnableHardwareTrigger(base, true);
     }
 #endif
@@ -281,15 +263,13 @@ status_t ADC_DoAutoCalibration(ADC_Type *base)
  * param base   ADC peripheral base address.
  * param config Pointer to "adc_offest_config_t" structure.
  */
-void ADC_SetOffsetConfig(ADC_Type *base, const adc_offest_config_t *config)
-{
+void ADC_SetOffsetConfig(ADC_Type *base, const adc_offest_config_t *config) {
     assert(NULL != config);
 
     uint32_t tmp32;
 
     tmp32 = ADC_OFS_OFS(config->offsetValue);
-    if (config->enableSigned)
-    {
+    if (config->enableSigned) {
         tmp32 |= ADC_OFS_SIGN_MASK;
     }
     base->OFS = tmp32;
@@ -308,8 +288,7 @@ void ADC_SetOffsetConfig(ADC_Type *base, const adc_offest_config_t *config)
  * param Pointer to "adc_hardware_compare_config_t" structure.
  *
  */
-void ADC_SetHardwareCompareConfig(ADC_Type *base, const adc_hardware_compare_config_t *config)
-{
+void ADC_SetHardwareCompareConfig(ADC_Type *base, const adc_hardware_compare_config_t *config) {
     uint32_t tmp32;
 
     tmp32 = base->GC & ~(ADC_GC_ACFE_MASK | ADC_GC_ACFGT_MASK | ADC_GC_ACREN_MASK);
@@ -322,8 +301,7 @@ void ADC_SetHardwareCompareConfig(ADC_Type *base, const adc_hardware_compare_con
     tmp32 |= ADC_GC_ACFE_MASK;
 
     /* Select the hardware compare working mode. */
-    switch (config->hardwareCompareMode)
-    {
+    switch (config->hardwareCompareMode) {
         case kADC_HardwareCompareMode0:
             break;
         case kADC_HardwareCompareMode1:
@@ -342,7 +320,7 @@ void ADC_SetHardwareCompareConfig(ADC_Type *base, const adc_hardware_compare_con
     base->GC = tmp32;
 
     /* Load the compare values. */
-    tmp32    = ADC_CV_CV1(config->value1) | ADC_CV_CV2(config->value2);
+    tmp32 = ADC_CV_CV1(config->value1) | ADC_CV_CV2(config->value2);
     base->CV = tmp32;
 }
 
@@ -356,16 +334,12 @@ void ADC_SetHardwareCompareConfig(ADC_Type *base, const adc_hardware_compare_con
  * param base ADC peripheral base address.
  * param mode Setting the hardware average mode. See "adc_hardware_average_mode_t".
  */
-void ADC_SetHardwareAverageConfig(ADC_Type *base, adc_hardware_average_mode_t mode)
-{
+void ADC_SetHardwareAverageConfig(ADC_Type *base, adc_hardware_average_mode_t mode) {
     uint32_t tmp32;
 
-    if (mode == kADC_HardwareAverageDiasable)
-    {
+    if (mode == kADC_HardwareAverageDiasable) {
         base->GC &= ~ADC_GC_AVGE_MASK;
-    }
-    else
-    {
+    } else {
         tmp32 = base->CFG & ~ADC_CFG_AVGS_MASK;
         tmp32 |= ADC_CFG_AVGS(mode);
         base->CFG = tmp32;
@@ -379,8 +353,7 @@ void ADC_SetHardwareAverageConfig(ADC_Type *base, adc_hardware_average_mode_t mo
  * param base ADC peripheral base address.
  * param mask Mask value for the cleared flags. See "adc_status_flags_t".
  */
-void ADC_ClearStatusFlags(ADC_Type *base, uint32_t mask)
-{
+void ADC_ClearStatusFlags(ADC_Type *base, uint32_t mask) {
     uint32_t tmp32 = 0;
 
     if (0U != (mask & (uint32_t)kADC_CalibrationFailedFlag))

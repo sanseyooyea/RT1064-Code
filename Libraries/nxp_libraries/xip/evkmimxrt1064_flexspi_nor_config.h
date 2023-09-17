@@ -70,8 +70,7 @@
      FLEXSPI_LUT_NUM_PADS1(pad1) | FLEXSPI_LUT_OPCODE1(cmd1))
 
 //!@brief Definitions for FlexSPI Serial Clock Frequency
-typedef enum _FlexSpiSerialClockFreq
-{
+typedef enum _FlexSpiSerialClockFreq {
     kFlexSpiSerialClk_30MHz = 1,
     kFlexSpiSerialClk_50MHz = 2,
     kFlexSpiSerialClk_60MHz = 3,
@@ -84,15 +83,13 @@ typedef enum _FlexSpiSerialClockFreq
 } flexspi_serial_clk_freq_t;
 
 //!@brief FlexSPI clock configuration type
-enum
-{
+enum {
     kFlexSpiClk_SDR, //!< Clock configure for SDR mode
     kFlexSpiClk_DDR, //!< Clock configurat for DDR mode
 };
 
 //!@brief FlexSPI Read Sample Clock Source definition
-typedef enum _FlashReadSampleClkSource
-{
+typedef enum _FlashReadSampleClkSource {
     kFlexSPIReadSampleClk_LoopbackInternally = 0,
     kFlexSPIReadSampleClk_LoopbackFromDqsPad = 1,
     kFlexSPIReadSampleClk_LoopbackFromSckPad = 2,
@@ -100,8 +97,7 @@ typedef enum _FlashReadSampleClkSource
 } flexspi_read_sample_clk_t;
 
 //!@brief Misc feature bit definitions
-enum
-{
+enum {
     kFlexSpiMiscOffset_DiffClkEnable = 0,            //!< Bit for Differential clock enable
     kFlexSpiMiscOffset_Ck2Enable = 1,                //!< Bit for CK2 enable
     kFlexSpiMiscOffset_ParallelEnable = 2,           //!< Bit for Parallel mode enable
@@ -112,8 +108,7 @@ enum
 };
 
 //!@brief Flash Type Definition
-enum
-{
+enum {
     kFlexSpiDeviceType_SerialNOR = 1,       //!< Flash devices are Serial NOR
     kFlexSpiDeviceType_SerialNAND = 2,      //!< Flash devices are Serial NAND
     kFlexSpiDeviceType_SerialRAM = 3,       //!< Flash devices are Serial RAM/HyperFLASH
@@ -122,8 +117,7 @@ enum
 };
 
 //!@brief Flash Pad Definitions
-enum
-{
+enum {
     kSerialFlash_1Pad = 1,
     kSerialFlash_2Pads = 2,
     kSerialFlash_4Pads = 4,
@@ -131,16 +125,14 @@ enum
 };
 
 //!@brief FlexSPI LUT Sequence structure
-typedef struct _lut_sequence
-{
+typedef struct _lut_sequence {
     uint8_t seqNum; //!< Sequence Number, valid number: 1-16
     uint8_t seqId;  //!< Sequence Index, valid number: 0-15
     uint16_t reserved;
 } flexspi_lut_seq_t;
 
 //!@brief Flash Configuration Command Type
-enum
-{
+enum {
     kDeviceConfigCmdType_Generic,    //!< Generic command, for example: configure dummy cycles, drive strength, etc
     kDeviceConfigCmdType_QuadEnable, //!< Quad Enable command
     kDeviceConfigCmdType_Spi2Xpi,    //!< Switch from SPI to DPI/QPI/OPI mode
@@ -150,8 +142,7 @@ enum
 };
 
 //!@brief FlexSPI Memory Configuration Block
-typedef struct _FlexSPIConfig
-{
+typedef struct _FlexSPIConfig {
     uint32_t tag;               //!< [0x000-0x003] Tag, fixed value 0x42464346UL
     uint32_t version;           //!< [0x004-0x007] Version,[31:24] -'V', [23:16] - Major, [15:8] - Minor, [7:0] - bugfix
     uint32_t reserved0;         //!< [0x008-0x00b] Reserved for future use
@@ -171,7 +162,7 @@ typedef struct _FlexSPIConfig
     uint8_t configCmdEnable;   //!< [0x01c-0x01c] Configure command Enable Flag, 1 - Enable, 0 - Disable
     uint8_t configModeType[3]; //!< [0x01d-0x01f] Configure Mode Type, similar as deviceModeTpe
     flexspi_lut_seq_t
-        configCmdSeqs[3]; //!< [0x020-0x02b] Sequence info for Device Configuration command, similar as deviceModeSeq
+            configCmdSeqs[3]; //!< [0x020-0x02b] Sequence info for Device Configuration command, similar as deviceModeSeq
     uint32_t reserved1;   //!< [0x02c-0x02f] Reserved for future use
     uint32_t configCmdArgs[3];     //!< [0x030-0x03b] Arguments/Parameters for device Configuration commands
     uint32_t reserved2;            //!< [0x03c-0x03f] Reserved for future use
@@ -236,8 +227,7 @@ typedef struct _FlexSPIConfig
 /*
  *  Serial NOR configuration block
  */
-typedef struct _flexspi_nor_config
-{
+typedef struct _flexspi_nor_config {
     flexspi_mem_config_t memConfig; //!< Common memory configuration info via FlexSPI
     uint32_t pageSize;              //!< Page size of Serial NOR
     uint32_t sectorSize;            //!< Sector size of Serial NOR

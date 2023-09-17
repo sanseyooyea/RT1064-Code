@@ -62,13 +62,17 @@ rt_sem_t camera_sem;
 debugger_image_t img0 = CREATE_DEBUGGER_IMAGE("raw", MT9V03X_CSI_W, MT9V03X_CSI_H, NULL);
 image_t img_raw = DEF_IMAGE(NULL, MT9V03X_CSI_W, MT9V03X_CSI_H);
 
-AT_DTCM_SECTION_ALIGN(uint8_t img_thres_data[MT9V03X_CSI_H][MT9V03X_CSI_W], 64);
+AT_DTCM_SECTION_ALIGN(uint8_t
+img_thres_data[MT9V03X_CSI_H][MT9V03X_CSI_W], 64);
 debugger_image_t img1 = CREATE_DEBUGGER_IMAGE("thres", MT9V03X_CSI_W, MT9V03X_CSI_H, img_thres_data);
-image_t img_thres = DEF_IMAGE((uint8_t *) img_thres_data, MT9V03X_CSI_W, MT9V03X_CSI_H);
+image_t img_thres = DEF_IMAGE((uint8_t * )
+img_thres_data, MT9V03X_CSI_W, MT9V03X_CSI_H);
 
-AT_DTCM_SECTION_ALIGN(uint8_t img_line_data[MT9V03X_CSI_H][MT9V03X_CSI_W], 64);
+AT_DTCM_SECTION_ALIGN(uint8_t
+img_line_data[MT9V03X_CSI_H][MT9V03X_CSI_W], 64);
 debugger_image_t img2 = CREATE_DEBUGGER_IMAGE("line", MT9V03X_CSI_W, MT9V03X_CSI_H, img_line_data);
-image_t img_line = DEF_IMAGE((uint8_t *) img_line_data, MT9V03X_CSI_W, MT9V03X_CSI_H);
+image_t img_line = DEF_IMAGE((uint8_t * )
+img_line_data, MT9V03X_CSI_W, MT9V03X_CSI_H);
 
 debugger_param_t p0 = CREATE_DEBUGGER_PARAM("thres", 0, 255, 1, &thres);
 
@@ -106,38 +110,82 @@ debugger_option_t opt2 = CREATE_DEBUGGER_OPTION("track_left", &track_left);
 debugger_option_t opt3 = CREATE_DEBUGGER_OPTION("adc_cross", &adc_cross);
 
 // 原图左右边线
-AT_DTCM_SECTION_ALIGN(int ipts0[POINTS_MAX_LEN][2], 8);
-AT_DTCM_SECTION_ALIGN(int ipts1[POINTS_MAX_LEN][2], 8);
+AT_DTCM_SECTION_ALIGN(int ipts0[POINTS_MAX_LEN][2],
+
+8);
+
+AT_DTCM_SECTION_ALIGN(int ipts1[POINTS_MAX_LEN][2],
+
+8);
 int ipts0_num, ipts1_num;
+
 // 变换后左右边线
-AT_DTCM_SECTION_ALIGN(float rpts0[POINTS_MAX_LEN][2], 8);
-AT_DTCM_SECTION_ALIGN(float rpts1[POINTS_MAX_LEN][2], 8);
+AT_DTCM_SECTION_ALIGN(float rpts0[POINTS_MAX_LEN][2],
+
+8);
+
+AT_DTCM_SECTION_ALIGN(float rpts1[POINTS_MAX_LEN][2],
+
+8);
 int rpts0_num, rpts1_num;
+
 // 变换后左右边线+滤波
-AT_DTCM_SECTION_ALIGN(float rpts0b[POINTS_MAX_LEN][2], 8);
-AT_DTCM_SECTION_ALIGN(float rpts1b[POINTS_MAX_LEN][2], 8);
+AT_DTCM_SECTION_ALIGN(float rpts0b[POINTS_MAX_LEN][2],
+
+8);
+
+AT_DTCM_SECTION_ALIGN(float rpts1b[POINTS_MAX_LEN][2],
+
+8);
 int rpts0b_num, rpts1b_num;
+
 // 变换后左右边线+等距采样
-AT_DTCM_SECTION_ALIGN(float rpts0s[POINTS_MAX_LEN][2], 8);
-AT_DTCM_SECTION_ALIGN(float rpts1s[POINTS_MAX_LEN][2], 8);
+AT_DTCM_SECTION_ALIGN(float rpts0s[POINTS_MAX_LEN][2],
+
+8);
+
+AT_DTCM_SECTION_ALIGN(float rpts1s[POINTS_MAX_LEN][2],
+
+8);
 int rpts0s_num, rpts1s_num;
+
 // 左右边线局部角度变化率
-AT_DTCM_SECTION_ALIGN(float rpts0a[POINTS_MAX_LEN], 8);
-AT_DTCM_SECTION_ALIGN(float rpts1a[POINTS_MAX_LEN], 8);
+AT_DTCM_SECTION_ALIGN(float rpts0a[POINTS_MAX_LEN],
+
+8);
+
+AT_DTCM_SECTION_ALIGN(float rpts1a[POINTS_MAX_LEN],
+
+8);
 int rpts0a_num, rpts1a_num;
+
 // 左右边线局部角度变化率+非极大抑制
-AT_DTCM_SECTION_ALIGN(float rpts0an[POINTS_MAX_LEN], 8);
-AT_DTCM_SECTION_ALIGN(float rpts1an[POINTS_MAX_LEN], 8);
+AT_DTCM_SECTION_ALIGN(float rpts0an[POINTS_MAX_LEN],
+
+8);
+
+AT_DTCM_SECTION_ALIGN(float rpts1an[POINTS_MAX_LEN],
+
+8);
 int rpts0an_num, rpts1an_num;
+
 // 左/右中线
-AT_DTCM_SECTION_ALIGN(float rptsc0[POINTS_MAX_LEN][2], 8);
-AT_DTCM_SECTION_ALIGN(float rptsc1[POINTS_MAX_LEN][2], 8);
+AT_DTCM_SECTION_ALIGN(float rptsc0[POINTS_MAX_LEN][2],
+
+8);
+
+AT_DTCM_SECTION_ALIGN(float rptsc1[POINTS_MAX_LEN][2],
+
+8);
 int rptsc0_num, rptsc1_num;
 // 中线
 float (*rpts)[2];
 int rpts_num;
+
 // 归一化中线
-AT_DTCM_SECTION_ALIGN(float rptsn[POINTS_MAX_LEN][2], 8);
+AT_DTCM_SECTION_ALIGN(float rptsn[POINTS_MAX_LEN][2],
+
+8);
 int rptsn_num;
 
 // Y角点
@@ -234,7 +282,8 @@ void print_all() {
 
     // Time
     len += snprintf(buffer + len, sizeof(buffer) - len, "%d\n", rt_tick_get_millisecond());
-    seekfree_wireless_send_buff((uint8_t *) buffer, len);
+    seekfree_wireless_send_buff((uint8_t * )
+    buffer, len);
 }
 
 int main(void) {
@@ -583,7 +632,8 @@ void process_image() {
     // 左右中线跟踪
     track_leftline(rpts0s, rpts0s_num, rptsc0, (int) round(angle_dist / sample_dist), pixel_per_meter * ROAD_WIDTH / 2);
     rptsc0_num = rpts0s_num;
-    track_rightline(rpts1s, rpts1s_num, rptsc1, (int) round(angle_dist / sample_dist), pixel_per_meter * ROAD_WIDTH / 2);
+    track_rightline(rpts1s, rpts1s_num, rptsc1, (int) round(angle_dist / sample_dist),
+                    pixel_per_meter * ROAD_WIDTH / 2);
     rptsc1_num = rpts1s_num;
 }
 

@@ -24,10 +24,9 @@
 /*@}*/
 
 /*! @brief Error codes for the OCOTP driver. */
-enum _ocotp_status
-{
+enum _ocotp_status {
     kStatus_OCOTP_AccessError = MAKE_STATUS(kStatusGroup_SDK_OCOTP, 0), /*!< eFuse and shadow register access error. */
-    kStatus_OCOTP_CrcFail     = MAKE_STATUS(kStatusGroup_SDK_OCOTP, 1), /*!< CRC check failed. */
+    kStatus_OCOTP_CrcFail = MAKE_STATUS(kStatusGroup_SDK_OCOTP, 1), /*!< CRC check failed. */
 };
 
 /*! @brief OCOTP timing structure.
@@ -41,8 +40,7 @@ enum _ocotp_status
  *  Tpgm = ((STROBE_PROG+1)- 2*(RELAX_PROG+1)) /ipg_clk_freq;
  *  The Tpgm should be configured within the range of 9000 ns < Tpgm < 11000 ns;
  */
-typedef struct _ocotp_timing
-{
+typedef struct _ocotp_timing {
     uint32_t wait;        /*!< Wait time value to fill in the TIMING register. */
     uint32_t relax;       /*!< Relax time value to fill in the TIMING register. */
     uint32_t strobe_prog; /*!< Storbe program time value to fill in the TIMING register. */
@@ -79,8 +77,7 @@ void OCOTP_Deinit(OCOTP_Type *base);
  * @param base         OCOTP peripheral base address.
  * @retval       true for bit set and false for cleared.
  */
-static inline bool OCOTP_CheckBusyStatus(OCOTP_Type *base)
-{
+static inline bool OCOTP_CheckBusyStatus(OCOTP_Type *base) {
     return ((OCOTP_CTRL_BUSY_MASK == (base->CTRL & OCOTP_CTRL_BUSY_MASK)) ? (true) : (false));
 }
 
@@ -90,8 +87,7 @@ static inline bool OCOTP_CheckBusyStatus(OCOTP_Type *base)
  * @param base         OCOTP peripheral base address.
  * @retval       true for bit set and false for cleared.
  */
-static inline bool OCOTP_CheckErrorStatus(OCOTP_Type *base)
-{
+static inline bool OCOTP_CheckErrorStatus(OCOTP_Type *base) {
     return ((OCOTP_CTRL_ERROR_MASK == (base->CTRL & OCOTP_CTRL_ERROR_MASK)) ? (true) : (false));
 }
 
@@ -100,8 +96,7 @@ static inline bool OCOTP_CheckErrorStatus(OCOTP_Type *base)
  *
  * @param base  OCOTP peripheral base address.
  */
-static inline void OCOTP_ClearErrorStatus(OCOTP_Type *base)
-{
+static inline void OCOTP_ClearErrorStatus(OCOTP_Type *base) {
     base->CTRL_CLR = OCOTP_CTRL_CLR_ERROR_MASK;
 }
 
@@ -139,8 +134,7 @@ status_t OCOTP_WriteFuseShadowRegister(OCOTP_Type *base, uint32_t address, uint3
  * @param base    OCOTP peripheral base address.
  * @retval  return the version value.
  */
-static inline uint32_t OCOTP_GetVersion(OCOTP_Type *base)
-{
+static inline uint32_t OCOTP_GetVersion(OCOTP_Type *base) {
     return (base->VERSION);
 }
 

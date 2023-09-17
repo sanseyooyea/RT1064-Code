@@ -82,23 +82,31 @@ void check_garage() {
             zebra_cross_flag0_num = 0;
             for (int x = pt[0] - 1; x >= MAX(0, pt[0] - 50); x--) {
                 if (zebra_cross_flag_begin == 0) { // even white, odd black
-                    if (zebra_cross_flag0_num % 2 == 0 && AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current even, current white
+                    if (zebra_cross_flag0_num % 2 == 0 &&
+                        AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current even, current white
                         zebra_cross_flag0[zebra_cross_flag0_num]++;
-                    } else if (zebra_cross_flag0_num % 2 == 0 && AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current even, current black
+                    } else if (zebra_cross_flag0_num % 2 == 0 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current even, current black
                         zebra_cross_flag0[++zebra_cross_flag0_num]++;
-                    } else if (zebra_cross_flag0_num % 2 == 1 && AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current odd, current white
+                    } else if (zebra_cross_flag0_num % 2 == 1 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current odd, current white
                         zebra_cross_flag0[++zebra_cross_flag0_num]++;
-                    } else if (zebra_cross_flag0_num % 2 == 1 && AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current odd, current black
+                    } else if (zebra_cross_flag0_num % 2 == 1 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current odd, current black
                         zebra_cross_flag0[zebra_cross_flag0_num]++;
                     }
                 } else { // even black, odd white
-                    if (zebra_cross_flag0_num % 2 == 0 && AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current even, current white
+                    if (zebra_cross_flag0_num % 2 == 0 &&
+                        AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current even, current white
                         zebra_cross_flag0[++zebra_cross_flag0_num]++;
-                    } else if (zebra_cross_flag0_num % 2 == 0 && AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current even, current black
+                    } else if (zebra_cross_flag0_num % 2 == 0 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current even, current black
                         zebra_cross_flag0[zebra_cross_flag0_num]++;
-                    } else if (zebra_cross_flag0_num % 2 == 1 && AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current odd, current white
+                    } else if (zebra_cross_flag0_num % 2 == 1 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current odd, current white
                         zebra_cross_flag0[zebra_cross_flag0_num]++;
-                    } else if (zebra_cross_flag0_num % 2 == 1 && AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current odd, current black
+                    } else if (zebra_cross_flag0_num % 2 == 1 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current odd, current black
                         zebra_cross_flag0[++zebra_cross_flag0_num]++;
                     }
                 }
@@ -108,23 +116,31 @@ void check_garage() {
             zebra_cross_flag1_num = 0;
             for (int x = pt[0] + 1; x <= MIN(img_raw.width - 1, pt[0] + 50); x++) {
                 if (zebra_cross_flag_begin == 0) { // even white, odd black
-                    if (zebra_cross_flag1_num % 2 == 0 && AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current even, current white
+                    if (zebra_cross_flag1_num % 2 == 0 &&
+                        AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current even, current white
                         zebra_cross_flag1[zebra_cross_flag1_num]++;
-                    } else if (zebra_cross_flag1_num % 2 == 0 && AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current even, current black
+                    } else if (zebra_cross_flag1_num % 2 == 0 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current even, current black
                         zebra_cross_flag1[++zebra_cross_flag1_num]++;
-                    } else if (zebra_cross_flag1_num % 2 == 1 && AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current odd, current white
+                    } else if (zebra_cross_flag1_num % 2 == 1 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current odd, current white
                         zebra_cross_flag1[++zebra_cross_flag1_num]++;
-                    } else if (zebra_cross_flag1_num % 2 == 1 && AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current odd, current black
+                    } else if (zebra_cross_flag1_num % 2 == 1 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current odd, current black
                         zebra_cross_flag1[zebra_cross_flag1_num]++;
                     }
                 } else { // even black, odd white
-                    if (zebra_cross_flag1_num % 2 == 0 && AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current even, current white
+                    if (zebra_cross_flag1_num % 2 == 0 &&
+                        AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current even, current white
                         zebra_cross_flag1[++zebra_cross_flag1_num]++;
-                    } else if (zebra_cross_flag1_num % 2 == 0 && AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current even, current black
+                    } else if (zebra_cross_flag1_num % 2 == 0 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current even, current black
                         zebra_cross_flag1[zebra_cross_flag1_num]++;
-                    } else if (zebra_cross_flag1_num % 2 == 1 && AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current odd, current white
+                    } else if (zebra_cross_flag1_num % 2 == 1 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) > thres) { // current odd, current white
                         zebra_cross_flag1[zebra_cross_flag1_num]++;
-                    } else if (zebra_cross_flag1_num % 2 == 1 && AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current odd, current black
+                    } else if (zebra_cross_flag1_num % 2 == 1 &&
+                               AT_IMAGE(&img_raw, x, pt[1]) < thres) { // current odd, current black
                         zebra_cross_flag1[++zebra_cross_flag1_num]++;
                     }
                 }
@@ -133,13 +149,17 @@ void check_garage() {
             // 判断连续跳变的阈值条件以识别斑马线
             int i0 = 1;
             for (; i0 < zebra_cross_flag0_num - 1; i0++) {
-                if (zebra_cross_flag0[i0] < 2 || zebra_cross_flag0[i0] >= 20 || abs(zebra_cross_flag0[i0 + 1] - zebra_cross_flag0[i0]) >= 10) break;
+                if (zebra_cross_flag0[i0] < 2 || zebra_cross_flag0[i0] >= 20 ||
+                    abs(zebra_cross_flag0[i0 + 1] - zebra_cross_flag0[i0]) >= 10)
+                    break;
             }
             bool is_zebra0 = i0 > 6;
 
             int i1 = 1;
             for (; i1 < zebra_cross_flag1_num - 1; i1++) {
-                if (zebra_cross_flag1[i1] < 2 || zebra_cross_flag1[i1] >= 20 || abs(zebra_cross_flag1[i1 + 1] - zebra_cross_flag1[i1]) >= 10) break;
+                if (zebra_cross_flag1[i1] < 2 || zebra_cross_flag1[i1] >= 20 ||
+                    abs(zebra_cross_flag1[i1 + 1] - zebra_cross_flag1[i1]) >= 10)
+                    break;
             }
             bool is_zebra1 = i1 > 6;
 
@@ -192,7 +212,8 @@ void run_garage() {
             aim_distance = 0.5;
             track_type = TRACK_LEFT;
             // 转向45度且识别到双L角点，则入库完毕
-            if (angle_diff(eulerAngle.yaw, garage_yaw) > 45 && Lpt0_found && Lpt0_rpts0s_id < 40 && Lpt1_found && Lpt1_rpts1s_id < 40) {
+            if (angle_diff(eulerAngle.yaw, garage_yaw) > 45 && Lpt0_found && Lpt0_rpts0s_id < 40 && Lpt1_found &&
+                Lpt1_rpts1s_id < 40) {
                 garage_type = GARAGE_STOP;
                 rt_mb_send(buzzer_mailbox, 2);
             }
@@ -201,7 +222,8 @@ void run_garage() {
             aim_distance = 0.5;
             track_type = TRACK_RIGHT;
             // 转向45度且识别到双L角点，则入库完毕
-            if (angle_diff(eulerAngle.yaw, garage_yaw) < -45 && Lpt0_found && Lpt0_rpts0s_id < 40 && Lpt1_found && Lpt1_rpts1s_id < 40) {
+            if (angle_diff(eulerAngle.yaw, garage_yaw) < -45 && Lpt0_found && Lpt0_rpts0s_id < 40 && Lpt1_found &&
+                Lpt1_rpts1s_id < 40) {
                 garage_type = GARAGE_STOP;
                 rt_mb_send(buzzer_mailbox, 2);
             }

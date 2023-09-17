@@ -33,7 +33,8 @@ void clear_image(image_t *img);
 void threshold(image_t *img0, image_t *img1, uint8_t thres, uint8_t low_value, uint8_t high_value);
 
 // 自适应二值化，img0和img1不可指向相同图片
-void adaptive_threshold(image_t *img0, image_t *img1, int block_size, int down_value, uint8_t low_value, uint8_t high_value);
+void
+adaptive_threshold(image_t *img0, image_t *img1, int block_size, int down_value, uint8_t low_value, uint8_t high_value);
 
 // 像素逻辑与，即都为255时才为255
 void image_and(image_t *img0, image_t *img1, image_t *img2);

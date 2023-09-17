@@ -41,8 +41,7 @@ typedef enum _ewm_lpo_clock_source
  *
  * This structure is used to configure the EWM.
  */
-typedef struct _ewm_config
-{
+typedef struct _ewm_config {
     bool enableEwm;           /*!< Enable EWM module */
     bool enableEwmInput;      /*!< Enable EWM_in input */
     bool setInputAssertLogic; /*!< EWM_in signal assertion state */
@@ -62,8 +61,7 @@ typedef struct _ewm_config
  *
  * This structure contains the settings for all of EWM interrupt configurations.
  */
-enum _ewm_interrupt_enable_t
-{
+enum _ewm_interrupt_enable_t {
     kEWM_InterruptEnable = EWM_CTRL_INTEN_MASK, /*!< Enable the EWM to generate an interrupt*/
 };
 
@@ -72,8 +70,7 @@ enum _ewm_interrupt_enable_t
  *
  * This structure contains the constants for the EWM status flags for use in the EWM functions.
  */
-enum _ewm_status_flags_t
-{
+enum _ewm_status_flags_t {
     kEWM_RunningFlag = EWM_CTRL_EWMEN_MASK, /*!< Running flag, set when EWM is enabled*/
 };
 
@@ -158,9 +155,8 @@ void EWM_GetDefaultConfig(ewm_config_t *config);
  *        The parameter can be combination of the following source if defined
  *        @arg kEWM_InterruptEnable
  */
-static inline void EWM_EnableInterrupts(EWM_Type *base, uint32_t mask)
-{
-    base->CTRL |= (uint8_t)mask;
+static inline void EWM_EnableInterrupts(EWM_Type *base, uint32_t mask) {
+    base->CTRL |= (uint8_t) mask;
 }
 
 /*!
@@ -173,8 +169,7 @@ static inline void EWM_EnableInterrupts(EWM_Type *base, uint32_t mask)
  *        The parameter can be combination of the following source if defined
  *        @arg kEWM_InterruptEnable
  */
-static inline void EWM_DisableInterrupts(EWM_Type *base, uint32_t mask)
-{
+static inline void EWM_DisableInterrupts(EWM_Type *base, uint32_t mask) {
     base->CTRL &= (uint8_t)(~mask);
 }
 
@@ -193,9 +188,8 @@ static inline void EWM_DisableInterrupts(EWM_Type *base, uint32_t mask)
  *                    - True: a related status flag has been set.
  *                    - False: a related status flag is not set.
  */
-static inline uint32_t EWM_GetStatusFlags(EWM_Type *base)
-{
-    return ((uint32_t)base->CTRL & EWM_CTRL_EWMEN_MASK);
+static inline uint32_t EWM_GetStatusFlags(EWM_Type *base) {
+    return ((uint32_t) base->CTRL & EWM_CTRL_EWMEN_MASK);
 }
 
 /*!

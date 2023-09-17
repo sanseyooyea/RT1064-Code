@@ -33,7 +33,8 @@ AT_ITCM_SECTION_INIT(void clear_image(image_t *img)) {
 }
 
 // 固定阈值二值化
-AT_ITCM_SECTION_INIT(void threshold(image_t *img0, image_t *img1, uint8_t thres, uint8_t low_value, uint8_t high_value)) {
+AT_ITCM_SECTION_INIT(
+        void threshold(image_t *img0, image_t *img1, uint8_t thres, uint8_t low_value, uint8_t high_value)) {
     assert(img0 && img0->data);
     assert(img1 && img1->data);
     assert(img0->width == img1->width && img0->height == img1->height);
@@ -47,7 +48,9 @@ AT_ITCM_SECTION_INIT(void threshold(image_t *img0, image_t *img1, uint8_t thres,
 }
 
 // 自适应阈值二值化
-AT_ITCM_SECTION_INIT(void adaptive_threshold(image_t *img0, image_t *img1, int block_size, int down_value, uint8_t low_value, uint8_t high_value)) {
+AT_ITCM_SECTION_INIT(
+        void adaptive_threshold(image_t *img0, image_t *img1, int block_size, int down_value, uint8_t low_value,
+                                uint8_t high_value)) {
     assert(img0 && img0->data);
     assert(img1 && img1->data);
     assert(img0->data != img1->data);
@@ -136,7 +139,8 @@ AT_ITCM_SECTION_INIT(void blur(image_t *img0, image_t *img1, uint32_t kernel)) {
         for (int x = 1; x < img0->width - 1; x++) {
                     AT(img1, x, y) = (1 * AT(img0, x - 1, y - 1) + 2 * AT(img0, x, y - 1) + 1 * AT(img0, x + 1, y - 1) +
                                       2 * AT(img0, x - 1, y) + 4 * AT(img0, x, y) + 2 * AT(img0, x + 1, y) +
-                                      1 * AT(img0, x - 1, y + 1) + 2 * AT(img0, x, y + 1) + 1 * AT(img0, x + 1, y + 1)) / 16;
+                                      1 * AT(img0, x - 1, y + 1) + 2 * AT(img0, x, y + 1) +
+                                      1 * AT(img0, x + 1, y + 1)) / 16;
         }
     }
 }
@@ -230,21 +234,46 @@ AT_ITCM_SECTION_INIT(void remap(image_t *img0, image_t *img1, fimage_t *mapx, fi
  * 3   1
  *   2
  */
-AT_DTCM_SECTION_ALIGN_INIT(const int dir_front[4][2], 8) = {{0,  -1},
-                                                            {1,  0},
-                                                            {0,  1},
-                                                            {-1, 0}};
-AT_DTCM_SECTION_ALIGN_INIT(const int dir_frontleft[4][2], 8) = {{-1, -1},
-                                                                {1,  -1},
-                                                                {1,  1},
-                                                                {-1, 1}};
-AT_DTCM_SECTION_ALIGN_INIT(const int dir_frontright[4][2], 8) = {{1,  -1},
-                                                                 {1,  1},
-                                                                 {-1, 1},
-                                                                 {-1, -1}};
+AT_DTCM_SECTION_ALIGN_INIT(const int dir_front[4][2],
+
+8) = {
+{
+0,  -1},
+{
+1,  0},
+{
+0,  1},
+{
+-1, 0}};
+
+AT_DTCM_SECTION_ALIGN_INIT(const int dir_frontleft[4][2],
+
+8) = {
+{
+-1, -1},
+{
+1,  -1},
+{
+1,  1},
+{
+-1, 1}};
+
+AT_DTCM_SECTION_ALIGN_INIT(const int dir_frontright[4][2],
+
+8) = {
+{
+1,  -1},
+{
+1,  1},
+{
+-1, 1},
+{
+-1, -1}};
 
 // 左手迷宫巡线
-AT_ITCM_SECTION_INIT(void findline_lefthand_adaptive(image_t *img, int block_size, int clip_value, int x, int y, int pts[][2], int *num)) {
+AT_ITCM_SECTION_INIT(
+        void findline_lefthand_adaptive(image_t *img, int block_size, int clip_value, int x, int y, int pts[][2],
+                                        int *num)) {
     assert(img && img->data);
     assert(num && *num >= 0);
     assert(block_size > 1 && block_size % 2 == 1);
@@ -287,7 +316,9 @@ AT_ITCM_SECTION_INIT(void findline_lefthand_adaptive(image_t *img, int block_siz
 }
 
 // 右手迷宫巡线
-AT_ITCM_SECTION_INIT(void findline_righthand_adaptive(image_t *img, int block_size, int clip_value, int x, int y, int pts[][2], int *num)) {
+AT_ITCM_SECTION_INIT(
+        void findline_righthand_adaptive(image_t *img, int block_size, int clip_value, int x, int y, int pts[][2],
+                                         int *num)) {
     assert(img && img->data);
     assert(num && *num >= 0);
     assert(block_size > 1 && block_size % 2 == 1);
@@ -363,7 +394,8 @@ AT_ITCM_SECTION_INIT(void approx_lines(int pts[][2], int pts_num, float epsilon,
 }
 
 // float类型的折线段近似
-AT_ITCM_SECTION_INIT(void approx_lines_f(float pts[][2], int pts_num, float epsilon, float lines[][2], int *lines_num)) {
+AT_ITCM_SECTION_INIT(
+        void approx_lines_f(float pts[][2], int pts_num, float epsilon, float lines[][2], int *lines_num)) {
     assert(pts);
     assert(epsilon > 0);
 
@@ -412,62 +444,84 @@ AT_ITCM_SECTION_INIT(void draw_line(image_t *img, int pt0[2], int pt1[2], uint8_
 }
 
 // 计算大津阈值
-AT_ITCM_SECTION_INIT(uint16_t getOSTUThreshold(image_t *img, uint8_t MinThreshold, uint8_t MaxThreshold)) {
-    uint8_t Histogram[256];
-    uint16_t OUSTThreshold = 0;
-    uint32_t PixelAmount = 0, Value_Sum = 0;
-    uint64_t sigma = 0, maxSigma = 0;
-    float w1 = 0, w2 = 0;
-    int32_t u1 = 0, u2 = 0;
-    uint8_t MinValue = 0, MaxValue = 255;
+AT_ITCM_SECTION_INIT(uint16_t
+getOSTUThreshold(image_t
+*img,
+uint8_t MinThreshold, uint8_t
+MaxThreshold)) {
+uint8_t Histogram[256];
+uint16_t OUSTThreshold = 0;
+uint32_t PixelAmount = 0, Value_Sum = 0;
+uint64_t sigma = 0, maxSigma = 0;
+float w1 = 0, w2 = 0;
+int32_t u1 = 0, u2 = 0;
+uint8_t MinValue = 0, MaxValue = 255;
 
-    //各像素点个数
-    uint8_t *ptr = img->data;
-    uint8_t *ptrEnd = img->data + img->width * img->height;
-    while (ptr != ptrEnd) {
-        ++Histogram[*ptr++];
-    }
+//各像素点个数
+uint8_t *ptr = img->data;
+uint8_t *ptrEnd = img->data + img->width * img->height;
+while (ptr != ptrEnd) {
+++Histogram[*ptr++];
+}
 
-    for (uint8_t m = 0; m < 100; m++) {
+for (
+uint8_t m = 0;
+m < 100; m++) {
 
-        Histogram[m] = 0;
-    }
+Histogram[m] = 0;
+}
 
-    for (MinValue = 0; Histogram[MinValue] == 0 && MinValue < 255; ++MinValue);
-    for (MaxValue = 255; Histogram[MaxValue] == 0 && MaxValue > 0; --MaxValue);
+for (
+MinValue = 0;
+Histogram[MinValue] == 0 && MinValue < 255; ++MinValue);
+for (
+MaxValue = 255;
+Histogram[MaxValue] == 0 && MaxValue > 0; --MaxValue);
 
-    if (MaxValue == MinValue) return MaxValue;         // 只有一个颜色
-    if (MinValue + 1 == MaxValue) return MinValue;        // 只有二个颜色
+if (MaxValue == MinValue) return
+MaxValue;         // 只有一个颜色
+if (MinValue + 1 == MaxValue) return
+MinValue;        // 只有二个颜色
 
-    if (MinValue < MinThreshold) {
-        MinValue = MinThreshold;
-    }
-    if (MaxValue > MaxThreshold) {
-        MaxValue = MaxThreshold;
-    }
+if (MinValue < MinThreshold) {
+MinValue = MinThreshold;
+}
+if (MaxValue > MaxThreshold) {
+MaxValue = MaxThreshold;
+}
 
-    uint32_t Pixel_Integral[256] = {0};   //像素积分 
-    uint32_t Value_Integral[256] = {0};    //灰度积分
-    for (uint8_t i = MinValue; i <= MaxValue; ++i) {
-        PixelAmount += Histogram[i];      //像素总数
-        Value_Sum += Histogram[i] * i;     //灰度总和
-        Pixel_Integral[i] = PixelAmount;
-        Value_Integral[i] = Value_Sum;
-    }
-    for (uint8_t i = MinValue; i < MaxValue + 1; ++i) {
-        w1 = (float) Pixel_Integral[i] / PixelAmount;  //前景像素点比例
-        w2 = 1 - w1;                               //背景比例
-        u1 = (int32_t) (Value_Integral[i] / w1);                   //前景平均灰度
-        u2 = (int32_t) ((Value_Sum - Value_Integral[i]) / w2);      //背景平均灰度
-        sigma = (uint64_t) (w1 * w2 * (u1 - u2) * (u1 - u2));
-        if (sigma >= maxSigma) {
-            maxSigma = sigma;
-            OUSTThreshold = i;
-        } else {
-            break;
-        }
-    }
-    return OUSTThreshold;
+uint32_t Pixel_Integral[256] = {0};   //像素积分
+uint32_t Value_Integral[256] = {0};    //灰度积分
+for (
+uint8_t i = MinValue;
+i <=
+MaxValue;
+++i) {
+PixelAmount += Histogram[i];      //像素总数
+Value_Sum += Histogram[i] *
+i;     //灰度总和
+Pixel_Integral[i] =
+PixelAmount;
+Value_Integral[i] =
+Value_Sum;
+}
+for (
+uint8_t i = MinValue;
+i < MaxValue + 1; ++i) {
+w1 = (float) Pixel_Integral[i] / PixelAmount;  //前景像素点比例
+w2 = 1 - w1;                               //背景比例
+u1 = (int32_t)(Value_Integral[i] / w1);                   //前景平均灰度
+u2 = (int32_t)((Value_Sum - Value_Integral[i]) / w2);      //背景平均灰度
+sigma = (uint64_t)(w1 * w2 * (u1 - u2) * (u1 - u2));
+if (sigma >= maxSigma) {
+maxSigma = sigma;
+OUSTThreshold = i;
+} else {
+break;
+}
+}
+return
+OUSTThreshold;
 }
 
 // 点集三角滤波
@@ -486,23 +540,23 @@ AT_ITCM_SECTION_INIT(void blur_points(float pts_in[][2], int num, float pts_out[
 }
 
 // 点集等距采样  使走过的采样前折线段的距离为`dist`
-AT_ITCM_SECTION_INIT(void resample_points(float pts_in[][2], int num1, float pts_out[][2], int *num2, float dist)){
+AT_ITCM_SECTION_INIT(void resample_points(float pts_in[][2], int num1, float pts_out[][2], int *num2, float dist)) {
     int remain = 0, len = 0;
-    for(int i=0; i<num1-1 && len < *num2; i++){
+    for (int i = 0; i < num1 - 1 && len < *num2; i++) {
         float x0 = pts_in[i][0];
         float y0 = pts_in[i][1];
-        float dx = pts_in[i+1][0] - x0;
-        float dy = pts_in[i+1][1] - y0;
-        float dn = sqrt(dx*dx+dy*dy);
+        float dx = pts_in[i + 1][0] - x0;
+        float dy = pts_in[i + 1][1] - y0;
+        float dn = sqrt(dx * dx + dy * dy);
         dx /= dn;
         dy /= dn;
 
-        while(remain < dn && len < *num2){
+        while (remain < dn && len < *num2) {
             x0 += dx * remain;
             pts_out[len][0] = x0;
             y0 += dy * remain;
             pts_out[len][1] = y0;
-            
+
             len++;
             dn -= remain;
             remain = dist;
@@ -626,6 +680,7 @@ void draw_x(image_t *img, int x, int y, int len, uint8_t value) {
 
 void draw_o(image_t *img, int x, int y, int radius, uint8_t value) {
     for (float i = -PI; i <= PI; i += PI / 10) {
-                AT(img, clip(x + radius * cosf(i), 0, img->width - 1), clip(y + radius * sinf(i), 0, img->height - 1)) = value;
+                AT(img, clip(x + radius * cosf(i), 0, img->width - 1),
+                   clip(y + radius * sinf(i), 0, img->height - 1)) = value;
     }
 }

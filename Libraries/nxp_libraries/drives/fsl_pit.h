@@ -29,8 +29,7 @@
  * @brief List of PIT channels
  * @note Actual number of available channels is SoC dependent
  */
-typedef enum _pit_chnl
-{
+typedef enum _pit_chnl {
     kPIT_Chnl_0 = 0U, /*!< PIT channel number 0*/
     kPIT_Chnl_1,      /*!< PIT channel number 1 */
     kPIT_Chnl_2,      /*!< PIT channel number 2 */
@@ -38,14 +37,12 @@ typedef enum _pit_chnl
 } pit_chnl_t;
 
 /*! @brief List of PIT interrupts */
-typedef enum _pit_interrupt_enable
-{
+typedef enum _pit_interrupt_enable {
     kPIT_TimerInterruptEnable = PIT_TCTRL_TIE_MASK, /*!< Timer interrupt enable*/
 } pit_interrupt_enable_t;
 
 /*! @brief List of PIT status flags */
-typedef enum _pit_status_flags
-{
+typedef enum _pit_status_flags {
     kPIT_TimerFlag = PIT_TFLG_TIF_MASK, /*!< Timer flag */
 } pit_status_flags_t;
 
@@ -58,8 +55,7 @@ typedef enum _pit_status_flags
  *
  * The configuration structure can be made constant so it resides in flash.
  */
-typedef struct _pit_config
-{
+typedef struct _pit_config {
     bool enableRunInDebug; /*!< true: Timers run in debug mode; false: Timers stop in debug mode */
 } pit_config_t;
 
@@ -102,8 +98,7 @@ void PIT_Deinit(PIT_Type *base);
  * @endcode
  * @param config Pointer to the configuration structure.
  */
-static inline void PIT_GetDefaultConfig(pit_config_t *config)
-{
+static inline void PIT_GetDefaultConfig(pit_config_t *config) {
     assert(NULL != config);
 
     /* Timers are stopped in Debug mode */
@@ -156,8 +151,7 @@ static inline void PIT_SetTimerChainMode(PIT_Type *base, pit_chnl_t channel, boo
  * @param mask    The interrupts to enable. This is a logical OR of members of the
  *                enumeration ::pit_interrupt_enable_t
  */
-static inline void PIT_EnableInterrupts(PIT_Type *base, pit_chnl_t channel, uint32_t mask)
-{
+static inline void PIT_EnableInterrupts(PIT_Type *base, pit_chnl_t channel, uint32_t mask) {
     base->CHANNEL[channel].TCTRL |= mask;
 }
 
@@ -169,8 +163,7 @@ static inline void PIT_EnableInterrupts(PIT_Type *base, pit_chnl_t channel, uint
  * @param mask    The interrupts to disable. This is a logical OR of members of the
  *                enumeration ::pit_interrupt_enable_t
  */
-static inline void PIT_DisableInterrupts(PIT_Type *base, pit_chnl_t channel, uint32_t mask)
-{
+static inline void PIT_DisableInterrupts(PIT_Type *base, pit_chnl_t channel, uint32_t mask) {
     base->CHANNEL[channel].TCTRL &= ~mask;
 }
 
@@ -183,8 +176,7 @@ static inline void PIT_DisableInterrupts(PIT_Type *base, pit_chnl_t channel, uin
  * @return The enabled interrupts. This is the logical OR of members of the
  *         enumeration ::pit_interrupt_enable_t
  */
-static inline uint32_t PIT_GetEnabledInterrupts(PIT_Type *base, pit_chnl_t channel)
-{
+static inline uint32_t PIT_GetEnabledInterrupts(PIT_Type *base, pit_chnl_t channel) {
     return (base->CHANNEL[channel].TCTRL & PIT_TCTRL_TIE_MASK);
 }
 
@@ -204,8 +196,7 @@ static inline uint32_t PIT_GetEnabledInterrupts(PIT_Type *base, pit_chnl_t chann
  * @return The status flags. This is the logical OR of members of the
  *         enumeration ::pit_status_flags_t
  */
-static inline uint32_t PIT_GetStatusFlags(PIT_Type *base, pit_chnl_t channel)
-{
+static inline uint32_t PIT_GetStatusFlags(PIT_Type *base, pit_chnl_t channel) {
     return (base->CHANNEL[channel].TFLG & PIT_TFLG_TIF_MASK);
 }
 
@@ -217,8 +208,7 @@ static inline uint32_t PIT_GetStatusFlags(PIT_Type *base, pit_chnl_t channel)
  * @param mask    The status flags to clear. This is a logical OR of members of the
  *                enumeration ::pit_status_flags_t
  */
-static inline void PIT_ClearStatusFlags(PIT_Type *base, pit_chnl_t channel, uint32_t mask)
-{
+static inline void PIT_ClearStatusFlags(PIT_Type *base, pit_chnl_t channel, uint32_t mask) {
     base->CHANNEL[channel].TFLG = mask;
 }
 
@@ -243,8 +233,7 @@ static inline void PIT_ClearStatusFlags(PIT_Type *base, pit_chnl_t channel, uint
  * @param channel Timer channel number
  * @param count   Timer period in units of ticks
  */
-static inline void PIT_SetTimerPeriod(PIT_Type *base, pit_chnl_t channel, uint32_t count)
-{
+static inline void PIT_SetTimerPeriod(PIT_Type *base, pit_chnl_t channel, uint32_t count) {
     base->CHANNEL[channel].LDVAL = count;
 }
 
@@ -261,8 +250,7 @@ static inline void PIT_SetTimerPeriod(PIT_Type *base, pit_chnl_t channel, uint32
  *
  * @return Current timer counting value in ticks
  */
-static inline uint32_t PIT_GetCurrentTimerCount(PIT_Type *base, pit_chnl_t channel)
-{
+static inline uint32_t PIT_GetCurrentTimerCount(PIT_Type *base, pit_chnl_t channel) {
     return base->CHANNEL[channel].CVAL;
 }
 
@@ -283,8 +271,7 @@ static inline uint32_t PIT_GetCurrentTimerCount(PIT_Type *base, pit_chnl_t chann
  * @param base    PIT peripheral base address
  * @param channel Timer channel number.
  */
-static inline void PIT_StartTimer(PIT_Type *base, pit_chnl_t channel)
-{
+static inline void PIT_StartTimer(PIT_Type *base, pit_chnl_t channel) {
     base->CHANNEL[channel].TCTRL |= PIT_TCTRL_TEN_MASK;
 }
 
@@ -297,8 +284,7 @@ static inline void PIT_StartTimer(PIT_Type *base, pit_chnl_t channel)
  * @param base    PIT peripheral base address
  * @param channel Timer channel number.
  */
-static inline void PIT_StopTimer(PIT_Type *base, pit_chnl_t channel)
-{
+static inline void PIT_StopTimer(PIT_Type *base, pit_chnl_t channel) {
     base->CHANNEL[channel].TCTRL &= ~PIT_TCTRL_TEN_MASK;
 }
 
